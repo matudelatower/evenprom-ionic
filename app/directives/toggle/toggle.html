@@ -1,0 +1,37 @@
+<ion-item-group *ngFor="var d of data">
+
+    <ion-item-divider (click)="toggleDetails(d)" light>
+        <b>{{d.title}}</b>
+
+        <ion-icon style="font-weight: bold;" primary item-right
+                  [name]="d.showDetails?'arrow-dropdown':'arrow-dropup'"></ion-icon>
+    </ion-item-divider>
+
+    <ion-item [hidden]="d.showDetails" *ngFor="let item of d.items">
+
+        <ion-label primary *ngIf="item.active" >{{item.text}}</ion-label>
+        <ion-label *ngIf="!item.active" >{{item.text}}</ion-label>
+        <ion-checkbox  [(ngModel)]="item.active"></ion-checkbox>
+    </ion-item>
+
+
+</ion-item-group>
+
+
+<!--<ion-list *ngFor="let d of data" (click)="toggleDetails(d)">-->
+
+<!--<ion-header-list>-->
+
+<!--<ion-icon primary item-right [name]="d.icon"></ion-icon>-->
+
+<!--{{d.items.length}}-->
+
+
+<!--</ion-header-list>-->
+
+<!--<ion-item [hidden]="d && d.showDetails" *ngFor="let item of d.items">-->
+<!--<ion-label>{{item.text}}</ion-label>-->
+<!--<ion-toggle [(ngModel)]="item.active"></ion-toggle>-->
+<!--</ion-item>-->
+
+<!--</ion-list>-->
