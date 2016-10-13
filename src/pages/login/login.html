@@ -1,0 +1,100 @@
+<!--<ion-header>-->
+    <!--<ion-navbar>-->
+    <!--<ion-title>Accediendo a Whats On City</ion-title>-->
+    <!--</ion-navbar>-->
+<!--</ion-header>-->
+
+<ion-content style="background-color: black;" class="has-header" padding align="center" class="login">
+    <ul style="list-style: none;" class="cb-slideshow">
+        <li><span></span>
+            <div>
+                <h3>Mensaje1</h3>
+            </div>
+        </li>
+        <li>
+            <span> </span>
+            <div>
+                <h3>Mensaje2 </h3>
+            </div>
+        </li>
+        <li><span></span>
+            <div>
+                <h3>Mensaje3</h3>
+            </div>
+        </li>
+        <li><span></span>
+            <div>
+                <h3>Mensaje1</h3>
+            </div>
+        </li>
+        <li><span> </span>
+            <div>
+                <h3>Mensaje2 </h3>
+            </div>
+        </li>
+        <li><span></span>
+            <div>
+                <h3>Mensaje3</h3>
+            </div>
+        </li>
+
+    </ul>
+
+
+
+    <!--<ion-list style="padding-top: 60%;" class="container">-->
+    <!--<ion-list-header style="color:black;">-->
+    <!--WHATS ON CITY-->
+    <!--</ion-list-header>-->
+
+
+    <!--<ion-item class="login-input">-->
+
+    <!--<ion-label fixed>Usuario</ion-label>-->
+    <!--<ion-input type="text" value=""></ion-input>-->
+    <!--</ion-item>-->
+
+    <!--<ion-item class="login-input">-->
+    <!--<ion-label fixed>Contraseña</ion-label>-->
+    <!--<ion-input type="password"></ion-input>-->
+    <!--</ion-item>-->
+    <!--<ion-item>-->
+    <!--<button ion-button>-->
+    <!--<ion-icon name="home"></ion-icon>-->
+    <!--Left Icon-->
+    <!--</button>-->
+
+    <!--&lt;!&ndash; Float the icon right &ndash;&gt;-->
+    <!--<button ion-button>-->
+    <!--Right Icon-->
+    <!--<ion-icon name="home"></ion-icon>-->
+    <!--</button>-->
+    <!--</ion-item>-->
+
+    <!--</ion-list>-->
+
+
+    <!--<form style="padding-top: 40%;" [formGroup]="loginForm" (submit)="login(!loginForm.valid)">-->
+    <div style="padding-top: 40%;"  (submit)="login()">
+        <ion-list>
+            <ion-item class="login-input">
+                <ion-label fixed>{{'login.user' | translate}}</ion-label>
+                <ion-input type="text" [(ngModel)]="user" placeholder="admin"></ion-input>
+            </ion-item>
+
+            <ion-item class="login-input">
+                <ion-label fixed>{{'login.pass' | translate}}</ion-label>
+                <ion-input type="password" [(ngModel)]="pass" placeholder="admin" ngControl="password"></ion-input>
+            </ion-item>
+            <ion-item class="login-input">
+                <ion-label stacked-label>{{'login.remember' | translate}}</ion-label>
+                <ion-checkbox dark [(ngModel)]="rememberMe" ngControl="rememberMe"></ion-checkbox>
+            </ion-item>
+        </ion-list>
+        <div>Credentials: admin/admin</div>
+        <div>
+            <button ion-button block type="button" (click)="login()"> Ingresar</button>
+            <button ion-button block type="button" (click)="cambiarLeguaje()">Cambiar lenguaje a {{lenguaje}}</button>
+        </div>
+    </div>
+</ion-content>
