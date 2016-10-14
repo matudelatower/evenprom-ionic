@@ -76,11 +76,11 @@
             </ion-col>
             <ion-col [ngStyle]="{'border-bottom-color': empresa.color}" class="color-gris item-publicacion-left"
                      width-40 (click)="modalPreviewPublicacion(empresa)" >
-                <ion-row *ngIf="empresa.promocion" >
-                    <span class="publicacion-promocion">{{empresa.promocion}}</span>
+                <ion-row *ngIf="empresa.promocion" text-center>
+                    <span class="publicacion-promocion">{{empresa.promocion | uppercase}}</span>
                 </ion-row>
-                <ion-row *ngIf="!empresa.promocion" >
-                    <span class="publicacion-promocion">{{empresa.titulo}}</span>
+                <ion-row *ngIf="!empresa.promocion" text-center>
+                    <span class="publicacion-promocion">{{empresa.titulo | uppercase}}</span>
                 </ion-row>
                 <ion-row *ngIf="empresa.descripcion" >
                     <span class="publicacion-descripcion">{{empresa.descripcion}}</span>
@@ -90,14 +90,14 @@
                      class="item-publicacion-mid" width-40
 
                      (click)="modalPreviewPublicacion(empresa)">
-                <ion-row>
+                <ion-row center>
                 <span [ngStyle]="{'color': empresa.color}" class=" empresa-nombre">{{empresa.nombre_empresa | uppercase}}</span>
                 </ion-row>
             </ion-col>
             <ion-col width-10 [ngStyle]="{'background-color': empresa.color}" class="item-publicacion-botones">
                 <ion-row>
                     <button ion-button icon-only small class="btn-item-publicacion" (click)="addPublicacionFav()">
-                        <ion-icon name="heart"></ion-icon>
+                        <ion-icon name="heart-outline"></ion-icon>
                     </button>
                 </ion-row>
                 <ion-row>

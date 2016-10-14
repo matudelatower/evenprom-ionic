@@ -12,11 +12,19 @@
                 <ion-icon name="ionic" item-right></ion-icon>
             </button>
 
-            <button menuClose ion-item menuIcon="logout" (click)="logout()">
-                <ion-icon name="ionic" item-left></ion-icon>
-                Salir
-                <ion-icon name="ionic" item-right></ion-icon>
+            <button menuClose ion-item *ngFor="let menu of menues">
+                <ion-icon [name]="menu.icono" item-left></ion-icon>
+                {{ menu.nombre |uppercase }}
             </button>
+
+
+
+            <button menuClose ion-item menuIcon="logout" (click)="logout()">
+                <ion-icon name="log-out" item-left></ion-icon>
+                Salir
+                <!--<ion-icon name="ionic" item-right></ion-icon>-->
+            </button>
+
         </ion-list>
     </ion-content>
 

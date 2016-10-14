@@ -41,6 +41,11 @@ item-list-empresa {
 /* Portrait and Landscape */
 
 @media screen and (max-width: 420px) {
+
+  .label-md{
+    margin: 1px 8px 1px 0 !important;
+  }
+
   .texto-publicacion {
     height: 50px;
   }
@@ -66,7 +71,7 @@ item-list-empresa {
   }
 
   .publicacion-promocion {
-    font-size: 15px;
+    font-size: 1.4em;
     font-weight: bold;
     margin-top: 25%;
   }

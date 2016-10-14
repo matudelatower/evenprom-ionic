@@ -3,7 +3,6 @@ import { Data } from './data';
 
 @Component({
     selector: 'toggle-directive',
-    //inputs: ['data'],
     templateUrl: 'toggle.html'
 })
 export class ToggleDirective {
