@@ -188,7 +188,7 @@ item-list-empresa {
 
 }
 
-.item-publicacion, .item-publicacion-left, .item-publicacion-mid {
+.item-publicacion, .item-publicacion-left, .item-publicacion-mid, .item-publicacion-premium-left  {
   border-style: solid;
   border-top: none;
   border-left: none;
@@ -200,6 +200,15 @@ item-list-empresa {
 .item-publicacion-left {
   border-bottom-left-radius: 15px;
   border-top-left-radius: 15px;
+}
+
+.img-publicacion-premium{
+  margin-bottom: -1%;
+  border-top-left-radius: 15px;
+}
+
+.item-publicacion-premium-left {
+  border-bottom-left-radius: 15px;
 }
 
 .fecha-publicacion, .hora-publicacion {
@@ -229,6 +238,13 @@ item-list-empresa {
   color: $ep-gris;
 }
 
+.no-padding{
+  padding: 0px !important;
+}
+
+.no-padding-top{
+  padding-top: 0px !important;
+}
 
 
 

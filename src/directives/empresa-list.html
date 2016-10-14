@@ -1,25 +1,66 @@
-<ion-list-header *ngIf="empresa.premium" class="empresa-imagen">
+<!--<ion-list-header *ngIf="empresa.premium" class="empresa-imagen">
     <img [src]="empresa.imagen_publicacion"/>
-</ion-list-header>
+</ion-list-header>-->
 
 <ion-list-header *ngIf="empresa.premium" class="publicacion-item" [ngStyle]="{'border-bottom-color': empresa.color}">
-    <ion-icon style="font-size: 2.4rem;" item-left></ion-icon>
     <ion-grid>
-        <ion-row class="texto-publicacion">
-            <!--<div class="led-box">-->
-            <!--<div class="led-red"></div>-->
-            <!--</div>-->
-            <!--<div class="led-box">-->
-            <!--<div class="led-blue"></div>-->
-            <!--</div>-->
-
-            <ion-col class="empresa-nombre" width-45>{{empresa.titulo}}</ion-col>
-            <ion-col [ngStyle]="{'color': empresa.color}" class="empresa-promocion" width-55>{{empresa.promocion}}
+        <!--<ion-row>
+            <ion-col offset-10 width-80>
+                <img [src]="empresa.imagen_publicacion"/>
             </ion-col>
+        </ion-row>-->
+        <ion-row wrap>
+           
+            <ion-col width-10>
+                <ion-row *ngIf="empresa.tipo_publicacion=='oferta'">
+                    <span class="hora-publicacion">{{empresa.hora_inicio }}</span>
+                </ion-row>
+                <ion-row>
+                    <span class="fecha-publicacion">{{empresa.fecha_inicio | date:'dd-MMM' | uppercase }}</span>
+                </ion-row>
+                <ion-row>
+                    <ion-icon style="font-size: 2.4rem;" class="icono-categoria"
+                              [name]="empresa.categorias[0]?empresa.categorias[0].icono:'ice-cream'"
+                    ></ion-icon>
+                </ion-row>
+            </ion-col>
+             <ion-col width-80 class="no-padding">
+                    <ion-row>
+                        <ion-col width-100 class="no-padding">
+                            <img class="img-publicacion-premium" [src]="empresa.imagen_publicacion"/>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row>
+                        <ion-col [ngStyle]="{'border-bottom-color': empresa.color}" class="color-gris item-publicacion-premium-left no-padding-top"
+                     width-50 (click)="modalPreviewPublicacion(empresa)" >
+                
+                <ion-row *ngIf="empresa.promocion" text-center>
+                    <span class="publicacion-promocion">{{empresa.promocion | uppercase}}</span>
+                </ion-row>
+                <ion-row *ngIf="!empresa.promocion" text-center>
+                    <span class="publicacion-promocion">{{empresa.titulo | uppercase}}</span>
+                </ion-row>
+                <ion-row *ngIf="empresa.descripcion" >
+                    <span class="publicacion-descripcion">{{empresa.descripcion}}</span>
+                </ion-row>
+                
+            </ion-col>
+            <ion-col [ngStyle]="{'border-bottom-color': empresa.color}"
+                     class="item-publicacion-mid no-padding-top" width-50 
+
+                     (click)="modalPreviewPublicacion(empresa)">
+                <ion-row center margin-left>
+                <span [ngStyle]="{'color': empresa.color}" class=" empresa-nombre">{{empresa.nombre_empresa | uppercase}}</span>
+                </ion-row>
+            </ion-col>
+                    </ion-row>
+             </ion-col>
+             
+            
             <ion-col width-10 [ngStyle]="{'background-color': empresa.color}" class="item-publicacion-botones">
                 <ion-row>
                     <button ion-button icon-only small class="btn-item-publicacion" (click)="addPublicacionFav()">
-                        <ion-icon name="heart"></ion-icon>
+                        <ion-icon name="heart-outline"></ion-icon>
                     </button>
                 </ion-row>
                 <ion-row>
@@ -36,9 +77,6 @@
             </ion-col>
         </ion-row>
     </ion-grid>
-    <ion-icon name="heart" item-right></ion-icon>
-    <ion-icon name="share" item-right></ion-icon>
-    <ion-icon name="text" item-right></ion-icon>
 </ion-list-header>
 
 <ion-list-header *ngIf="!empresa.premium" class="publicacion-item" [ngStyle]="{'border-bottom-color': empresa.color}">
@@ -90,7 +128,7 @@
                      class="item-publicacion-mid" width-40
 
                      (click)="modalPreviewPublicacion(empresa)">
-                <ion-row center>
+                <ion-row center margin-left>
                 <span [ngStyle]="{'color': empresa.color}" class=" empresa-nombre">{{empresa.nombre_empresa | uppercase}}</span>
                 </ion-row>
             </ion-col>
