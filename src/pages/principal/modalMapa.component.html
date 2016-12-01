@@ -1,0 +1,24 @@
+<ion-header>
+
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button color="primary" (click)="dismiss(false)">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-title>
+            Mapis
+        </ion-title>
+
+        <ion-buttons end>
+            <button ion-button secondary (click)="dismiss(true)">
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+          <empresas-map [empresas]="empresas" style="width:100%;"></empresas-map>
+</ion-content>

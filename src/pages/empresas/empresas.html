@@ -7,14 +7,13 @@
 <ion-header>
     <ion-toolbar>
         <ion-navbar>
-            Empresas
+            Empresas <span *ngIf="categoriaSel" > <b>{{categoriaSel.nombre}} </b> </span>
         </ion-navbar>
-        <!--<ion-buttons start>-->
-            <!--<button ion-button (click)="dismiss()">-->
-                <!--<span color="primary" showWhen="ios">Cancel</span>-->
-                <!--<ion-icon name="md-close" showWhen="android,windows"></ion-icon>-->
-            <!--</button>-->
-        <!--</ion-buttons>-->
+        <ion-buttons *ngIf="categoriaSel" end>
+            <button ion-button>
+                <ion-icon [name]="categoriaSel.icono"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -26,10 +25,19 @@
         <div class="scroll-hidden-x-container">
             <div class="scroll-hidden-x-inner">
                 <ion-row>
-                    <button ion-button icon-only large color="light" round class="btn-categorias"
-                            *ngFor="let categoria of categorias">
-                        <ion-icon [name]="categoria.icono"></ion-icon>
-                    </button>
+                    <div *ngFor="let categoria of categorias" class="div-categorias-btn">
+                        <button *ngIf="!categoriaSel" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="light" round class="btn-categorias">
+                            <ion-icon [name]="categoria.icono"></ion-icon>
+                        </button>
+                        <button *ngIf="categoriaSel && categoria.slug != categoriaSel.slug" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="light" round class="btn-categorias">
+                            <ion-icon [name]="categoria.icono"></ion-icon>
+                        </button>
+                        <button *ngIf="categoriaSel && categoria.slug == categoriaSel.slug" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="default" round class="btn-categorias">
+                            <ion-icon [name]="categoria.icono"></ion-icon>
+                        </button>
+                    </div>
+
+
                 </ion-row>
             </div>
         </div>

@@ -20,6 +20,16 @@ import {ToggleDirective} from "../directives/toggle/toggle";
 import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 import {Empresas} from "../pages/empresas/empresas";
 import {CommentText} from "../directives/comment-text";
+import {FilterPublicaciones} from "../filters/filter-publicaciones";
+// import {GeocodingService} from "../services/mapbox/geocoding.service";
+// import {MapService} from "../services/mapbox/map.service";
+import {GeocodingService} from "../directives/map/geocode.service.ts";
+import {MapService} from "../directives/map/map.service.ts";
+import {MapComponent} from '../directives/map/map.component.ts';
+import {GeosearchComponent} from '../directives/map/geosearch.component.ts';
+import {ModalMapa} from '../pages/principal/modalMapa.component';
+import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
+
 
 @NgModule({
     declarations: [
@@ -34,13 +44,18 @@ import {CommentText} from "../directives/comment-text";
         RankingPage,
         ModalSearch,
         ItemListEmpresa,
-        Progressbar,
         Progress,
+        Progressbar ,
         Bar,
         ToggleDirective,
         ModalPreviewPublicacion,
         Empresas,
-        CommentText
+        CommentText,
+        FilterPublicaciones,
+        MapComponent,
+        GeosearchComponent,
+        ModalMapa,
+        MapaEmpresaComponent
     ],
     imports: [
         TranslateModule.forRoot({
@@ -62,10 +77,13 @@ import {CommentText} from "../directives/comment-text";
         ModalSearch,
         ItemListEmpresa,
         ModalPreviewPublicacion,
-        Empresas
-
+        Empresas,
+        MapComponent,
+        GeosearchComponent,
+        ModalMapa
+        
     ],
-    providers: [Storage, MainService],
+    providers: [Storage, MainService,GeocodingService, MapService],
     schemas:[
         // ItemListEmpresa,
         // Progressbar

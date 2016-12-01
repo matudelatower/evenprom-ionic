@@ -16,15 +16,16 @@ import {EmpresaPerfilPage} from "../empresaPerfil/empresaPerfil";
 })
 export class Empresas {
 
-    public categorias: any[];
-    public empresas: any[];
+    public categorias:any[];
+    public empresas:any[];
+
+    public categoriaSel:any;
 
 
-    constructor(public navCtrl: NavController,
-                public viewCtrl: ViewController,
-                public mainService: MainService,
-                public loadingCtrl: LoadingController)
-    {
+    constructor(public navCtrl:NavController,
+                public viewCtrl:ViewController,
+                public mainService:MainService,
+                public loadingCtrl:LoadingController) {
 
         let loader = this.loadingCtrl.create({
             content: "Cargando",
@@ -32,7 +33,9 @@ export class Empresas {
         });
         loader.present();
         mainService.getCategorias().toPromise()
-            .then(response => this.categorias = response.json());
+            .then(
+                response => this.categorias = response.json()
+            );
         mainService.getEmpresas().toPromise()
             .then(response => {
                 this.empresas = response.json();
@@ -40,6 +43,15 @@ export class Empresas {
             });
         // console.log(this.categorias);
         // console.log(this.empresas);
+    }
+
+    loadEmpresasBySlug (cat){
+        this.categoriaSel = cat;
+        this.mainService.getEmpresasBySlug(cat.slug).toPromise()
+            .then(response => {
+                this.empresas = response.json();
+
+            });
     }
 
     ionViewDidLoad() {
@@ -56,7 +68,7 @@ export class Empresas {
 
         modal.present();
 
-        modal.onDidDismiss((data: any[]) => {
+        modal.onDidDismiss((data:any[]) => {
             if (data) {
                 console.log(data);
             }
