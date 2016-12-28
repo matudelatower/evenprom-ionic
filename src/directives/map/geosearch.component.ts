@@ -1,8 +1,8 @@
 import {Component, Output, EventEmitter} from '@angular/core';
-import {GeocodingService} from './geocode.service.ts';
-import {MapService} from './map.service.ts';
-import {Location} from './location.class.ts';
-import {Map} from 'leaflet';
+import {GeocodingService} from './geocode.service';
+import {MapService} from './map.service';
+import {Location} from './location.class';
+
 
 @Component({
     selector: 'geosearch',
@@ -12,7 +12,7 @@ export class GeosearchComponent {
     address: string;
 
     private geocoder: GeocodingService;
-    private map: Map;
+
     private mapService: MapService;
     @Output() locationFound = new EventEmitter();
 
@@ -47,7 +47,7 @@ export class GeosearchComponent {
             let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
             latlng.push(lat);
             latlng.push(lng);
-            this.mapService.addMaker(latlng);
+            this.mapService.addMarker(latlng, '');
         }, error => console.error(error));
     }
 }

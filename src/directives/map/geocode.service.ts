@@ -1,7 +1,8 @@
 import {Http, Headers, Response} from '@angular/http';
-import {Location} from './location.class.ts';
+import {Location} from './location.class';
 import {Injectable} from '@angular/core';
-import {LatLngBounds} from 'leaflet';
+
+let L = require('leaflet');
 
 
 import 'rxjs/add/operator/map';
@@ -20,8 +21,15 @@ export class GeocodingService {
             .get('http://maps.googleapis.com/maps/api/geocode/json?address=' + encodeURIComponent(address))
             .map(res => res.json())
             .map(result => {
-                if (result.status !== 'OK') { throw new Error('unable to geocode address'); }
+                //if (result.status !== 'OK') { throw new Error('unable to geocode address'); }
+
                 var location = new Location();
+                if (result.status !== 'OK') {
+                    location.valid =false;
+                    return location;
+                }else{
+                    location.valid = true;
+                }
                 location.address = result.results[0].formatted_address;
                 location.latitude = result.results[0].geometry.location.lat;
                 location.longitude = result.results[0].geometry.location.lng;

@@ -1,6 +1,6 @@
 import {Component } from '@angular/core';
 import {NavParams, ViewController} from 'ionic-angular';
-import {MapService} from '../../directives/map/map.service.ts';
+import {MapService} from '../../directives/map/map.service';
 
 @Component({
     selector: 'modal-mapa',

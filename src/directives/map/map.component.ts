@@ -1,8 +1,8 @@
 import {Component, ElementRef, OnInit, Output, EventEmitter} from '@angular/core';
 import {ViewController} from 'ionic-angular';
-import {MapService} from './map.service.ts';
-import {GeocodingService} from './geocode.service.ts';
-import {GeosearchComponent} from './geosearch.component.ts';
+import {MapService} from './map.service';
+import {GeocodingService} from './geocode.service';
+import {GeosearchComponent} from './geosearch.component';
 import {Subscription} from 'rxjs/Subscription';
 
 @Component({

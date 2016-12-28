@@ -14,15 +14,14 @@ import {Empresas} from "../empresas/empresas";
 import {FilterPublicaciones} from "../../filters/filter-publicaciones";
 
 
-import {GeocodingService} from './../../directives/map/geocode.service.ts';
-import {MapService} from './../../directives/map/map.service.ts';
-import {Location} from './../../directives/map/location.class.ts';
-import {Map} from 'leaflet';
-import {MapComponent} from './../../directives/map/map.component.ts';
-import {GeosearchComponent} from './../../directives/map/geosearch.component.ts';
+import {GeocodingService} from './../../directives/map/geocode.service';
+import {MapService} from './../../directives/map/map.service';
+import {Location} from './../../directives/map/location.class';
+import {MapComponent} from './../../directives/map/map.component';
+import {GeosearchComponent} from './../../directives/map/geosearch.component';
 import {ModalMapa} from './modalMapa.component';
 import {MapaEmpresaComponent} from '../../directives/map-empresa/map.component';
-
+import {DefaultImageDirective} from "../../directives/image-default.directive";
 
 @Component({
     selector: 'page-principal',
@@ -39,8 +38,6 @@ export class PrincipalPage {
 
     address:string;
     private geocoder:GeocodingService;
-    private map:Map;
-    private mapService:MapService;
     @Output() locationFound = new EventEmitter();
 
 
@@ -52,9 +49,10 @@ export class PrincipalPage {
 
 
     constructor(private navController:NavController,
-                private mainservice:MainService,
+                public mainservice:MainService,
                 public loadingCtrl:LoadingController,
-                geocoder:GeocodingService, mapService:MapService) {
+                geocoder:GeocodingService,
+                public mapService:MapService) {
         this.address = '';
         this.geocoder = geocoder;
         this.mapService = mapService;
@@ -64,11 +62,10 @@ export class PrincipalPage {
         });
         loader.present();
 
-        mainservice.getPublicaciones().toPromise()
-            .then(response => {
-                this.publicaciones = response.json();
-                loader.dismissAll();
-            });
+        this.mainservice.getPublicaciones().subscribe((data)=> {
+            this.publicaciones = data;
+            loader.dismissAll();
+        });
 
         //console.log(this.public aciones);
 

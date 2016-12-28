@@ -1,11 +1,13 @@
 import {Injectable} from '@angular/core';
-import {Map, TileLayer} from 'leaflet';
+//import {Map, TileLayer} from 'leaflet';
+
+let L = require('leaflet');
 
 import {ReplaySubject} from 'rxjs/ReplaySubject';
 
 @Injectable()
 export class MapService {
-    public map:Map;
+    public map;
     public baseMaps:any;
 
     //Observable bounds source
@@ -29,11 +31,11 @@ export class MapService {
         console.log(document.getElementById(domId));
         this.map = new L.Map(domId, {
             zoomControl: false,
-            center: new L.LatLng(40.731253, -73.996139),
+            //center: new L.LatLng(40.731253, -73.996139),
             //zoom: this.getURLParameter('zoomLevel') || 12,
-            zoom: 7,
+            zoom: 16,
             minZoom: 4,
-            maxZoom: 19,
+            maxZoom: 18,
             layers: [this.baseMaps.OpenStreetMap]
         });
         L.control.zoom({position: 'topright'}).addTo(this.map);
@@ -50,7 +52,7 @@ export class MapService {
         this._geosearchBoundsSource.next(newBounds);
     }
 
-    addMaker(newBounds:any, text = false) {
+    addMarker(newBounds:any, text) {
 
         let maker = L.marker(newBounds).addTo(this.map);
 
@@ -77,8 +79,11 @@ export class MapService {
 
     }
 
-    remove () {
-        this.map.remove();
+    remove() {
+        if(this.map != undefined || this.map != null) {
+            this.map.remove();
+        }
+
     }
 
     disableMouseEvent(tag:string) {

@@ -8,7 +8,7 @@ import { Pipe, PipeTransform, Injectable } from "@angular/core";
 })
 @Injectable()
 export class FilterPublicaciones implements PipeTransform {
-    transform(items: any[], args: any[]): any {
+    transform(items: any[], args: string): any {
         
         if ( !(typeof items === "undefined") ){
             return items.filter(item => args == "all" || item.tipo_publicacion.indexOf(args) !== -1);

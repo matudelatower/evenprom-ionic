@@ -1,11 +1,10 @@
-import {Component, ElementRef, OnInit, Output, Input, EventEmitter, ElementRef} from '@angular/core';
+import {Component, ElementRef, OnInit, Output, Input, EventEmitter} from '@angular/core';
 import {BrowserDomAdapter} from '@angular/platform-browser/src/browser/browser_adapter';
 import {ViewController} from 'ionic-angular';
 import {MapService} from '../map/map.service';
 import {GeocodingService} from '../map/geocode.service';
 import {GeosearchComponent} from '../map/geosearch.component';
 import {Subscription} from 'rxjs/Subscription';
-import forEach = ts.forEach;
 import { Geolocation } from 'ionic-native';
 import {EmpresaPerfilPage} from "../../pages/empresaPerfil/empresaPerfil";
 import {MainService} from "../../app/main.service";
@@ -20,7 +19,7 @@ export class MapaEmpresaComponent {
     @Input() empresas;
     private mapService:MapService;
     private geocoder:GeocodingService;
-    domAdapter:BrowserDomAdapter =  new BrowserDomAdapter();
+    domAdapter:BrowserDomAdapter = new BrowserDomAdapter();
     public touchScreen:Boolean = true;
     map:any;
     options:Object;
@@ -32,7 +31,8 @@ export class MapaEmpresaComponent {
     sub:any;
     navigated = false; // true if navigated here
 
-    constructor(private elRef:ElementRef, mapService:MapService,
+    constructor(private elRef:ElementRef,
+                mapService:MapService,
                 geocoder:GeocodingService,
                 public viewCtrl:ViewController,
                 public mainService:MainService,
@@ -43,10 +43,8 @@ export class MapaEmpresaComponent {
 
 
     ngOnInit() {
-        // create the map
-
-        //    this.map = this.mapService.createMap('map');
-        this.map = this.mapService.createMap(this.elRef.nativeElement.firstChild);
+        this.mapService.remove();
+        this.map = this.mapService.createMap('map');
         this.mapLoaded.next(this.map);
 
         this.subscription = this.mapService.geosearchBounds$.subscribe(
@@ -60,12 +58,18 @@ export class MapaEmpresaComponent {
     }
 
     createMakers() {
+        console.log(this.empresas);
         for (let e of this.empresas) {
             console.log(e.direccion.length);
             if (e.direccion.length != 0) {
 
                 let location = this.geocoder.geocode(e.direccion.calle + " " + e.direccion.altura + ", " + e.direccion.localidad);
+
                 location.subscribe(location => {
+                    console.log(location);
+                    if (!location.valid) {
+                        return;
+                    }
                     let address = location.address;
 
                     var newBounds = location.viewBounds;
@@ -79,14 +83,26 @@ export class MapaEmpresaComponent {
                     latlng.push(lng);
                     //let data = '<img src="' + e.image_name + '">';
 
-                    let img = this.domAdapter.createElement('img');
+                    //let img = this.domAdapter.createElement('img');
+                    let newDiv:HTMLDivElement;
+                    newDiv = document.createElement("div");
+                    let newContent = document.createTextNode(e.nombre);
+
+
+                    let img:HTMLImageElement;
+                    img = document.createElement('img');
+                    newDiv.style.color = e.color;
+                    newDiv.appendChild(newContent);
+                    newDiv.appendChild(img);
+
+                    console.log(newDiv);
+
                     img.src = e.image_name;
-                    this.domAdapter.on(img, 'click', this.goToPerfil.bind(this, e));
-                    this.domAdapter.appendChild(this.elementRef.nativeElement, img);
+                    img.src = "http://www.goleamos.com/post/boca.png";
+                    this.domAdapter.on(newDiv, 'click', this.goToPerfil.bind(this, e));
+                    this.domAdapter.appendChild(this.elementRef.nativeElement, newDiv);
 
-
-                    let data = '<img  src="' + e.image_name + '" (click)="goToPerfil(' + e.id + ')">';
-                    this.mapService.addMaker(latlng, img);
+                    this.mapService.addMarker(latlng, newDiv);
                     //this.mapService.addText(e.nombre);
                 }, error => console.error(error));
             }

@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
-import {ToastController} from "ionic-angular";
+import {ToastController,NavController} from "ionic-angular";
 import {MainService} from "../app/main.service";
+import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 
 
 @Component({
@@ -14,7 +15,9 @@ export class ItemListEmpresa {
 
 
     constructor(public toastCtrl: ToastController,
-                public mainservice: MainService) {
+                public mainservice: MainService,
+                public navController:NavController
+    ) {
 
     }
 
@@ -22,9 +25,15 @@ export class ItemListEmpresa {
     //     this.empersa = 
     // }
 
-    modalPreviewPublicacion(publicacion) {
-        this.mainservice.modalPublicacion(publicacion);
+    //modalPreviewPublicacion(publicacion) {
+    //    this.mainservice.modalPublicacion(publicacion);
+    //}
+
+    pagePublicacion(publicacion) {
+        console.log(publicacion)
+        this.navController.push(ModalPreviewPublicacion, {publicacion: publicacion});
     }
+
 
     sharePublicacion(){
         let toast = this.toastCtrl.create({

@@ -23,12 +23,13 @@ import {CommentText} from "../directives/comment-text";
 import {FilterPublicaciones} from "../filters/filter-publicaciones";
 // import {GeocodingService} from "../services/mapbox/geocoding.service";
 // import {MapService} from "../services/mapbox/map.service";
-import {GeocodingService} from "../directives/map/geocode.service.ts";
-import {MapService} from "../directives/map/map.service.ts";
-import {MapComponent} from '../directives/map/map.component.ts';
-import {GeosearchComponent} from '../directives/map/geosearch.component.ts';
+import {GeocodingService} from "../directives/map/geocode.service";
+import {MapService} from "../directives/map/map.service";
+import {MapComponent} from '../directives/map/map.component';
+import {GeosearchComponent} from '../directives/map/geosearch.component';
 import {ModalMapa} from '../pages/principal/modalMapa.component';
 import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
+import {DefaultImageDirective} from "../directives/image-default.directive";
 
 
 @NgModule({
@@ -55,7 +56,8 @@ import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
         MapComponent,
         GeosearchComponent,
         ModalMapa,
-        MapaEmpresaComponent
+        MapaEmpresaComponent,
+        DefaultImageDirective
     ],
     imports: [
         TranslateModule.forRoot({

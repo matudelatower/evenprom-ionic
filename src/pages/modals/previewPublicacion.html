@@ -1,41 +1,132 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-title>
-            {{publicacion.nombre_empresa}}
-        </ion-title>
-        <ion-buttons start>
-            <button ion-button (click)="dismiss()">
-                <span color="primary" showWhen="ios">Cerrar</span>
-                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-toolbar>
+<!--<ion-header>-->
+<!--<ion-toolbar>-->
+<!--<ion-title>-->
+<!--{{publicacion.nombre_empresa}}-->
+<!--</ion-title>-->
+<!--<ion-buttons start>-->
+<!--<button ion-button (click)="dismiss()">-->
+<!--<ion-icon name="arrow-back" ></ion-icon>-->
+<!--</button>-->
+<!--</ion-buttons>-->
+<!--</ion-toolbar>-->
+<!--</ion-header>-->
+
+<ion-header class="header-preview-publicacion">
+    <ion-navbar *ngIf="publicacion.color" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
+
+        <ion-title text-right>evenprom</ion-title>
+    </ion-navbar>
+    <ion-navbar *ngIf="!publicacion.color" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
+
+        <ion-title text-right>evenprom</ion-title>
+    </ion-navbar>
 </ion-header>
 
 <ion-content class="modal-preview-publicacion">
-    <ion-card>
-        <!--ion-card-->
-        <div class="img-ion-card">
 
-            <img [hidden]="!publicacion.imagen_publicacion" [src]="publicacion.imagen_publicacion"/>
+    <ion-grid>
+        <ion-row>
+            <ion-col center text-left width-60>
+                <ion-note>
+                    <h1>
+                        <b [ngStyle]="{'color':publicacion.color}">{{publicacion.nombre_empresa | uppercase }}</b>
+                    </h1>
+                </ion-note>
 
-            <div class="card-title" [ngStyle]="{color:publicacion.color}"> {{publicacion.promocion}}</div>
-            <!--<div class="card-subtitle">{{publicacion.descripcion}}</div>-->
-        </div>
+            </ion-col>
+
+            <ion-col center width-20>
+
+                <button ion-button icon-left clear color="danger">
+                    <ion-icon name='checkmark-circle-outline'></ion-icon>
+                    <div>12</div>
+                </button>
+
+            </ion-col>
+            <ion-col center width-20>
+                <button danger ion-button icon-left clear color="danger">
+                    <ion-icon name='ios-people-outline'></ion-icon>
+                    <div>12</div>
+                </button>
+
+            </ion-col>
+
+        </ion-row>
+
+        <ion-row class="img-publicacion-content">
+            <ion-col>
+                <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
+                <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
+                     [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
+                    {{publicacion.promocion | uppercase}}
+                </div>
+                <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
+                     [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
+                    {{publicacion.titulo | uppercase}}
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row class="publicacion-fecha-border" text-center>
+            <ion-col class="ep-gris" text-right width-40>
+                <p>Fecha</p>
+                <p>Hora</p>
+            </ion-col>
+            <ion-col text-left width-60>
+                <p>{{publicacion.rango_fecha.fecha_desde}} al {{publicacion.rango_fecha.fecha_hasta}} </p>
+                <p>{{publicacion.rango_fecha.hora_desde}} hasta las {{publicacion.hora_hasta}}</p>
+            </ion-col>
+        </ion-row>
+
+        <ion-row text-center>
+            <ion-col>
+                <p class="ep-gris">DESCRIPCIÓN</p>
+                <div [innerHTML]="publicacion.cuerpo">
+
+                </div>
+            </ion-col>
+        </ion-row>
+
+        <ion-row text-center >
+            <ion-col no-padding>
+                <div style="height: 100%;" id="contenedor-mapa-publicacion">
+                </div>
+            </ion-col>
+        </ion-row>
+        <ion-row text-center>
+            <ion-col>
+                <a style="text-decoration: none;" href="tel://3764359876">
+                    <button color="primary" large round ion-button icon-only>
+                        <ion-icon name="call"></ion-icon>
+                    </button>
+                </a>
+                <a style="text-decoration: none;" href="https://www.google.com/maps/place/{{lat}},{{lng}}">
+                    <button color="danger" large round ion-button icon-only>
+                        <ion-icon name="pin"></ion-icon>
+                    </button>
+                </a>
+                <a style="text-decoration: none;" href="http://evenprom.com.ar/en/inicio">
+                    <button color="secondary" large round ion-button icon-only>
+                        <ion-icon name="globe"></ion-icon>
+                    </button>
+                </a>
+            </ion-col>
+        </ion-row>
+
+        <ion-row text-center>
+            <ion-col class="tarjetas-content">
+
+                <img src="assets/img/tarjetas/mestro.png" alt="Maestro">
+                <img src="assets/img/tarjetas/paypal2.png" alt="Paypal">
+                <img src="assets/img/tarjetas/mastercard.png" alt="Mastercard">
+                <img src="assets/img/tarjetas/visa.png" alt="Visa">
+                <img src="assets/img/tarjetas/mercadopago.png" width="51" height="32" alt="mercado pago">
+                <img src="assets/img/tarjetas/american-express.png" alt="American Express">
+
+            </ion-col>
+        </ion-row>
 
 
-        <ion-card-content>
-            <ion-card-title>
-                {{publicacion.titulo}}
-            </ion-card-title>
-            <p>
-                {{publicacion.descripcion}}
-            </p>
-        </ion-card-content>
-    </ion-card>
-    <div [innerHTML]="publicacion.cuerpo" padding>
-
-    </div>
+    </ion-grid>
 
     <!--<ion-list>-->
     <!--<ion-item>-->
