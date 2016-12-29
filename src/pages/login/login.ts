@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, Nav} from 'ionic-angular';
+import {NavController, Nav,LoadingController} from 'ionic-angular';
 // import {FormBuilder, Validators, ControlGroup} from '@angular/common';
 import {Validators, FormBuilder} from '@angular/forms';
 import {TranslateService} from 'ng2-translate';
@@ -33,7 +33,7 @@ export class LoginPage {
 
     lenguaje: String = 'Español';
 
-    constructor(public navController: NavController, public nav: Nav, form: FormBuilder,
+    constructor(public navController: NavController, public nav: Nav, form: FormBuilder, public loadingCtrl:LoadingController,
                 public translate: TranslateService, public mainService:MainService, public userData: UserData) {
         this.loginForm = form.group({
             username: ['', Validators.required],
@@ -145,6 +145,12 @@ export class LoginPage {
 
     crearPerfil() {
 
+        let loader = this.loadingCtrl.create({
+            content: "Ingresando a EvenProm",
+            // duration: 6000
+        });
+        loader.present();
+
         let user = {
             avatar: '',
             sexo: '',
@@ -184,7 +190,7 @@ export class LoginPage {
                                        // this.redirectPrincipal(setDataValues.isNew);
 
 
-                                        alert(JSON.stringify(setDataValues));
+
 
                                         this.nav.setRoot(PrincipalPage );
 

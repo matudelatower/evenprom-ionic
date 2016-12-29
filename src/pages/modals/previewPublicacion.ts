@@ -33,13 +33,12 @@ export class ModalPreviewPublicacion {
 
     ngOnInit() {
 
-
-        document.getElementById('contenedor-mapa-publicacion').innerHTML = "<div style='height:150px;' id='map-publicacion'></div>";
-
-        this.map = this.mapService.createMap('map-publicacion');
-
-
         if (this.publicacion.direccion_empresa.length != 0) {
+
+
+            document.getElementById('contenedor-mapa-publicacion').innerHTML = "<div style='height:150px;' id='map-publicacion'></div>";
+
+            this.map = this.mapService.createMap('map-publicacion');
 
             let location = this.geocoder.geocode(this.publicacion.direccion_empresa.calle + " " + this.publicacion.direccion_empresa.altura + ", " + this.publicacion.direccion_empresa.localidad);
 

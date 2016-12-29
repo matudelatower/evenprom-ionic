@@ -27,13 +27,13 @@
                 <ion-row>
                     <div *ngFor="let categoria of categorias" class="div-categorias-btn">
                         <button *ngIf="!categoriaSel" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="light" round class="btn-categorias">
-                            <ion-icon [name]="categoria.icono"></ion-icon>
+                            <ion-icon [name]="categoria.icono?categoria.icono:'home'"></ion-icon>
                         </button>
                         <button *ngIf="categoriaSel && categoria.slug != categoriaSel.slug" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="light" round class="btn-categorias">
-                            <ion-icon [name]="categoria.icono"></ion-icon>
+                            <ion-icon [name]="categoria.icono?categoria.icono:'home'"></ion-icon>
                         </button>
                         <button *ngIf="categoriaSel && categoria.slug == categoriaSel.slug" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="default" round class="btn-categorias">
-                            <ion-icon [name]="categoria.icono"></ion-icon>
+                            <ion-icon [name]="categoria.icono?categoria.icono:'home'"></ion-icon>
                         </button>
                     </div>
 

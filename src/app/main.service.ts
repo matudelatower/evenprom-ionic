@@ -18,15 +18,14 @@ export class MainService {
 
     //public ip = 'http://192.168.0.116';
     //public ip = 'http://192.168.10.134';
-    public ip = 'http://192.168.0.117';
-    //public ip = 'http://evenprom.com/';
-    // public ip = 'http://192.168.56.101';
+    //public ip = 'http://192.168.0.117';
+    public ip = 'http://evenprom.com/';
+     //public ip = 'http://192.168.1.32';
 
     public http;
 
-    public service = this.ip + '/evenprom-backend/web/app_dev.php/';
-    //public service = this.ip;
-    // public service = this.ip + '/whatsoncity-backend/web/';
+    //public service = this.ip + '/evenprom-backend/web/app_dev.php/';
+    public service = this.ip;
 
     public publicaciones;
 
