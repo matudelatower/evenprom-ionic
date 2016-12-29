@@ -11,13 +11,13 @@ import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 })
 export class ItemListEmpresa {
 
-    @Input() empresa ;
+    @Input() empresa;
+    @Input() isFirst;
 
 
-    constructor(public toastCtrl: ToastController,
-                public mainservice: MainService,
-                public navController:NavController
-    ) {
+    constructor(public toastCtrl:ToastController,
+                public mainservice:MainService,
+                public navController:NavController) {
 
     }
 
@@ -29,13 +29,26 @@ export class ItemListEmpresa {
     //    this.mainservice.modalPublicacion(publicacion);
     //}
 
+    getMesByFecha(fecha) {
+        let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+
+        let arrayFecha = fecha.split("-");
+
+        let mes = meses[parseInt(arrayFecha[1]) - 1];
+
+        return arrayFecha[1] + " " + mes.substring(0, 3);
+        ;
+
+    }
+
+
     pagePublicacion(publicacion) {
         console.log(publicacion)
         this.navController.push(ModalPreviewPublicacion, {publicacion: publicacion});
     }
 
 
-    sharePublicacion(){
+    sharePublicacion() {
         let toast = this.toastCtrl.create({
             message: 'Compartido',
             duration: 2000,
@@ -45,7 +58,7 @@ export class ItemListEmpresa {
         toast.present(toast);
     }
 
-    comentPublicacion(){
+    comentPublicacion() {
         let toast = this.toastCtrl.create({
             message: 'Comentario',
             duration: 2000,
@@ -55,7 +68,7 @@ export class ItemListEmpresa {
         toast.present(toast);
     }
 
-    addPublicacionFav(){
+    addPublicacionFav() {
         let toast = this.toastCtrl.create({
             message: 'Agregado a favoritos',
             duration: 2000,

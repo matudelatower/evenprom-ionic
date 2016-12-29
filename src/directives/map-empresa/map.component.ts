@@ -98,7 +98,7 @@ export class MapaEmpresaComponent {
                     console.log(newDiv);
 
                     img.src = e.image_name;
-                    img.src = "http://www.goleamos.com/post/boca.png";
+                    //img.src = "http://www.goleamos.com/post/boca.png";
                     this.domAdapter.on(newDiv, 'click', this.goToPerfil.bind(this, e));
                     this.domAdapter.appendChild(this.elementRef.nativeElement, newDiv);
 

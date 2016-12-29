@@ -55,6 +55,16 @@ export class MainService {
 
     }
 
+    getPromoCalendario() {
+
+        return this.http.get(this.routeServices.promoCalendario)
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+            //...errors if any
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+
+    }
+
     getCategorias() {
 
         return this.http.get(this.routeServices.categorias);
@@ -99,6 +109,7 @@ export class MainService {
         this.routeServices.categorias = this.service + 'api/categorias';
         this.routeServices.empresasporslugs = this.service + 'api/empresasporslugs/';
         this.routeServices.empresas = this.service + 'api/empresas';
+        this.routeServices.promoCalendario = this.service + 'api/promo/calendario';
     }
 
     public handleError(error:any) {

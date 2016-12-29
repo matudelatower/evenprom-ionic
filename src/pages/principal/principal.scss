@@ -18,6 +18,9 @@ $ep-fucsia:#d45ce6;
   //background-color: $ep-gris-claro;
 }
 
+.publiacion {
+  border-bottom: solid 1px $ep-gris-claro;
+}
 
 item-list-empresa {
   //ion-list-header {
@@ -51,6 +54,11 @@ item-list-empresa {
   color: $ep-fucsia;
 }
 
+.h1-empresa{
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
 .img-publicacion-content {
   position: relative;
   text-align: right;
@@ -59,6 +67,8 @@ item-list-empresa {
 
 .img-publicacion-img {
   border-radius: 5px;
+  max-height: 270px;
+  width: 100%;
 }
 
 .img-publicacion-subtitle {
@@ -77,6 +87,23 @@ item-list-empresa {
   white-space: normal;
 }
 
+.img-promo-subtitle{
+  position: absolute;
+  text-align: center;
+  top: 60%;
+  padding: 2%;
+  border-radius: 10px 5px;
+  width: auto;
+  max-width: 60%;
+  right: 0%;
+  font-size: 2em;
+  color: #fff;
+  font-weight: bold;
+  float: right;
+  white-space: normal;
+
+}
+
 .tarjetas-content>img{
   height: 32px;
   width: 51px;
@@ -88,10 +115,14 @@ item-list-empresa {
 
 .margen-publicacion-izq-premium{
   margin-left: 7.5%;
+  padding: 0px;
+  padding-left: 5px;
 }
 
 .margen-publicacion-izq-premium-no{
   margin-left: 6.0%;
+  padding: 0px;
+  padding-left: 5px;
 }
 
 .header-preview-publicacion {

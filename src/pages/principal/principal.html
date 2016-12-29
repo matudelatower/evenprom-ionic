@@ -38,11 +38,36 @@
 
 <ion-content class="principal">
 
+    <ion-grid no-padding no-padding *ngIf="promoCalendario">
+        <ion-row no-padding>
+            <ion-col text-center width-100 no-padding>
+                <h1 [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
+                    {{promoCalendario.titulo}}
 
+                </h1>
+
+            </ion-col>
+        </ion-row>
+
+        <ion-row no-padding  class="img-publicacion-content" >
+            <ion-col  no-padding>
+                <img  [src]="promoCalendario.imagen_publicacion"/>
+                <div  class="img-promo-subtitle">
+                    {{ promoCalendario.nombre_empresa | uppercase}}
+                </div>
+
+            </ion-col>
+        </ion-row>
+
+
+    </ion-grid>
     <ion-list>
 
-        <item-list-empresa  *ngFor="let empresa of (publicaciones | filterPublicaciones:tipoPublicacion)"
-                           [empresa]="empresa">
+
+
+        <item-list-empresa  *ngFor="let empresa of (publicaciones | filterPublicaciones:tipoPublicacion); let isFirst = first"
+                           [empresa]="empresa" [isFirst]="isFirst">
+
 
         </item-list-empresa>
     </ion-list>
