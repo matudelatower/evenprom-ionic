@@ -1,14 +1,13 @@
 <ion-header>
     <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+                <ion-icon name="arrow-round-back" showWhen="android"></ion-icon>
+            </button>
+        </ion-buttons>
         <ion-title>
             {{empresa.nombre}}
         </ion-title>
-        <ion-buttons start>
-            <button ion-button (click)="dismiss()">
-                <span color="primary" showWhen="ios">Cancel</span>
-                <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-            </button>
-        </ion-buttons>
         <ion-buttons end>
             <button ion-button>
                 <ion-icon [name]="icono"></ion-icon>
@@ -34,14 +33,15 @@
             </div>
         </ion-card-content>
         <ion-item>
-            <button ion-button clear item-left>
-                <ion-icon name="share"></ion-icon>
-            </button>
-            <button ion-button (click)="focusInput(comentarioId)" clear item-left>
-                <ion-icon name="text"></ion-icon>
-            </button>
+            <a href="tel://{{empresa.contacto.telefono}}">
+                <button ion-button clear item-left>
+                    <ion-icon name="call"></ion-icon>
+                </button>
+            </a>
+
             <button ion-button clear item-right>
-                <ion-icon name="heart"></ion-icon>
+                Enviar Mensaje
+                <ion-icon name="arrow-forward"></ion-icon>
             </button>
         </ion-item>
     </ion-card>
@@ -73,6 +73,63 @@
             </ion-row>
         </div>
     </div>
+    <ion-row>
+        <ion-col text-center>
+
+            <button ion-button>Ver Eventos y Promociones Hoy</button>
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-row text-center>
+
+            <h2>Novedades</h2>
+        </ion-row>
+    </ion-row>
+    <ion-row>
+        <ion-col text-left>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <span>0</span>
+            <br>
+            <span>0</span>
+            <ion-icon name="person"></ion-icon>
+        </ion-col>
+        <ion-col text-right>
+            Sitio Web
+            <ion-icon name="globe"></ion-icon>
+            <br>
+            Cómo Llegar?
+            <ion-icon name="pin"></ion-icon>
+
+        </ion-col>
+    </ion-row>
+    <ion-row>
+        <ion-col text-center>
+            <a style="text-decoration: none;" href="#">
+                <button color="color-whatsapp" large round ion-button icon-only>
+                    <ion-icon name="logo-whatsapp"></ion-icon>
+                </button>
+            </a>
+            <a style="text-decoration: none;" href="#">
+                <button color="color-facebook" large round ion-button icon-only>
+                    <ion-icon name="logo-facebook"></ion-icon>
+                </button>
+            </a>
+            <a style="text-decoration: none;" href="#">
+                <button color="danger" large round ion-button icon-only>
+                    <ion-icon name="share"></ion-icon>
+                </button>
+            </a>
+            <a style="text-decoration: none;" href="#">
+                <button color="ep-rojo" large round ion-button icon-only>
+                    <ion-icon name="notifications-outline"></ion-icon>
+                </button>
+            </a>
+        </ion-col>
+    </ion-row>
 
     <ion-list>
         <ion-item>

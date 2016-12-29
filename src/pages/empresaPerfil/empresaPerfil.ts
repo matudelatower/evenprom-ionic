@@ -22,6 +22,7 @@ export class EmpresaPerfilPage {
 
         if (!this.empresa) {
             this.empresa = navParams.data.empresa;
+            console.log("empresa", this.empresa)
             this.link_youtube = sanitizer.bypassSecurityTrustResourceUrl(navParams.data.empresa.link_youtube);
             this.icono = navParams.data.icono;
         }
