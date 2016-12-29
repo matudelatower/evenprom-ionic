@@ -75,26 +75,32 @@
 
 
     <!--<form style="padding-top: 40%;" [formGroup]="loginForm" (submit)="login(!loginForm.valid)">-->
-    <div style="padding-top: 40%;"  (submit)="login()">
-        <ion-list>
-            <ion-item class="login-input">
-                <ion-label fixed>{{'login.user' | translate}}</ion-label>
-                <ion-input type="text" [(ngModel)]="user" placeholder="admin"></ion-input>
-            </ion-item>
+    <div style="padding-top: 50%;"  (submit)="login()">
+        <!--<ion-list>-->
+            <!--<ion-item class="login-input">-->
+                <!--<ion-label fixed>{{'login.user'  | translate:param}}</ion-label>-->
+                <!--<ion-input type="text" [(ngModel)]="user" placeholder="admin"></ion-input>-->
+            <!--</ion-item>-->
 
-            <ion-item class="login-input">
-                <ion-label fixed>{{'login.pass' | translate}}</ion-label>
-                <ion-input type="password" [(ngModel)]="pass" placeholder="admin" ngControl="password"></ion-input>
-            </ion-item>
-            <ion-item class="login-input">
-                <ion-label stacked-label>{{'login.remember' | translate}}</ion-label>
-                <ion-checkbox dark [(ngModel)]="rememberMe" ngControl="rememberMe"></ion-checkbox>
-            </ion-item>
-        </ion-list>
-        <div>Credentials: admin/admin</div>
+            <!--<ion-item class="login-input">-->
+                <!--<ion-label fixed>{{'login.pass' | translate}}</ion-label>-->
+                <!--<ion-input type="password" [(ngModel)]="pass" placeholder="admin" ngControl="password"></ion-input>-->
+            <!--</ion-item>-->
+            <!--<ion-item class="login-input">-->
+                <!--<ion-label stacked-label>{{'login.remember' | translate}}</ion-label>-->
+                <!--<ion-checkbox dark [(ngModel)]="rememberMe" ngControl="rememberMe"></ion-checkbox>-->
+            <!--</ion-item>-->
+        <!--</ion-list>-->
+        <!--<div>Credentials: admin/admin</div>-->
         <div>
-            <button ion-button block type="button" (click)="login()"> Ingresar</button>
-            <button ion-button block type="button" (click)="cambiarLeguaje()">Cambiar lenguaje a {{lenguaje}}</button>
+            <!--<button ion-button block type="button" (click)="login()"> Ingresar</button>-->
+            <button  (click)="loginFacebook()" ion-button icon-right>
+                Ingresar con Facebook
+
+                <ion-icon name="logo-facebook"></ion-icon>
+
+            </button>
+            <!--<button ion-button block type="button" (click)="cambiarLeguaje()">Cambiar lenguaje a {{lenguaje}}</button>-->
         </div>
     </div>
 </ion-content>

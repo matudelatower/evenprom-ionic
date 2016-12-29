@@ -9,6 +9,7 @@ import {ModalController} from 'ionic-angular';
 import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 
 import {Observable} from 'rxjs/Rx';
+import {NativeStorage} from "ionic-native";
 
 // import 'rxjs/add/operator/map';
 
@@ -17,7 +18,7 @@ export class MainService {
 
     //public ip = 'http://192.168.0.116';
     //public ip = 'http://192.168.10.134';
-    public ip = 'http://localhost';
+    public ip = 'http://192.168.0.117';
     //public ip = 'http://evenprom.com/';
     // public ip = 'http://192.168.56.101';
 
@@ -34,6 +35,9 @@ export class MainService {
     public modalCont;
 
 
+    user:any;
+
+
     constructor(http:Http, modalCont:ModalController) {
 
         this.publicaciones = [];
@@ -43,7 +47,23 @@ export class MainService {
         this.modalCont = modalCont;
 
         this.initRouteServices();
+
+        NativeStorage.getItem('userData')
+            .then(
+                data => {
+                    this.user = data;
+                },
+                error => {
+                    console.log(error);
+                }
+            );
     }
+
+    //post(resource: string, params?: any): Observable<any> {
+    //    return this.http.post(this.serverUri + resource, params)
+    //        .map(this.extractData)
+    //        .catch(this.handleError);
+    //}
 
     getPublicaciones() {
 
@@ -65,6 +85,7 @@ export class MainService {
 
     }
 
+
     getCategorias() {
 
         return this.http.get(this.routeServices.categorias);
@@ -75,10 +96,39 @@ export class MainService {
         return this.http.get(this.routeServices.empresasporslugs + slug);
     }
 
+    postPerfil(user) {
+
+        return this.http.post(this.routeServices.registrars, user)
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+            //...errors if any
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    postFavEmpresa(empresaId, personaId) {
+
+        return this.http.post(this.service + 'api/favears/' + empresaId + '/empresas/' + personaId)
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+            //...errors if any
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    postFavPublicacion(pubId, personaId) {
+
+        return this.http.post(this.service + 'api/favears/' + pubId + '/publicacions/' + personaId)
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+            //...errors if any
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
     getEmpresas() {
 
         return this.http.get(this.routeServices.empresas);
     }
+
+
 
 
     modalCreate(modalClass, parameters = {}) {
@@ -110,6 +160,7 @@ export class MainService {
         this.routeServices.empresasporslugs = this.service + 'api/empresasporslugs/';
         this.routeServices.empresas = this.service + 'api/empresas';
         this.routeServices.promoCalendario = this.service + 'api/promo/calendario';
+        this.routeServices.registrars = this.service + 'api/registrars';
     }
 
     public handleError(error:any) {

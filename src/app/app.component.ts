@@ -4,17 +4,23 @@ import {StatusBar} from 'ionic-native';
 
 // import { TabsPage } from '../pages/tabs/tabs';
 import {PrincipalPage} from "../pages/principal/principal";
+import {LoginPage} from "../pages/login/login";
+import {Facebook, NativeStorage} from "ionic-native";
 
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
-    rootPage = PrincipalPage;
 
+    //rootPage = LoginPage;
+    rootPage:any;
+    user:any;
     pages = [];
 
-    menues: any = [
+    prod = true;
+
+    menues:any = [
         {
             function: 'nada()',
             icono: 'notifications',
@@ -102,15 +108,47 @@ export class MyApp {
         },
     ];
 
-    constructor(platform: Platform) {
+    constructor(platform:Platform) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
+            this.rootPage = PrincipalPage;
+            NativeStorage.getItem('userData')
+                .then(
+                    data => {
+                        this.user = data;
+                    },
+                    error => {
+                        console.log(error);
+                    }
+                );
+
+            if (this.prod) {
+                Facebook.getLoginStatus()
+                    .then(rtaLoginStatus => {
+                        console.log("rtaLoginStatus", JSON.stringify(rtaLoginStatus));
+                        if (rtaLoginStatus.status == 'connected') {
+                            this.rootPage = PrincipalPage;
+
+                        } else {
+                            this.rootPage = LoginPage;
+                        }
+                    })
+                    .catch(error => {
+                        console.error(error);
+                        console.error('login', JSON.stringify(error));
+                    });
+            }
+
         });
     }
 
-    nada() {
-        console.log('menu');
+    logout() {
+        Facebook.logout();
+        NativeStorage.remove('userData');
+        this.rootPage = LoginPage;
+        console.log('logout');
     }
+
 }

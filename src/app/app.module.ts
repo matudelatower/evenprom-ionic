@@ -1,4 +1,5 @@
 import {NgModule} from '@angular/core';
+import { Http,Response } from '@angular/http';
 import {IonicApp, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
 import {AboutPage} from '../pages/about/about';
@@ -30,6 +31,7 @@ import {GeosearchComponent} from '../directives/map/geosearch.component';
 import {ModalMapa} from '../pages/principal/modalMapa.component';
 import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
 import {DefaultImageDirective} from "../directives/image-default.directive";
+import {TranslateStaticLoader} from "ng2-translate/index";
 
 
 @NgModule({
@@ -62,6 +64,8 @@ import {DefaultImageDirective} from "../directives/image-default.directive";
     imports: [
         TranslateModule.forRoot({
             provide: TranslateLoader,
+            useFactory: (http: Http) => new TranslateStaticLoader(http, '/assets/i18n', '.json'),
+            deps: [Http]
         }),
         IonicModule.forRoot(MyApp)
     ],

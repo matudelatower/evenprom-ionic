@@ -116,6 +116,10 @@ export class PrincipalPage {
         });
     }
 
+    favPublicacion (id) {
+
+    }
+
 
     modalEmpresas() {
         let modal = this.mainservice.modalCreate(Empresas);

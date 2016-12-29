@@ -18,3 +18,21 @@
 .text-center{
   text-align: center;
 }
+
+.menu-header{
+  height: 35%;
+  max-height: 250px;
+  background-color: #f53d3d;
+
+
+  ion-avatar img {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 125px;
+    max-width: 125px;
+    border-radius: 50%;
+  }
+}
+
+
+

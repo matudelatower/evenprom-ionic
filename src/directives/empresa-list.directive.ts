@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import {ToastController,NavController} from "ionic-angular";
 import {MainService} from "../app/main.service";
 import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
+import { SocialSharing } from 'ionic-native';
 
 
 @Component({
@@ -49,6 +50,8 @@ export class ItemListEmpresa {
 
 
     sharePublicacion() {
+
+
         let toast = this.toastCtrl.create({
             message: 'Compartido',
             duration: 2000,
@@ -58,24 +61,38 @@ export class ItemListEmpresa {
         toast.present(toast);
     }
 
-    comentPublicacion() {
-        let toast = this.toastCtrl.create({
-            message: 'Comentario',
-            duration: 2000,
-            position: 'bottom'
-        });
+    sharedTwitter(message:string, image?:string, url?:string) {
 
-        toast.present(toast);
+
+        SocialSharing.shareViaTwitter(message, image, url).then(() => {
+            let toast = this.toastCtrl.create({
+                message: 'Comentario',
+                duration: 2000,
+                position: 'bottom'
+            });
+
+            toast.present(toast);
+        }).catch(() => {
+            // Error!
+        });
     }
 
-    addPublicacionFav() {
-        let toast = this.toastCtrl.create({
-            message: 'Agregado a favoritos',
-            duration: 2000,
-            position: 'bottom'
-        });
+    addPublicacionFav(id) {
 
-        toast.present(toast);
+        let personaId = this.mainservice.user.id;
+
+        this.mainservice.postFavPublicacion(id, personaId).subscribe((data)=> {
+            let toast = this.toastCtrl.create({
+                message: 'Agregado a favoritos',
+                duration: 2000,
+                position: 'bottom'
+            });
+
+            toast.present(toast);
+
+        });
+        ;
+
     }
 
 }
