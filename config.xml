@@ -3,7 +3,7 @@
   <name>EvenProm</name>
   <description>Aplicacion de ofertas y descuentos</description>
   <author email="sergioj.sanabria@gmail.com" href="http://ionicframework.com/">Sergio Sanabria</author>
-  <content src="http://192.168.0.117:8000" original-src="index.html"/>
+  <content src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>

@@ -69,6 +69,10 @@ export class ModalPreviewPublicacion {
         }
     }
 
+    openUrl (url){
+        window.open('//:'+url, "_system");
+    }
+
     dismiss() {
         this.map.remove();
         this.viewCtrl.dismiss();

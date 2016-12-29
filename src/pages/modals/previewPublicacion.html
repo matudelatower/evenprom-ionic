@@ -104,11 +104,11 @@
                         <ion-icon name="pin"></ion-icon>
                     </button>
                 </a>
-                <a style="text-decoration: none;" href="//{{publicacion.contacto_empresa.web}}">
-                    <button color="secondary" large round ion-button icon-only>
+
+                    <button (click)="openUrl(publicacion.contacto_empresa.web)" color="secondary" large round ion-button icon-only>
                         <ion-icon name="globe"></ion-icon>
                     </button>
-                </a>
+
             </ion-col>
         </ion-row>
 

@@ -45,14 +45,14 @@
 
             </button>
         </ion-col>
-        <ion-col text-center>
+        <ion-col (click)="addPublicacionFav(empresa.id)" text-center>
             <button ion-button clear small color="danger" icon-center>
                 <ion-icon name='heart-outline'></ion-icon>
 
             </button>
         </ion-col>
         <ion-col text-center>
-            <button ion-button clear small color="secondary" icon-center>
+            <button (click)="share(empresa.nombre_empresa, '@evenprom', empresa.imagen_publicacion, empresa.contacto_empresa.web)" ion-button clear small color="secondary" icon-center>
                 <ion-icon name='share'></ion-icon>
 
             </button>
@@ -107,7 +107,7 @@
             </button>
         </ion-col>
         <ion-col text-center>
-            <button (click)="sharedTwitter(empresa.nombre_empresa)" ion-button clear small color="secondary" icon-center>
+            <button (click)="share(empresa.nombre_empresa, '@evenprom', null, empresa.contacto_empresa.web)" ion-button clear small color="secondary" icon-center>
                 <ion-icon name='share'></ion-icon>
 
             </button>

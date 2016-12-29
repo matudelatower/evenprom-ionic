@@ -9,6 +9,7 @@ import { Facebook,NativeStorage } from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {PrincipalPage} from "../principal/principal";
 import {MyApp} from "../../app/app.component";
+import {UserData} from "./user-data";
 
 
 @Component({
@@ -32,7 +33,8 @@ export class LoginPage {
 
     lenguaje: String = 'Español';
 
-    constructor(public navController: NavController, public nav: Nav, form: FormBuilder,  public translate: TranslateService, public mainService:MainService) {
+    constructor(public navController: NavController, public nav: Nav, form: FormBuilder,
+                public translate: TranslateService, public mainService:MainService, public userData: UserData) {
         this.loginForm = form.group({
             username: ['', Validators.required],
             password: ['', Validators.required],
@@ -115,8 +117,8 @@ export class LoginPage {
                                             () => {
                                                 console.log('Stored item!');
                                                 this.crearPerfil();
+                                                this.userData.signup(user);
 
-                                               
                                             },
                                             error => console.error('Error storing item', error)
                                         )

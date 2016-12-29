@@ -77,6 +77,22 @@ export class ItemListEmpresa {
         });
     }
 
+    share(message:string, subject?:string, image?:string, url?:string) {
+
+
+        SocialSharing.share(message, '@evenprom', image, url).then(() => {
+            let toast = this.toastCtrl.create({
+                message: 'Comentario',
+                duration: 2000,
+                position: 'bottom'
+            });
+
+            toast.present(toast);
+        }).catch(() => {
+            // Error!
+        });
+    }
+
     addPublicacionFav(id) {
 
         let personaId = this.mainservice.user.id;

@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {Platform} from 'ionic-angular';
+import {Platform, Events} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
 // import { TabsPage } from '../pages/tabs/tabs';
@@ -69,12 +69,12 @@ export class MyApp {
         },
     ];
 
-    constructor(platform:Platform) {
+    constructor(platform:Platform, public events: Events) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
-            this.rootPage = PrincipalPage;
+
             NativeStorage.getItem('userData')
                 .then(
                     data => {
@@ -100,9 +100,36 @@ export class MyApp {
                         console.error(error);
                         console.error('login', JSON.stringify(error));
                     });
+            }else{
+                this.rootPage = PrincipalPage;
             }
 
         });
+
+        this.listenToLoginEvents();
+    }
+
+
+    listenToLoginEvents() {
+        this.events.subscribe('user:login', (user) => {
+            console.log('login');
+            this.user = (true);
+        });
+
+        this.events.subscribe('user:signup', (user) => {
+            console.log('login');
+            console.log('userdata',user);
+            this.user = user;
+        });
+
+        this.events.subscribe('user:logout', () => {
+            console.log('logout');
+        });
+    }
+
+
+    nada(){
+        console.log("menu");
     }
 
     logout() {

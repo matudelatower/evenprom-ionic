@@ -32,6 +32,7 @@ import {ModalMapa} from '../pages/principal/modalMapa.component';
 import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
 import {DefaultImageDirective} from "../directives/image-default.directive";
 import {TranslateStaticLoader} from "ng2-translate/index";
+import {UserData} from "../pages/login/user-data";
 
 
 @NgModule({
@@ -89,7 +90,7 @@ import {TranslateStaticLoader} from "ng2-translate/index";
         ModalMapa
         
     ],
-    providers: [Storage, MainService,GeocodingService, MapService],
+    providers: [Storage, MainService,GeocodingService, MapService, UserData],
     schemas:[
         // ItemListEmpresa,
         // Progressbar
