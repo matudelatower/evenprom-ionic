@@ -23,88 +23,49 @@ export class MyApp {
     menues:any = [
         {
             function: 'nada()',
-            icono: 'notifications',
-            nombre: 'Notificaciones',
-        },
-        {
-            function: 'nada()',
-            icono: 'search',
-            nombre: 'BUSCALO SEGÚN TU ESTILO/ONDA!',
-        },
-        {
-            function: 'nada()',
-            icono: 'flame',
-            nombre: 'TUS LUGARES EN VIVO',
-        },
-        {
-            function: 'nada()',
-            icono: 'funnel',
-            nombre: 'FILTROS',
-        },
-        {
-            function: 'nada()',
-            icono: 'contact',
-            nombre: 'PERFIL  (FOTOS, AVALIAR/PUNTUACION, GRUPOS, GUARDADOS)',
-        },
-        {
-            function: 'nada()',
-            icono: 'share',
-            nombre: 'INVITA AMIGOS A APP',
-        },
-        {
-            function: 'nada()',
-            icono: 'ribbon',
-            nombre: 'BECOME A PREMIUM USER',
-        },
-        {
-            function: 'nada()',
-            icono: 'contacts',
-            nombre: 'BUSCA AMIGOS',
-        },
-        {
-            function: 'nada()',
-            icono: 'share',
-            nombre: 'INVITA AMIGOS A APP',
-        },
-        {
-            function: 'nada()',
-            icono: 'heart',
-            nombre: 'MIS FAVORITOS',
-        },
-        {
-            function: 'nada()',
             icono: 'star',
-            nombre: 'CALIFICANOS EN GOOGLE PLAY',
+            nombre: 'Favoritos',
+        },
+        {
+            function: 'nada()',
+            icono: 'notifications',
+            nombre: 'Recomendados',
+        },
+
+        {
+            function: 'nada()',
+            icono: 'checkmark-circle-outline',
+            nombre: 'Check In',
+        },
+        {
+            function: 'nada()',
+            icono: 'people',
+            nombre: 'Buscar Amigos',
         },
         {
             function: 'nada()',
             icono: 'calendar',
-            nombre: 'CALENDARIO',
+            nombre: 'Calendario',
         },
         {
             function: 'nada()',
-            icono: 'search',
-            nombre: 'SEARCH',
+            icono: 'create',
+            nombre: 'CALIFICANOS EN GOOGLE PLAY',
         },
         {
             function: 'nada()',
-            icono: 'locate',
-            nombre: 'GEOLOCALIZACION-DISTANCIA',
+            icono: 'pin',
+            nombre: 'Geolocalización',
         },
         {
             function: 'nada()',
             icono: 'call',
-            nombre: 'CONTACTANOS',
+            nombre: 'Tu empresa aquí',
         },
         {
             function: 'nada()',
-            icono: 'card',
-            nombre: 'BUY NOW! AGARRALO AHORA',
-        },
-        {
-            function: 'nada()',
-            icono: 'pricetag',
-            nombre: 'MY TICKETS',
+            icono: 'mail',
+            nombre: 'Contactanos',
         },
     ];
 
