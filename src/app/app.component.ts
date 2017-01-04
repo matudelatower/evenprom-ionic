@@ -18,7 +18,7 @@ export class MyApp {
     user:any;
     pages = [];
 
-    prod = false;
+    prod = true;
 
     menues:any = [
         {
