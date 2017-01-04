@@ -27,8 +27,7 @@ export class MapService {
 
     // load a web map and return response
     createMap(domId:any) {
-        console.log('in map service createMap function');
-        console.log(document.getElementById(domId));
+        this.remove()
         this.map = new L.Map(domId, {
             zoomControl: false,
             //center: new L.LatLng(40.731253, -73.996139),

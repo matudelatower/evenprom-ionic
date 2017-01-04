@@ -7,33 +7,33 @@
 <ion-header>
     <ion-toolbar>
         <ion-navbar>
-            Empresas <span *ngIf="categoriaSel" > <b>{{categoriaSel.nombre}} </b> </span>
+            Empresas <span *ngIf="rubroSel" > <b>{{rubroSel.nombre}} </b> </span>
         </ion-navbar>
-        <ion-buttons *ngIf="categoriaSel" end>
+        <ion-buttons *ngIf="rubroSel" end>
             <button ion-button>
-                <ion-icon [name]="categoriaSel.icono"></ion-icon>
+                <ion-icon [name]="rubroSel.icono"></ion-icon>
             </button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-row class="img-categoria">
+    <ion-row class="img-rubro">
         <img src="assets/img/6.jpg" class="img-responsive">
     </ion-row>
     <ion-row>
         <div class="scroll-hidden-x-container">
             <div class="scroll-hidden-x-inner">
                 <ion-row>
-                    <div *ngFor="let categoria of categorias" class="div-categorias-btn">
-                        <button *ngIf="!categoriaSel" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="light" round class="btn-categorias">
-                            <ion-icon [name]="categoria.icono?categoria.icono:'home'"></ion-icon>
+                    <div *ngFor="let rubro of rubros" class="div-rubros-btn">
+                        <button *ngIf="!rubroSel" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large color="light" round class="btn-rubros">
+                            <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
                         </button>
-                        <button *ngIf="categoriaSel && categoria.slug != categoriaSel.slug" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="light" round class="btn-categorias">
-                            <ion-icon [name]="categoria.icono?categoria.icono:'home'"></ion-icon>
+                        <button *ngIf="rubroSel && rubro.slug != rubroSel.slug" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large color="light" round class="btn-rubros">
+                            <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
                         </button>
-                        <button *ngIf="categoriaSel && categoria.slug == categoriaSel.slug" (click)="loadEmpresasBySlug(categoria)" ion-button icon-only large color="default" round class="btn-categorias">
-                            <ion-icon [name]="categoria.icono?categoria.icono:'home'"></ion-icon>
+                        <button *ngIf="rubroSel && rubro.slug == rubroSel.slug" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large color="default" round class="btn-rubros">
+                            <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
                         </button>
                     </div>
 
@@ -58,7 +58,7 @@
                     </h2>
                     <ion-item>
                         <span style="font-size:12px;" item-left>12 Seguidores</span>
-                        <ion-icon name='heart-outline' item-right style="color: #55acee"></ion-icon>
+                        <ion-icon name='heart-outline' item-right color="danger"></ion-icon>
                     </ion-item>
 
                 </ion-card>

@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import { Http,Response } from '@angular/http';
+import { Http } from '@angular/http';
 import {IonicApp, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
 import {AboutPage} from '../pages/about/about';

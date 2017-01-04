@@ -1,22 +1,42 @@
-<ion-header>
-    <ion-toolbar>
-        <ion-buttons start>
-            <button ion-button (click)="dismiss()">
-                <ion-icon name="arrow-round-back" showWhen="android"></ion-icon>
-            </button>
-        </ion-buttons>
-        <ion-title>
-            {{empresa.nombre}}
-        </ion-title>
-        <ion-buttons end>
-            <button ion-button>
-                <ion-icon [name]="icono"></ion-icon>
-            </button>
-        </ion-buttons>
-    </ion-toolbar>
+<ion-header class="header-preview-publicacion">
+    <ion-navbar>
+        <img src="assets/img/logos/favicon.png" style="width: 10%;">
+    </ion-navbar>
 </ion-header>
 
 <ion-content class="empresa-perfil" *ngIf="empresa">
+    <ion-row>
+        <ion-col width-20>
+            <ion-avatar item-left>
+                <img [src]="empresa.image_name">
+            </ion-avatar>
+        </ion-col>
+        <ion-col width-80>
+            <ion-row>
+                <ion-col width-75>
+                    <h1 [ngStyle]="{'color': empresa.color, margin:'0px'}">{{ empresa.nombre | uppercase }}</h1>
+                </ion-col>
+                <ion-col width-25>
+                    <ion-row>
+                        <ion-col>
+                            <ion-icon *ngIf="empresa.rubros.length >0" [name]="empresa.rubros[0].icono"></ion-icon>
+
+                        </ion-col>
+                        <ion-col>
+                            <img *ngIf="empresa.ondas.length >0 " [src]="empresa.ondas[0].icono">
+                        </ion-col>
+                    </ion-row>
+
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    {{empresa.descripicion}}
+                </ion-col>
+            </ion-row>
+
+        </ion-col>
+    </ion-row>
     <ion-card>
         <ion-card-content>
             <!--<video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
@@ -32,14 +52,12 @@
                 Video no disponible
             </div>
         </ion-card-content>
-        <ion-item>
-            <a href="tel://{{empresa.contacto.telefono}}">
-                <button ion-button clear item-left>
-                    <ion-icon name="call"></ion-icon>
-                </button>
-            </a>
+        <ion-item [ngStyle]="{'background-color':empresa.color}">
+            <button ion-button clear item-left (click)="call(empresa.id, empresa.contacto.telefono)">
+                <ion-icon name="call"></ion-icon>
+            </button>
 
-            <button ion-button clear item-right>
+            <button ion-button icon-right clear item-right (click)="sendMail(empresa.contacto.mail)">
                 Enviar Mensaje
                 <ion-icon name="arrow-forward"></ion-icon>
             </button>
@@ -75,18 +93,38 @@
     </div>
     <ion-row>
         <ion-col text-center>
-
             <button ion-button>Ver Eventos y Promociones Hoy</button>
         </ion-col>
     </ion-row>
-    <ion-row>
-        <ion-row text-center>
-
+    <ion-row class="row-novedades">
+        <ion-col text-center>
             <h2>Novedades</h2>
-        </ion-row>
+            <ion-slides pager>
+
+                <ion-slide *ngFor="let noticia of noticias">
+                    <ion-card>
+                        <img [src]="noticia.noticia.image_name"/>
+                        <ion-card-content>
+                            <ion-card-title>
+                                {{ noticia.noticia.titulo }}
+                            </ion-card-title>
+
+                            <div [innerHTML]="noticia.noticia.cuerpo">
+
+                            </div>
+
+                        </ion-card-content>
+                    </ion-card>
+                </ion-slide>
+
+
+            </ion-slides>
+
+        </ion-col>
     </ion-row>
+
     <ion-row>
-        <ion-col text-left>
+        <ion-col text-right>
             <ion-icon name="star-outline"></ion-icon>
             <ion-icon name="star-outline"></ion-icon>
             <ion-icon name="star-outline"></ion-icon>
@@ -98,28 +136,35 @@
             <ion-icon name="person"></ion-icon>
         </ion-col>
         <ion-col text-right>
-            Sitio Web
-            <ion-icon name="globe"></ion-icon>
+            <a (click)="openUrl(empresa.contacto.web)">
+                <span>Sitio Web</span>
+                <span><ion-icon name="globe"></ion-icon></span>
+            </a>
             <br>
-            Cómo Llegar?
-            <ion-icon name="pin"></ion-icon>
+            <a>
+                <span>Cómo Llegar?</span>
+                <span><ion-icon name="pin"></ion-icon></span>
+            </a>
 
         </ion-col>
     </ion-row>
     <ion-row>
         <ion-col text-center>
-            <a style="text-decoration: none;" href="#">
+            <a (click)="shareWhastApp(empresa.nombre ,empresa.image_name, empresa.contacto.web)"
+               style="text-decoration: none;" href="#">
                 <button color="color-whatsapp" large round ion-button icon-only>
                     <ion-icon name="logo-whatsapp"></ion-icon>
                 </button>
             </a>
-            <a style="text-decoration: none;" href="#">
+            <a (click)="shareFacebook(empresa.nombre ,empresa.image_name, empresa.contacto.web)"
+               style="text-decoration: none;" href="#">
                 <button color="color-facebook" large round ion-button icon-only>
                     <ion-icon name="logo-facebook"></ion-icon>
                 </button>
             </a>
-            <a style="text-decoration: none;" href="#">
-                <button color="danger" large round ion-button icon-only>
+            <a (click)="share(empresa.nombre ,empresa.image_name, empresa.contacto.web)" style="text-decoration: none;"
+               href="#">
+                <button color="ep-violeta" large round ion-button icon-only>
                     <ion-icon name="share"></ion-icon>
                 </button>
             </a>

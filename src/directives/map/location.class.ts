@@ -1,5 +1,5 @@
 import {ILatLng} from './latLng.interface';
-let L = require('leaflet');
+// let L = require('leaflet');
 
 
 export class Location implements ILatLng {

@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 //import { NgClass, NgStyle } from 'angular2/common';
 
 // import {Progress} from './progress.directive';
@@ -16,9 +16,9 @@ import {Component, Input} from '@angular/core';
   `
 })
 export class Progressbar {
-    @Input() private animate:boolean;
-    @Input() private max:number;
-    @Input() private type:string;
-    @Input() private value:number;
-    @Input() private color:string;
+    // @Input() private animate:boolean;
+    // @Input() private max:number;
+    // @Input() private type:string;
+    // @Input() private value:number;
+    // @Input() private color:string;
 }

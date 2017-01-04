@@ -38,14 +38,14 @@
             <ion-col center width-20>
 
                 <button ion-button icon-left clear color="danger">
-                    <ion-icon name='checkmark-circle-outline'></ion-icon>
+                    <ion-icon name='checkmark-circle'></ion-icon>
                     <div>12</div>
                 </button>
 
             </ion-col>
             <ion-col center width-20>
                 <button danger ion-button icon-left clear color="danger">
-                    <ion-icon name='ios-people-outline'></ion-icon>
+                    <ion-icon name='heart'></ion-icon>
                     <div>12</div>
                 </button>
 
@@ -56,6 +56,14 @@
         <ion-row class="img-publicacion-content">
             <ion-col>
                 <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
+                <div class="btn-flotantes-publicacion">
+                    <button ion-button icon-only clear color="danger">
+                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    </button>
+                    <button ion-button icon-only clear color="danger">
+                        <ion-icon name="heart-outline"></ion-icon>
+                    </button>
+                </div>
                 <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
                      [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
                     {{publicacion.promocion | uppercase}}
@@ -86,28 +94,32 @@
             </ion-col>
         </ion-row>
 
-        <ion-row text-center *ngIf="publicacion.direccion_empresa">
+        <ion-row text-center>
             <ion-col no-padding>
-                <div style="height: 100%;" id="contenedor-mapa-publicacion">
+                <div #contenedorMapa>
+                    <div style="height: 100%;" id="contenedor-mapa-publicacion">
+                    </div>
                 </div>
             </ion-col>
         </ion-row>
         <ion-row text-center>
             <ion-col>
-                <a style="text-decoration: none;" href="tel://{{publicacion.contacto_empresa.telefono}}">
-                    <button color="primary" large round ion-button icon-only>
-                        <ion-icon name="call"></ion-icon>
-                    </button>
-                </a>
-                <a style="text-decoration: none;" href="https://www.google.com/maps/place/{{lat}},{{lng}}">
-                    <button color="danger" large round ion-button icon-only>
-                        <ion-icon name="pin"></ion-icon>
-                    </button>
-                </a>
 
-                    <button (click)="openUrl(publicacion.contacto_empresa.web)" color="secondary" large round ion-button icon-only>
-                        <ion-icon name="globe"></ion-icon>
-                    </button>
+                <button color="ep-celeste" large round ion-button icon-only
+                        (click)="call(publicacion.id, publicacion.contacto_empresa.telefono)">
+                    <ion-icon name="call"></ion-icon>
+                </button>
+
+
+                <button color="danger" large round ion-button icon-only (click)="openUrl('google.navigation:q='+lat+','+ lng)">
+                    <ion-icon name="pin"></ion-icon>
+                </button>
+
+
+                <button (click)="openUrl(publicacion.contacto_empresa.web)" color="ep-violeta" large round ion-button
+                        icon-only>
+                    <ion-icon name="globe"></ion-icon>
+                </button>
 
             </ion-col>
         </ion-row>
@@ -128,19 +140,42 @@
 
     </ion-grid>
 
-    <!--<ion-list>-->
-    <!--<ion-item>-->
-    <!--<ion-avatar item-left>-->
-    <!--<img src="{{character.image}}">-->
-    <!--</ion-avatar>-->
-    <!--<h2>{{character.name}}</h2>-->
-    <!--<p>{{character.quote}}</p>-->
-    <!--</ion-item>-->
-    <!--<ion-item *ngFor="let item of character['items']">-->
-    <!--{{item.title}}-->
-    <!--<ion-note item-right>-->
-    <!--{{item.note}}-->
-    <!--</ion-note>-->
-    <!--</ion-item>-->
-    <!--</ion-list>-->
+    <ion-list>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+            </ion-avatar>
+            <h2>Finn</h2>
+            <p>I've had a pretty messed up day. If we just...</p>
+        </ion-item>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+            </ion-avatar>
+            <h2>Finn</h2>
+            <p>I've had a pretty messed up day. If we just...</p>
+        </ion-item>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+            </ion-avatar>
+            <h2>Finn</h2>
+            <p>I've had a pretty messed up day. If we just...</p>
+        </ion-item>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+            </ion-avatar>
+            <h2>Finn</h2>
+            <comment-text text='Ive had a pretty messed up day. If we just ;as;as;d;sdsd;sdfsdf'></comment-text>
+        </ion-item>
+        <ion-item>
+            <ion-avatar item-left>
+                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+            </ion-avatar>
+            <h2>Mi usuario</h2>
+            <ion-textarea #comentarioId [(ngModel)]="comentario" placeholder="Escribi un comentario">></ion-textarea>
+            <ion-icon name="send" item-right></ion-icon>
+        </ion-item>
+    </ion-list>
 </ion-content>

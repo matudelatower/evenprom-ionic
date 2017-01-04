@@ -1,10 +1,10 @@
-import {Component,Output,EventEmitter} from '@angular/core';
+import {Component, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
 import {Platform, NavParams, ViewController} from 'ionic-angular';
 import {MapService} from "../../directives/map/map.service";
-
-import {GeosearchComponent} from '../../directives/map/geosearch.component';
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {Subscription} from "rxjs/Subscription";
+import {CallNumber} from 'ionic-native';
+import {MainService} from "../../app/main.service";
 
 
 @Component({
@@ -12,19 +12,20 @@ import {Subscription} from "rxjs/Subscription";
     templateUrl: 'previewPublicacion.html'
 })
 export class ModalPreviewPublicacion {
-    public publicacion:any;
-    subscription:Subscription;
+    public publicacion: any;
+    subscription: Subscription;
     @Output() mapLoaded = new EventEmitter();
-    map:any;
+    @ViewChild('contenedorMapa') contenedorMapa: ElementRef;
+    map: any;
+    lat: any;
+    lng: any;
 
-    lat:any;
-    lng:any;
-
-    constructor(public platform:Platform,
-                public params:NavParams,
-                public viewCtrl:ViewController,
-                public mapService:MapService,
-                public geocoder:GeocodingService) {
+    constructor(public platform: Platform,
+                public params: NavParams,
+                public viewCtrl: ViewController,
+                public mapService: MapService,
+                public geocoder: GeocodingService,
+                public mainService: MainService) {
 
         this.publicacion = this.params.get('publicacion');
 
@@ -34,11 +35,11 @@ export class ModalPreviewPublicacion {
     ngOnInit() {
 
         if (this.publicacion.direccion_empresa.length != 0) {
+            let mapId = 'map-id';
 
+            this.contenedorMapa.nativeElement.innerHTML = '<div style="height:150px;" id="' + mapId + '"></div>';
 
-            document.getElementById('contenedor-mapa-publicacion').innerHTML = "<div style='height:150px;' id='map-publicacion'></div>";
-
-            this.map = this.mapService.createMap('map-publicacion');
+            this.map = this.mapService.createMap(mapId);
 
             let location = this.geocoder.geocode(this.publicacion.direccion_empresa.calle + " " + this.publicacion.direccion_empresa.altura + ", " + this.publicacion.direccion_empresa.localidad);
 
@@ -47,7 +48,7 @@ export class ModalPreviewPublicacion {
                 if (!location.valid) {
                     return;
                 }
-                let address = location.address;
+                // let address = location.address;
 
                 var newBounds = location.viewBounds;
                 //this.mapService.changeBounds(newBounds);
@@ -61,15 +62,35 @@ export class ModalPreviewPublicacion {
 
                 this.mapService.addMarker(latlng, this.publicacion.nombre_empresa);
 
-                this.mapService.setPosition(this.lat,  this.lng);
+                this.mapService.setPosition(this.lat, this.lng);
                 this.mapService.setBound(this.lat - 0.02, this.lng - 0.02, this.lat + 0.02, this.lng + 0.02);
 
             }, error => console.error(error));
         }
     }
 
-    openUrl (url){
-        window.open('//:'+url, "_system");
+    openUrl(url) {
+        window.open(url, "_system");
+    }
+
+    call(publicacionId, tel) {
+
+        if (tel) {
+            CallNumber.callNumber(tel, true)
+                .then(() => {
+                        console.log('Launched dialer!');
+                        let personaId = this.mainService.user.id;
+
+                        this.mainService.postRegistrarLlamadaPublicacion(publicacionId, personaId).subscribe((data) => {
+                            console.log('Llamada registrada');
+                        });
+                        ;
+
+                    }
+                )
+                .catch(() => console.log('Error launching dialer'));
+        }
+
     }
 
     dismiss() {

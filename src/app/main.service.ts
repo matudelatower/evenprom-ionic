@@ -1,13 +1,6 @@
 import {Injectable} from '@angular/core';
-// import {Headers, Http, Response} from '@angular/http';
-import { Http,Response } from '@angular/http';
-
-// import {ModalSearch} from './pages/modals/search';
-// import {ModalPreviewPublicacion} from './pages/modals/previewPublicacion';
-
+import {Http, Response} from '@angular/http';
 import {ModalController} from 'ionic-angular';
-import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
-
 import {Observable} from 'rxjs/Rx';
 import {NativeStorage} from "ionic-native";
 
@@ -20,24 +13,26 @@ export class MainService {
     //public ip = 'http://192.168.10.134';
     //public ip = 'http://192.168.0.117';
     public ip = 'http://evenprom.com/';
-     //public ip = 'http://192.168.1.32';
+    // public ip = 'http://dev.evenprom.com/';
+    //public ip = 'http://192.168.1.32';
 
     public http;
 
     //public service = this.ip + '/evenprom-backend/web/app_dev.php/';
+    // public service = this.ip + '/whatsoncity-backend/web/app_dev.php/';
     public service = this.ip;
 
     public publicaciones;
 
-    public routeServices:any = {};
+    public routeServices: any = {};
 
     public modalCont;
 
 
-    user:any;
+    user: any;
 
 
-    constructor(http:Http, modalCont:ModalController) {
+    constructor(http: Http, modalCont: ModalController) {
 
         this.publicaciones = [];
 
@@ -67,20 +62,20 @@ export class MainService {
     getPublicaciones() {
 
         return this.http.get(this.routeServices.publicaciones)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 
     }
 
     getPromoCalendario() {
 
         return this.http.get(this.routeServices.promoCalendario)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
 
     }
 
@@ -88,6 +83,11 @@ export class MainService {
     getCategorias() {
 
         return this.http.get(this.routeServices.categorias);
+    }
+
+    getRubros() {
+
+        return this.http.get(this.routeServices.rubros);
     }
 
     getEmpresasBySlug(slug) {
@@ -98,28 +98,44 @@ export class MainService {
     postPerfil(user) {
 
         return this.http.post(this.routeServices.registrars, user)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postFavEmpresa(empresaId, personaId) {
 
         return this.http.post(this.service + 'api/favears/' + empresaId + '/empresas/' + personaId)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postFavPublicacion(pubId, personaId) {
 
         return this.http.post(this.service + 'api/favears/' + pubId + '/publicacions/' + personaId)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    postRegistrarLlamada(empresaId, personaId) {
+        return this.http.post(this.service + '/api/registros/' + empresaId + '/llamadas/' + personaId + '/empresas')
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            //...errors if any
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+    }
+
+    postRegistrarLlamadaPublicacion(publicacionId, personaId) {
+        return this.http.post(this.service + '/api/registros/' + publicacionId + '/llamadas/' + personaId + '/publicacions')
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            //...errors if any
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     getEmpresas() {
@@ -127,7 +143,11 @@ export class MainService {
         return this.http.get(this.routeServices.empresas);
     }
 
+    getNoticiasEmpresa(empresaId) {
 
+        return this.http.get(this.service + 'api/noticias/' + empresaId + '/empresa')
+
+    }
 
 
     modalCreate(modalClass, parameters = {}) {
@@ -137,32 +157,17 @@ export class MainService {
     };
 
 
-    modalPublicacion(publicacion) {
-        let modal = this.modalCont.create(ModalPreviewPublicacion, {publicacion: publicacion});
-
-        modal.present();
-
-        modal.onDidDismiss((data:any[]) => {
-            console.log(data);
-            if (data) {
-                console.log(data);
-            }
-        });
-
-
-    }
-
-
-    initRouteServices():void {
+    initRouteServices(): void {
         this.routeServices.publicaciones = this.service + 'api/publicaciones';
         this.routeServices.categorias = this.service + 'api/categorias';
         this.routeServices.empresasporslugs = this.service + 'api/empresasporslugs/';
         this.routeServices.empresas = this.service + 'api/empresas';
         this.routeServices.promoCalendario = this.service + 'api/promo/calendario';
         this.routeServices.registrars = this.service + 'api/registrars';
+        this.routeServices.rubros = this.service + 'api/rubros';
     }
 
-    public handleError(error:any) {
+    public handleError(error: any) {
         console.error('An error occurred', error);
         return false;
     }

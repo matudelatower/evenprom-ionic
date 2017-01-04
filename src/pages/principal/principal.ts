@@ -1,4 +1,5 @@
 import {Component, Output, EventEmitter} from '@angular/core';
+import {ToastController} from "ionic-angular";
 // import {Nav, Modal} from 'ionic-angular/index';
 // import {MainService} from '../main.service';
 // import {ModalPreviewPublicacion} from '../modals/previewPublicacion';
@@ -9,19 +10,19 @@ import {MainService} from "../../app/main.service";
 import 'leaflet';
 
 import {NavController, LoadingController} from 'ionic-angular';
-import {RankingPage} from "../ranking/ranking";
+// import {RankingPage} from "../ranking/ranking";
 import {Empresas} from "../empresas/empresas";
-import {FilterPublicaciones} from "../../filters/filter-publicaciones";
+// import {FilterPublicaciones} from "../../filters/filter-publicaciones";
 
 
 import {GeocodingService} from './../../directives/map/geocode.service';
 import {MapService} from './../../directives/map/map.service';
-import {Location} from './../../directives/map/location.class';
-import {MapComponent} from './../../directives/map/map.component';
+// import {Location} from './../../directives/map/location.class';
+// import {MapComponent} from './../../directives/map/map.component';
 import {GeosearchComponent} from './../../directives/map/geosearch.component';
 import {ModalMapa} from './modalMapa.component';
-import {MapaEmpresaComponent} from '../../directives/map-empresa/map.component';
-import {DefaultImageDirective} from "../../directives/image-default.directive";
+// import {MapaEmpresaComponent} from '../../directives/map-empresa/map.component';
+// import {DefaultImageDirective} from "../../directives/image-default.directive";
 
 @Component({
     selector: 'page-principal',
@@ -53,6 +54,7 @@ export class PrincipalPage {
     constructor(private navController:NavController,
                 public mainservice:MainService,
                 public loadingCtrl:LoadingController,
+                public toastCtrl:ToastController,
                 geocoder:GeocodingService,
                 public mapService:MapService) {
         this.address = '';
@@ -137,8 +139,26 @@ export class PrincipalPage {
         this.navController.push(Empresas);
     }
 
+    toastPromo(promo) {
+
+
+        let toast = this.toastCtrl.create({
+            message: promo.titulo+ " Te lo desea: "+ promo.nombre_empresa.toUpperCase() ,
+            duration: 2000,
+            position: 'center'
+        });
+
+        toast.present(toast);
+    }
+
 
     modalUbicaciones() {
+
+        let loader = this.loadingCtrl.create({
+            content: "Cargando empresas",
+            // duration: 6000
+        });
+        loader.present();
 
         this.mainservice.getEmpresas().toPromise()
             .then(response => {
@@ -149,6 +169,7 @@ export class PrincipalPage {
                 console.log(param);
                 let modal = this.mainservice.modalCreate(ModalMapa, param);
 
+                loader.dismissAll();
                 modal.present();
 
                 modal.onDidDismiss((data:any[]) => {

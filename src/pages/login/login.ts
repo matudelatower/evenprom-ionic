@@ -4,19 +4,17 @@ import {NavController, Nav,LoadingController} from 'ionic-angular';
 import {Validators, FormBuilder} from '@angular/forms';
 import {TranslateService} from 'ng2-translate';
 import {TabsPage} from '../tabs/tabs';
-import {Storage} from '@ionic/storage';
+// import {Storage} from '@ionic/storage';
 import { Facebook,NativeStorage } from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {PrincipalPage} from "../principal/principal";
-import {MyApp} from "../../app/app.component";
+// import {MyApp} from "../../app/app.component";
 import {UserData} from "./user-data";
 
 
 @Component({
     selector: 'page-login',
-    templateUrl: 'login.html',
-    providers: [Storage]
-
+    templateUrl: 'login.html'
 })
 
 export class LoginPage {
@@ -45,7 +43,7 @@ export class LoginPage {
         this.translate.use('es');
 
         // this.local = new Storage(LocalStorage);
-        this.local = Storage;
+        // this.local = Storage;
 
         console.log(translate);
     }

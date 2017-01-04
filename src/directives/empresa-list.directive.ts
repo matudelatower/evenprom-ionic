@@ -44,7 +44,7 @@ export class ItemListEmpresa {
 
 
     pagePublicacion(publicacion) {
-        console.log(publicacion)
+        // console.log(publicacion)
         this.navController.push(ModalPreviewPublicacion, {publicacion: publicacion});
     }
 
@@ -78,7 +78,7 @@ export class ItemListEmpresa {
     }
 
     share(message:string, subject?:string, image?:string, url?:string) {
-
+        console.log(message, subject, image, url);
 
         SocialSharing.share(message, '@evenprom', image, url).then(() => {
             let toast = this.toastCtrl.create({

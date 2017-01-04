@@ -1,7 +1,7 @@
 import {Component, Output, EventEmitter} from '@angular/core';
 import {GeocodingService} from './geocode.service';
 import {MapService} from './map.service';
-import {Location} from './location.class';
+// import {Location} from './location.class';
 
 
 @Component({

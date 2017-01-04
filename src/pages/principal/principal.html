@@ -5,6 +5,7 @@
         </button>
         <ion-title>Page Uno</ion-title>-->
         <button ion-button menuToggle>
+            <img src="assets/img/logos/favicon.png" style="width: 50%; margin-left: -20%; position: absolute;">
             <ion-icon name="menu"></ion-icon>
         </button>
 
@@ -23,14 +24,11 @@
             <ion-segment-button value="all" style="text-transform: lowercase;">
                 <b class="ep-celeste">even</b><b class="ep-fucsia">prom</b>
             </ion-segment-button>
-            <ion-segment-button value="evento">
-                Even
+            <ion-segment-button value="oferta" (click)="pageEmpresas()">
+                <ion-icon name="home"></ion-icon>
             </ion-segment-button>
-            <ion-segment-button value="oferta">
-                Prom
-            </ion-segment-button>
-            <ion-segment-button value="sitios" (click)="pageEmpresas()">
-                Sitios
+            <ion-segment-button value="sitios">
+                <ion-icon name="notifications-outline"></ion-icon>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
@@ -38,7 +36,7 @@
 
 <ion-content class="principal">
 
-    <ion-grid no-padding no-padding *ngIf="promoCalendario">
+    <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
         <ion-row no-padding>
             <ion-col text-center width-100 no-padding>
                 <h1 [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
@@ -49,10 +47,10 @@
             </ion-col>
         </ion-row>
 
-        <ion-row no-padding  class="img-publicacion-content" >
-            <ion-col  no-padding>
-                <img style="width: 100%;"  [src]="promoCalendario.imagen_publicacion"/>
-                <div  class="img-promo-subtitle">
+        <ion-row no-padding class="img-publicacion-content">
+            <ion-col no-padding>
+                <img style="width: 100%;" [src]="promoCalendario.imagen_publicacion"/>
+                <div class="img-promo-subtitle">
                     {{ promoCalendario.nombre_empresa | uppercase}}
                 </div>
 
@@ -64,9 +62,9 @@
     <ion-list>
 
 
-
-        <item-list-empresa  *ngFor="let empresa of (publicaciones | filterPublicaciones:tipoPublicacion); let isFirst = first"
-                           [empresa]="empresa" [isFirst]="isFirst">
+        <item-list-empresa
+                *ngFor="let empresa of (publicaciones | filterPublicaciones:tipoPublicacion); let isFirst = first"
+                [empresa]="empresa" [isFirst]="isFirst">
 
 
         </item-list-empresa>
@@ -74,9 +72,9 @@
 
     <ion-fab right bottom>
         <!--<button ion-fab color="light" (click)="modalSearch({charNum: 0})">-->
-            <!--<ion-icon name="options"></ion-icon>-->
+        <!--<ion-icon name="options"></ion-icon>-->
         <!--</button>-->
-        <button mini ion-fab color="dark" (click)="modalUbicaciones()" >
+        <button mini ion-fab color="dark" (click)="modalUbicaciones()">
             <ion-icon name="pin"></ion-icon>
         </button>
     </ion-fab>

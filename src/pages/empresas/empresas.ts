@@ -16,40 +16,46 @@ import {EmpresaPerfilPage} from "../empresaPerfil/empresaPerfil";
 })
 export class Empresas {
 
-    public categorias:any[];
-    public empresas:any[];
+    public rubros: any[];
+    public empresas: any[];
 
-    public categoriaSel:any;
+    public rubroSel: any;
 
 
-    constructor(public navCtrl:NavController,
-                public viewCtrl:ViewController,
-                public mainService:MainService,
-                public loadingCtrl:LoadingController) {
+    constructor(public navCtrl: NavController,
+                public viewCtrl: ViewController,
+                public mainService: MainService,
+                public loadingCtrl: LoadingController) {
 
         let loader = this.loadingCtrl.create({
             content: "Cargando",
             // duration: 6000
         });
         loader.present();
-        mainService.getCategorias().toPromise()
+        mainService.getRubros().toPromise()
             .then(
-                response => this.categorias = response.json()
+                response => this.rubros = response.json()
             );
         mainService.getEmpresas().toPromise()
             .then(response => {
                 this.empresas = response.json();
                 loader.dismissAll();
             });
-        // console.log(this.categorias);
+        // console.log(this.rubros);
         // console.log(this.empresas);
     }
 
-    loadEmpresasBySlug (cat){
-        this.categoriaSel = cat;
-        this.mainService.getEmpresasBySlug(cat.slug).toPromise()
+    loadEmpresasBySlug(rub) {
+        this.rubroSel = rub;
+        let loader = this.loadingCtrl.create({
+            content: "Cargando",
+            // duration: 6000
+        });
+        loader.present();
+        this.mainService.getEmpresasBySlug(rub.slug).toPromise()
             .then(response => {
                 this.empresas = response.json();
+                loader.dismissAll();
 
             });
     }
@@ -61,18 +67,20 @@ export class Empresas {
 
     goToPerfil(empresa) {
 
-        let modal = this.mainService.modalCreate(EmpresaPerfilPage, {
-            empresa: empresa,
-            icono: 'pizza'
-        });
+        this.navCtrl.push(EmpresaPerfilPage, {empresa: empresa});
 
-        modal.present();
-
-        modal.onDidDismiss((data:any[]) => {
-            if (data) {
-                console.log(data);
-            }
-        });
+        // let modal = this.mainService.modalCreate(EmpresaPerfilPage, {
+        //     empresa: empresa,
+        //     icono: 'pizza'
+        // });
+        //
+        // modal.present();
+        //
+        // modal.onDidDismiss((data: any[]) => {
+        //     if (data) {
+        //         console.log(data);
+        //     }
+        // });
     }
 
     dismiss() {
