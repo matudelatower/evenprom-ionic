@@ -24,15 +24,15 @@ export class MainService {
 
     public publicaciones;
 
-    public routeServices: any = {};
+    public routeServices:any = {};
 
     public modalCont;
 
 
-    user: any;
+    user:any;
 
 
-    constructor(http: Http, modalCont: ModalController) {
+    constructor(http:Http, modalCont:ModalController) {
 
         this.publicaciones = [];
 
@@ -59,23 +59,40 @@ export class MainService {
     //        .catch(this.handleError);
     //}
 
+
+    setUser(user) {
+
+        this.user = user;
+
+
+    }
+
+    getAvatar(fId, gId) {
+        if (fId) {
+            return "http://graph.facebook.com/" + fId + "/picture?type=large"
+        } else if (gId) {
+
+        }
+    }
+
     getPublicaciones() {
 
         return this.http.get(this.routeServices.publicaciones)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => console.log(error));
 
     }
 
     getPromoCalendario() {
 
         return this.http.get(this.routeServices.promoCalendario)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
 
     }
 
@@ -98,45 +115,64 @@ export class MainService {
     postPerfil(user) {
 
         return this.http.post(this.routeServices.registrars, user)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postFavEmpresa(empresaId, personaId) {
 
         return this.http.post(this.service + 'api/favears/' + empresaId + '/empresas/' + personaId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postFavPublicacion(pubId, personaId) {
 
         return this.http.post(this.service + 'api/favears/' + pubId + '/publicacions/' + personaId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postRegistrarLlamada(empresaId, personaId) {
         return this.http.post(this.service + '/api/registros/' + empresaId + '/llamadas/' + personaId + '/empresas')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postRegistrarLlamadaPublicacion(publicacionId, personaId) {
         return this.http.post(this.service + '/api/registros/' + publicacionId + '/llamadas/' + personaId + '/publicacions')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
             //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
     }
+
+
+    postComentarPublicacion(publicacionId, personaId, texto) {
+        return this.http.post(this.service + 'api/comentars/' + publicacionId + '/publicacions/' + personaId, {
+            texto: texto
+        });
+    }
+
+    getComentariosPublicacion(publicacionId) {
+
+        return this.http.get(this.service + 'api/comentarios/' + publicacionId + '/publicacion')
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+
+            //...errors if any
+            .catch((error:any) => console.log(error));
+
+    }
+
 
     getEmpresas() {
 
@@ -157,7 +193,7 @@ export class MainService {
     };
 
 
-    initRouteServices(): void {
+    initRouteServices():void {
         this.routeServices.publicaciones = this.service + 'api/publicaciones';
         this.routeServices.categorias = this.service + 'api/categorias';
         this.routeServices.empresasporslugs = this.service + 'api/empresasporslugs/';
@@ -167,7 +203,7 @@ export class MainService {
         this.routeServices.rubros = this.service + 'api/rubros';
     }
 
-    public handleError(error: any) {
+    public handleError(error:any) {
         console.error('An error occurred', error);
         return false;
     }

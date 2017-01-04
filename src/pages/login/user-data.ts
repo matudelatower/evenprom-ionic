@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 
 import { Events } from 'ionic-angular';
+import {MainService} from "../../app/main.service";
 
 
 @Injectable()
@@ -10,7 +11,7 @@ export class UserData {
 
   user:any;
 
-  constructor(public events: Events) {}
+  constructor(public events: Events, public mainService:MainService) {}
 
   hasFavorite(sessionName) {
     return (this._favorites.indexOf(sessionName) > -1);
@@ -33,6 +34,7 @@ export class UserData {
 
   signup(user) {
     console.log('userdata',user);
+    this.mainService.setUser(user);
     this.events.publish('user:signup', user);
   }
 

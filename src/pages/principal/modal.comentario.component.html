@@ -1,0 +1,21 @@
+<ion-header>
+
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button color="primary" (click)="dismiss(false)">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
+
+        <ion-title>
+            Comentar publicación
+        </ion-title>
+
+    </ion-toolbar>
+</ion-header>
+
+<ion-content>
+    <ion-textarea #comentarioId [(ngModel)]="comentario" placeholder="Escribí un comentario">></ion-textarea>
+    <button (click)="comentar()" ion-button block>Comentar</button>
+
+</ion-content>

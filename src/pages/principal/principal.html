@@ -35,6 +35,14 @@
 </ion-header>
 
 <ion-content class="principal">
+    <ion-refresher (ionRefresh)="doRefresh($event)">
+        <ion-refresher-content
+                pullingIcon="arrow-dropdown"
+                pullingText="Suelte para actualizar"
+                refreshingSpinner="circles"
+                refreshingText="Actualizando...">
+        </ion-refresher-content>
+    </ion-refresher>
 
     <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
         <ion-row no-padding>
@@ -59,7 +67,7 @@
 
 
     </ion-grid>
-    <ion-list>
+    <ion-list *ngIf="publicaciones">
 
 
         <item-list-empresa

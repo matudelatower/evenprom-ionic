@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
-import {Platform, NavParams, ViewController} from 'ionic-angular';
+import {Platform, NavParams, ViewController,LoadingController} from 'ionic-angular';
 import {MapService} from "../../directives/map/map.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {Subscription} from "rxjs/Subscription";
@@ -12,20 +12,25 @@ import {MainService} from "../../app/main.service";
     templateUrl: 'previewPublicacion.html'
 })
 export class ModalPreviewPublicacion {
-    public publicacion: any;
-    subscription: Subscription;
-    @Output() mapLoaded = new EventEmitter();
-    @ViewChild('contenedorMapa') contenedorMapa: ElementRef;
-    map: any;
-    lat: any;
-    lng: any;
 
-    constructor(public platform: Platform,
-                public params: NavParams,
-                public viewCtrl: ViewController,
-                public mapService: MapService,
-                public geocoder: GeocodingService,
-                public mainService: MainService) {
+    @Output() mapLoaded = new EventEmitter();
+    @ViewChild('contenedorMapa') contenedorMapa:ElementRef;
+    publicacion:any;
+    comentarios:any;
+    subscription:Subscription;
+    comentario:any;
+    
+    map:any;
+    lat:any;
+    lng:any;
+
+    constructor(public platform:Platform,
+                public params:NavParams,
+                public viewCtrl:ViewController,
+                public mapService:MapService,
+                public geocoder:GeocodingService,
+                public loadingCtrl:LoadingController,
+                public mainService:MainService) {
 
         this.publicacion = this.params.get('publicacion');
 
@@ -33,6 +38,13 @@ export class ModalPreviewPublicacion {
     }
 
     ngOnInit() {
+
+        let loader = this.loadingCtrl.create({
+            content: "Cargando comentarios",
+            // duration: 6000
+        });
+        loader.present();
+        this.getComentarios(this.publicacion.id, loader);
 
         if (this.publicacion.direccion_empresa.length != 0) {
             let mapId = 'map-id';
@@ -71,6 +83,41 @@ export class ModalPreviewPublicacion {
 
     openUrl(url) {
         window.open(url, "_system");
+    }
+
+    comentar(publicacionId) {
+        if (this.comentario) {
+            let loader = this.loadingCtrl.create({
+                content: "Enviando comentario",
+                // duration: 6000
+            });
+            loader.present();
+
+            this.mainService.postComentarPublicacion(publicacionId, 3, this.comentario).subscribe((data)=> {
+                this.comentario = '';
+                loader.dismissAll();
+                console.log('comente', this.comentario);
+                loader = this.loadingCtrl.create({
+                    content: "Enviando comentario",
+                    // duration: 6000
+                });
+                loader.present();
+                this.getComentarios(publicacionId, loader);
+            }, (error)=>{
+                loader.dismissAll();
+            });
+        }
+
+    }
+
+    getComentarios(publicacionId, loader) {
+        this.mainService.getComentariosPublicacion(publicacionId).subscribe((data)=> {
+            this.comentarios = data;
+            console.log('obtuve los comentario', this.comentario);
+            loader.dismissAll();
+        }, (error)=>{
+            loader.dismissAll();
+        });
     }
 
     call(publicacionId, tel) {

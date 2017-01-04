@@ -1,11 +1,12 @@
 import {Component} from '@angular/core';
-import {Platform, Events} from 'ionic-angular';
+import {Platform, Events, LoadingController} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 
 // import { TabsPage } from '../pages/tabs/tabs';
 import {PrincipalPage} from "../pages/principal/principal";
 import {LoginPage} from "../pages/login/login";
-import {Facebook, NativeStorage, AppRate, BackgroundGeolocation} from "ionic-native";
+import {Facebook, NativeStorage, AppRate} from "ionic-native";
+import {MainService} from "./main.service";
 
 
 @Component({
@@ -18,7 +19,7 @@ export class MyApp {
     user:any;
     pages = [];
 
-    prod = true;
+    prod = false;
 
     menues:any = [
         {
@@ -69,50 +70,35 @@ export class MyApp {
         },
     ];
 
-    constructor(platform:Platform, public events: Events) {
+    constructor(platform:Platform, public events:Events, public loadingCtrl:LoadingController, public mainService:MainService) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
-            // BackgroundGeolocation is highly configurable. See platform specific configuration options
-            let config = {
-                startOnBoot: true,
-                desiredAccuracy: 10,
-                stationaryRadius: 20,
-                distanceFilter: 30,
-                debug: true, //  enable this hear sounds for background-geolocation life-cycle.
-                stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-            };
-
-            BackgroundGeolocation.configure((location) => {
-                console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
-
-                // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
-                // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
-                // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-                BackgroundGeolocation.finish(); // FOR IOS ONLY
-
-            }, (error) => {
-                console.log('BackgroundGeolocation error');
-            }, config);
-
-            // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
-            BackgroundGeolocation.start();
-
-
-            // NativeStorage user data
-            NativeStorage.getItem('userData')
-                .then(
-                    data => {
-                        this.user = data;
-                    },
-                    error => {
-                        console.log(error);
-                    }
-                );
 
             if (this.prod) {
+
+                let loader = this.loadingCtrl.create({
+                    content: "Ingresando a EvenProm",
+                    // duration: 6000
+                });
+                loader.present();
+
+                // NativeStorage user data
+                NativeStorage.getItem('userData')
+                    .then(
+                        data => {
+                            this.user = data;
+                            this.mainService.setUser(data);
+                        },
+                        error => {
+                            console.log(error);
+                            loader.dismissAll();
+                        }
+                    );
+
+
                 Facebook.getLoginStatus()
                     .then(rtaLoginStatus => {
                         console.log("rtaLoginStatus", JSON.stringify(rtaLoginStatus));
@@ -122,12 +108,14 @@ export class MyApp {
                         } else {
                             this.rootPage = LoginPage;
                         }
+                        loader.dismissAll();
                     })
                     .catch(error => {
                         console.error(error);
                         console.error('login', JSON.stringify(error));
+                        loader.dismissAll();
                     });
-            }else{
+            } else {
                 this.rootPage = PrincipalPage;
             }
 
@@ -145,7 +133,7 @@ export class MyApp {
 
         this.events.subscribe('user:signup', (user) => {
             console.log('login');
-            console.log('userdata',user);
+            console.log('userdata', user);
             this.user = user;
         });
 

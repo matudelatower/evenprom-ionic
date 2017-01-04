@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import {ToastController,NavController} from "ionic-angular";
 import {MainService} from "../app/main.service";
-import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 import { SocialSharing } from 'ionic-native';
+import {ModalComentario} from "../pages/principal/modal.comentario.component";
 
 
 @Component({
@@ -22,13 +22,6 @@ export class ItemListEmpresa {
 
     }
 
-    // ngOnInit() {
-    //     this.empersa = 
-    // }
-
-    //modalPreviewPublicacion(publicacion) {
-    //    this.mainservice.modalPublicacion(publicacion);
-    //}
 
     getMesByFecha(fecha) {
         let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -43,22 +36,20 @@ export class ItemListEmpresa {
     }
 
 
-    pagePublicacion(publicacion) {
-        // console.log(publicacion)
-        this.navController.push(ModalPreviewPublicacion, {publicacion: publicacion});
-    }
+    modalComentario(publiacion) {
 
-
-    sharePublicacion() {
-
-
-        let toast = this.toastCtrl.create({
-            message: 'Compartido',
-            duration: 2000,
-            position: 'bottom'
+        console.log(publiacion);
+        let modal = this.mainservice.modalCreate(ModalComentario, {
+            publicacion:publiacion
         });
 
-        toast.present(toast);
+        modal.present();
+
+        modal.onDidDismiss((data:any[]) => {
+            if (data) {
+                console.log(data);
+            }
+        });
     }
 
     sharedTwitter(message:string, image?:string, url?:string) {

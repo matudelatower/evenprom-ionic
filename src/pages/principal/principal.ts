@@ -67,14 +67,23 @@ export class PrincipalPage {
         loader.present();
 
         this.mainservice.getPublicaciones().subscribe((data)=> {
-            this.publicaciones = data;
-            loader.dismissAll();
-        });
+                this.publicaciones = data;
+
+            }, ()=> {
+
+                this.publicaciones = [];
+            },
+            () => {
+                loader.dismissAll();
+                console.log('END')
+            }
+        );
+
 
         this.mainservice.getPromoCalendario().subscribe((data)=> {
-            if (data){
+            if (data) {
                 this.promoCalendario = data[0];
-            }else{
+            } else {
                 this.promoCalendario = false;
             }
 
@@ -89,6 +98,15 @@ export class PrincipalPage {
     ngOnInit() {
 
     }
+
+    doRefresh(refresher) {
+        this.mainservice.getPublicaciones().subscribe((data)=> {
+            this.publicaciones = data;
+            refresher.complete();
+        });
+
+    }
+
 
 
     modalSearch(characterNum) {
@@ -118,7 +136,7 @@ export class PrincipalPage {
         });
     }
 
-    favPublicacion (id) {
+    favPublicacion(id) {
 
     }
 
@@ -143,7 +161,7 @@ export class PrincipalPage {
 
 
         let toast = this.toastCtrl.create({
-            message: promo.titulo+ " Te lo desea: "+ promo.nombre_empresa.toUpperCase() ,
+            message: promo.titulo + " Te lo desea: " + promo.nombre_empresa.toUpperCase(),
             duration: 2000,
             position: 'center'
         });

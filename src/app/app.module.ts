@@ -33,6 +33,7 @@ import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
 import {DefaultImageDirective} from "../directives/image-default.directive";
 import {TranslateStaticLoader} from "ng2-translate/index";
 import {UserData} from "../pages/login/user-data";
+import {ModalComentario} from "../pages/principal/modal.comentario.component";
 
 
 @NgModule({
@@ -60,7 +61,9 @@ import {UserData} from "../pages/login/user-data";
         GeosearchComponent,
         ModalMapa,
         MapaEmpresaComponent,
-        DefaultImageDirective
+        DefaultImageDirective,
+        ModalComentario
+
     ],
     imports: [
         TranslateModule.forRoot({
@@ -87,7 +90,8 @@ import {UserData} from "../pages/login/user-data";
         Empresas,
         MapComponent,
         GeosearchComponent,
-        ModalMapa
+        ModalMapa,
+        ModalComentario
         
     ],
     providers: [Storage, MainService,GeocodingService, MapService, UserData],
