@@ -44,6 +44,24 @@
         </ion-refresher-content>
     </ion-refresher>
 
+    <ion-grid no-padding no-padding *ngIf="errorNoConexion">
+        <ion-row no-padding>
+            <ion-col text-center width-100 no-padding>
+                <h1>
+                    No hay conexión a internet.
+                </h1>
+                <h4>
+                    Arrastre la parte superior hacia abajo para actualizar
+                </h4>
+            </ion-col>
+        </ion-row>
+        <ion-row no-padding>
+            <ion-col text-center width-100 no-padding>
+                <img src="assets/img/noconexion.png">
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+
     <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
         <ion-row no-padding>
             <ion-col text-center width-100 no-padding>

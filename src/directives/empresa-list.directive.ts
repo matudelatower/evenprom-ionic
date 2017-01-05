@@ -3,6 +3,7 @@ import {ToastController,NavController} from "ionic-angular";
 import {MainService} from "../app/main.service";
 import { SocialSharing } from 'ionic-native';
 import {ModalComentario} from "../pages/principal/modal.comentario.component";
+import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 
 
 @Component({
@@ -100,6 +101,11 @@ export class ItemListEmpresa {
         });
         ;
 
+    }
+
+    pagePublicacion(publicacion) {
+        console.log(publicacion)
+        this.navController.push(ModalPreviewPublicacion, {publicacion: publicacion});
     }
 
 }

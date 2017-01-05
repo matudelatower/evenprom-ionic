@@ -1,5 +1,5 @@
 import {Component } from '@angular/core';
-import {NavParams, ViewController,LoadingController} from 'ionic-angular';
+import {NavParams, ViewController,LoadingController, ToastController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 
 @Component({
@@ -10,7 +10,10 @@ export class ModalComentario {
 
     publicacion:any;
     comentario:any;
-    constructor(public params:NavParams, public viewCtrl:ViewController, public mainService:MainService, public loadingCtrl:LoadingController) {
+    constructor(public params:NavParams,
+                public viewCtrl:ViewController,
+                public toastCtrl:ToastController,
+                public mainService:MainService, public loadingCtrl:LoadingController) {
         this.publicacion = this.params.get('publicacion');
 
         console.log(this.publicacion);
@@ -40,6 +43,13 @@ export class ModalComentario {
 
             }, (error)=>{
                 loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                    duration: 3250,
+                    position: 'center'
+                });
+
+                toast.present(toast);
             });
         }
 

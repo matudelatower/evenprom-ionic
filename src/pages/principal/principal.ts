@@ -14,8 +14,6 @@ import {NavController, LoadingController} from 'ionic-angular';
 import {Empresas} from "../empresas/empresas";
 // import {FilterPublicaciones} from "../../filters/filter-publicaciones";
 
-
-import {GeocodingService} from './../../directives/map/geocode.service';
 import {MapService} from './../../directives/map/map.service';
 // import {Location} from './../../directives/map/location.class';
 // import {MapComponent} from './../../directives/map/map.component';
@@ -30,36 +28,40 @@ import {ModalMapa} from './modalMapa.component';
 })
 export class PrincipalPage {
 
-
-    empresa:any = {
-        id: 1,
-        color: 'red',
-        nombre: 'FREEDO',
-    };
-
-    address:string;
-    private geocoder:GeocodingService;
     @Output() locationFound = new EventEmitter();
 
 
     tipoPublicacion = "all";
 
-    public publicaciones:any[];
+    errorNoConexion = false;
+
+    publicaciones:any[];
 
     promoCalendario:any;
 
-    public myDate = new Date();
+    myDate = new Date();
 
 
     constructor(private navController:NavController,
                 public mainservice:MainService,
                 public loadingCtrl:LoadingController,
                 public toastCtrl:ToastController,
-                geocoder:GeocodingService,
                 public mapService:MapService) {
-        this.address = '';
-        this.geocoder = geocoder;
         this.mapService = mapService;
+
+        this.doRefresh(false);
+
+
+
+
+    }
+
+    ngOnInit() {
+
+    }
+
+    doRefresh(refresher) {
+
         let loader = this.loadingCtrl.create({
             content: "Cargando Promos",
             // duration: 6000
@@ -68,14 +70,33 @@ export class PrincipalPage {
 
         this.mainservice.getPublicaciones().subscribe((data)=> {
                 this.publicaciones = data;
+                this.errorNoConexion = false;
 
-            }, ()=> {
+            }, (err)=> {
+                console.log('error timeout');
 
-                this.publicaciones = [];
+                this.errorNoConexion = true;
+                //this.publicaciones = [];
+                loader.dismissAll();
+                if (refresher) {
+                    refresher.complete();
+                }
+
+                let toast = this.toastCtrl.create({
+                    message: "Error en la conección a internet",
+                    duration: 2000,
+                    position: 'center'
+                });
+
+                toast.present(toast);
             },
             () => {
                 loader.dismissAll();
-                console.log('END')
+                this.errorNoConexion = false;
+                if (refresher) {
+                    refresher.complete();
+                }
+
             }
         );
 
@@ -88,25 +109,13 @@ export class PrincipalPage {
             }
 
 
+        }, (err)=> {
+            console.log('error timeout');
+
         });
 
-        //console.log(this.public aciones);
-
 
     }
-
-    ngOnInit() {
-
-    }
-
-    doRefresh(refresher) {
-        this.mainservice.getPublicaciones().subscribe((data)=> {
-            this.publicaciones = data;
-            refresher.complete();
-        });
-
-    }
-
 
 
     modalSearch(characterNum) {

@@ -53,11 +53,11 @@
             </div>
         </ion-card-content>
         <ion-item [ngStyle]="{'background-color':empresa.color}">
-            <button ion-button clear item-left (click)="call(empresa.id, empresa.contacto.telefono)">
+            <button ion-button clear item-left (click)="call(empresa.id, empresa.contacto.telefono)" class="btn-call">
                 <ion-icon name="call"></ion-icon>
             </button>
 
-            <button ion-button icon-right clear item-right (click)="sendMail(empresa.contacto.mail)">
+            <button ion-button icon-right clear item-right (click)="sendMail(empresa.contacto.mail)" class="btn-mail">
                 Enviar Mensaje
                 <ion-icon name="arrow-forward"></ion-icon>
             </button>
@@ -177,41 +177,23 @@
     </ion-row>
 
     <ion-list>
-        <ion-item>
+        <ion-item *ngFor="let c of comentarios">
             <ion-avatar item-left>
-                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+                <img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">
             </ion-avatar>
-            <h2>Finn</h2>
-            <p>I've had a pretty messed up day. If we just...</p>
+            <h2>{{c.persona.nombre}} {{c.persona.apellido}}</h2>
+            <p>{{c.texto}}</p>
         </ion-item>
         <ion-item>
             <ion-avatar item-left>
-                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
+                <img *ngIf="mainService.user" [src]="mainService.user.avatar" [default]="'assets/img/avatar.png'">
             </ion-avatar>
-            <h2>Finn</h2>
-            <p>I've had a pretty messed up day. If we just...</p>
-        </ion-item>
-        <ion-item>
-            <ion-avatar item-left>
-                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
-            </ion-avatar>
-            <h2>Finn</h2>
-            <p>I've had a pretty messed up day. If we just...</p>
-        </ion-item>
-        <ion-item>
-            <ion-avatar item-left>
-                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
-            </ion-avatar>
-            <h2>Finn</h2>
-            <comment-text text='Ive had a pretty messed up day. If we just ;as;as;d;sdsd;sdfsdf'></comment-text>
-        </ion-item>
-        <ion-item>
-            <ion-avatar item-left>
-                <img src="http://www.followingthenerd.com/site/wp-content/uploads/avatar.jpg_274898881.jpg">
-            </ion-avatar>
-            <h2>Mi usuario</h2>
-            <ion-textarea #comentarioId [(ngModel)]="comentario" placeholder="Escribi un comentario">></ion-textarea>
-            <ion-icon name="send" item-right></ion-icon>
+            <h2>Yo</h2>
+            <ion-textarea placeholder="Escribí un comentario" [(ngModel)]="comentario"></ion-textarea>
+
+            <button (click)="comentar()" ion-button clear icon-only item-right>
+                <ion-icon name="send" is-active="false"></ion-icon>
+            </button>
         </ion-item>
     </ion-list>
 

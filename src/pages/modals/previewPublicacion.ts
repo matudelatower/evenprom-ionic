@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
-import {Platform, NavParams, ViewController,LoadingController} from 'ionic-angular';
+import {Platform, NavParams, ViewController,LoadingController, ToastController} from 'ionic-angular';
 import {MapService} from "../../directives/map/map.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {Subscription} from "rxjs/Subscription";
@@ -19,7 +19,7 @@ export class ModalPreviewPublicacion {
     comentarios:any;
     subscription:Subscription;
     comentario:any;
-    
+
     map:any;
     lat:any;
     lng:any;
@@ -30,6 +30,7 @@ export class ModalPreviewPublicacion {
                 public mapService:MapService,
                 public geocoder:GeocodingService,
                 public loadingCtrl:LoadingController,
+                public toastCtrl:ToastController,
                 public mainService:MainService) {
 
         this.publicacion = this.params.get('publicacion');
@@ -85,7 +86,7 @@ export class ModalPreviewPublicacion {
         window.open(url, "_system");
     }
 
-    comentar(publicacionId) {
+    comentar() {
         if (this.comentario) {
             let loader = this.loadingCtrl.create({
                 content: "Enviando comentario",
@@ -93,17 +94,24 @@ export class ModalPreviewPublicacion {
             });
             loader.present();
 
-            this.mainService.postComentarPublicacion(publicacionId, 3, this.comentario).subscribe((data)=> {
+            this.mainService.postComentarPublicacion(this.publicacion.id, 3, this.comentario).subscribe((data)=> {
                 this.comentario = '';
                 loader.dismissAll();
                 console.log('comente', this.comentario);
                 loader = this.loadingCtrl.create({
-                    content: "Enviando comentario",
+                    content: "Cargando comentarios",
                     // duration: 6000
                 });
                 loader.present();
-                this.getComentarios(publicacionId, loader);
-            }, (error)=>{
+                this.getComentarios(this.publicacion.id, loader);
+            }, (error)=> {
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                    duration: 3250,
+                    position: 'center'
+                });
+
+                toast.present(toast);
                 loader.dismissAll();
             });
         }
@@ -113,10 +121,16 @@ export class ModalPreviewPublicacion {
     getComentarios(publicacionId, loader) {
         this.mainService.getComentariosPublicacion(publicacionId).subscribe((data)=> {
             this.comentarios = data;
-            console.log('obtuve los comentario', this.comentario);
             loader.dismissAll();
-        }, (error)=>{
+        }, (error)=> {
             loader.dismissAll();
+            let toast = this.toastCtrl.create({
+                message: "No se han podido cargar los comentarios.",
+                duration: 3250,
+                position: 'center'
+            });
+
+            toast.present(toast);
         });
     }
 

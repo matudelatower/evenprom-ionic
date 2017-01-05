@@ -141,22 +141,25 @@
     </ion-grid>
 
     <ion-list>
-        <ion-item  *ngFor="let c of comentarios">
+        <ion-item *ngFor="let c of comentarios">
             <ion-avatar item-left>
                 <img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">
             </ion-avatar>
-            <h2>{{c.persona.nombre}}</h2>
+            <h2>{{c.persona.nombre}} {{c.persona.apellido}}</h2>
             <p>{{c.texto}}</p>
         </ion-item>
         <ion-item>
             <ion-avatar item-left>
-                <img *ngIf="mainService.user" [src]="mainService.user.avatar">
+                <img *ngIf="mainService.user" [src]="mainService.user.avatar" [default]="'assets/img/avatar.png'">
             </ion-avatar>
             <h2>Yo</h2>
-            <ion-textarea #comentarioId [(ngModel)]="comentario" placeholder="Escribí un comentario">></ion-textarea>
-            <button (click)="comentar(publicacion.id)" ion-button clear item-right>
-                <ion-icon  name="send" ></ion-icon>
+            <ion-textarea placeholder="Escribí un comentario" [(ngModel)]="comentario"></ion-textarea>
+
+            <button (click)="comentar()" ion-button clear icon-only item-right>
+                <ion-icon name="send" is-active="false"></ion-icon>
+
             </button>
+
         </ion-item>
     </ion-list>
 </ion-content>

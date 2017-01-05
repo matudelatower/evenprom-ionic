@@ -80,9 +80,10 @@ export class MainService {
         return this.http.get(this.routeServices.publicaciones)
             // ...and calling .json() on the response to return data
             .map((res:Response) => res.json())
-
-            //...errors if any
-            .catch((error:any) => console.log(error));
+            .delay(500)
+            .timeout(7500)
+        //...errors if any
+        //.catch((error:any) => console.log(error));
 
     }
 
@@ -90,9 +91,7 @@ export class MainService {
 
         return this.http.get(this.routeServices.promoCalendario)
             // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
-            //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .map((res:Response) => res.json());
 
     }
 
@@ -114,11 +113,7 @@ export class MainService {
 
     postPerfil(user) {
 
-        return this.http.post(this.routeServices.registrars, user)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
-            //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+        return this.http.post(this.routeServices.registrars, user);
     }
 
     postFavEmpresa(empresaId, personaId) {
@@ -158,8 +153,11 @@ export class MainService {
 
     postComentarPublicacion(publicacionId, personaId, texto) {
         return this.http.post(this.service + 'api/comentars/' + publicacionId + '/publicacions/' + personaId, {
-            texto: texto
-        });
+                texto: texto
+            })
+            .delay(500)
+            .timeout(5000);
+        ;
     }
 
     getComentariosPublicacion(publicacionId) {
@@ -167,9 +165,27 @@ export class MainService {
         return this.http.get(this.service + 'api/comentarios/' + publicacionId + '/publicacion')
             // ...and calling .json() on the response to return data
             .map((res:Response) => res.json())
+            .delay(500)
+            .timeout(6000);
 
-            //...errors if any
-            .catch((error:any) => console.log(error));
+    }
+
+
+    postComentarEmpresa(empresaId, personaId, texto) {
+        return this.http.post(this.service + 'api/comentars/' + empresaId + '/empresas/' + personaId, {
+                texto: texto
+            })
+            .delay(500)
+            .timeout(6000);
+    }
+
+    getComentariosEmpresa(publicacionId) {
+
+        return this.http.get(this.service + 'api/comentarios/' + publicacionId + '/empresa')
+            // ...and calling .json() on the response to return data
+            .map((res:Response) => res.json())
+            .delay(500)
+            .timeout(6000);
 
     }
 
