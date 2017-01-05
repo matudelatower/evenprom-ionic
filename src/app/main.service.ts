@@ -42,15 +42,6 @@ export class MainService {
 
         this.initRouteServices();
 
-        NativeStorage.getItem('userData')
-            .then(
-                data => {
-                    this.user = data;
-                },
-                error => {
-                    console.log(error);
-                }
-            );
     }
 
     //post(resource: string, params?: any): Observable<any> {
@@ -63,7 +54,11 @@ export class MainService {
     setUser(user) {
 
         this.user = user;
+    }
 
+    getUser() {
+
+        return  NativeStorage.getItem('userData');
 
     }
 

@@ -41,7 +41,7 @@ export class ItemListEmpresa {
 
         console.log(publiacion);
         let modal = this.mainservice.modalCreate(ModalComentario, {
-            publicacion:publiacion
+            publicacion: publiacion
         });
 
         modal.present();
@@ -87,19 +87,22 @@ export class ItemListEmpresa {
 
     addPublicacionFav(id) {
 
-        let personaId = this.mainservice.user.id;
 
-        this.mainservice.postFavPublicacion(id, personaId).subscribe((data)=> {
-            let toast = this.toastCtrl.create({
-                message: 'Agregado a favoritos',
-                duration: 2000,
-                position: 'bottom'
+        this.mainservice.getUser().then((user)=> {
+
+            alert( JSON.stringify(user));
+            this.mainservice.postFavPublicacion(id, user.id).subscribe((data)=> {
+                let toast = this.toastCtrl.create({
+                    message: 'Agregado a favoritos',
+                    duration: 2000,
+                    position: 'bottom'
+                });
+
+                toast.present(toast);
+
             });
-
-            toast.present(toast);
-
         });
-        ;
+
 
     }
 
