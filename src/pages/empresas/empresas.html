@@ -7,7 +7,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-navbar>
-            Empresas <span *ngIf="rubroSel" > <b>{{rubroSel.nombre}} </b> </span>
+            Empresas <span *ngIf="rubroSel"> <b>{{rubroSel.nombre}} </b> </span>
         </ion-navbar>
         <ion-buttons *ngIf="rubroSel" end>
             <button ion-button>
@@ -26,13 +26,16 @@
             <div class="scroll-hidden-x-inner">
                 <ion-row>
                     <div *ngFor="let rubro of rubros" class="div-rubros-btn">
-                        <button *ngIf="!rubroSel" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large color="light" round class="btn-rubros">
+                        <button *ngIf="!rubroSel" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large
+                                color="light" round class="btn-rubros">
                             <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
                         </button>
-                        <button *ngIf="rubroSel && rubro.slug != rubroSel.slug" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large color="light" round class="btn-rubros">
+                        <button *ngIf="rubroSel && rubro.slug != rubroSel.slug" (click)="loadEmpresasBySlug(rubro)"
+                                ion-button icon-only large color="light" round class="btn-rubros">
                             <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
                         </button>
-                        <button *ngIf="rubroSel && rubro.slug == rubroSel.slug" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large color="default" round class="btn-rubros">
+                        <button *ngIf="rubroSel && rubro.slug == rubroSel.slug" (click)="loadEmpresasBySlug(rubro)"
+                                ion-button icon-only large color="default" round class="btn-rubros">
                             <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
                         </button>
                     </div>
@@ -43,28 +46,15 @@
         </div>
     </ion-row>
     <ion-grid>
+
         <ion-row class="responsive-sm" wrap>
-            <ion-col width-50 class="promocion-imagen"
-                     (click)="goToPerfil(item)" *ngFor="let item of empresas">
-                <ion-card *ngIf="item">
-
-
-                    <div class="empresa-imagen">
-                        <img [src]="item.image_name?item.image_name:'assets/img/empty.png'"/>
-                    </div>
-                    <h2 class="card-title">
-                        <b> {{item.nombre}}</b>
-                        <ion-icon name='checkmark-circle' item-right [ngStyle]="{color: item.color}"></ion-icon>
-                    </h2>
-                    <ion-item>
-                        <span style="font-size:12px;" item-left>12 Seguidores</span>
-                        <ion-icon name='heart-outline' item-right color="danger"></ion-icon>
-                    </ion-item>
-
-                </ion-card>
-            </ion-col>
-
+            <item-empresa
+                    *ngFor="let item of empresas"
+                    [empresa]="item">
+            </item-empresa>
         </ion-row>
+
+
     </ion-grid>
 </ion-content>
 

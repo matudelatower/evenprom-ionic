@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, ViewController, LoadingController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
-import {EmpresaPerfilPage} from "../empresaPerfil/empresaPerfil";
 
 
 /*
@@ -21,6 +20,10 @@ export class Empresas {
 
     public rubroSel: any;
 
+    errorNoConexion = false;
+
+    usuarioId = null;
+
 
     constructor(public navCtrl: NavController,
                 public viewCtrl: ViewController,
@@ -36,11 +39,46 @@ export class Empresas {
             .then(
                 response => this.rubros = response.json()
             );
-        mainService.getEmpresas().toPromise()
-            .then(response => {
-                this.empresas = response.json();
-                loader.dismissAll();
-            });
+        // aca
+
+        this.mainService.getUser().then((user) => {
+            this.usuarioId = user.userID;
+            this.mainService.getEmpresas(user.userID).subscribe(
+                (data) => {
+                    this.empresas = data;
+                    this.errorNoConexion = false;
+                    loader.dismissAll();
+
+                },
+                (err) => {
+                    console.log('error timeout');
+
+                    this.errorNoConexion = true;
+                    //this.publicaciones = [];
+                    loader.dismissAll();
+                }
+            );
+        }, () => {
+            this.usuarioId = null;
+            this.mainService.getEmpresas(null).subscribe(
+                (data) => {
+                    this.empresas = data;
+                    this.errorNoConexion = false;
+                    loader.dismissAll();
+
+                },
+                (err) => {
+                    console.log('error timeout');
+
+                    this.errorNoConexion = true;
+                    //this.publicaciones = [];
+                    loader.dismissAll();
+
+                },
+            );
+
+        });
+
         // console.log(this.rubros);
         // console.log(this.empresas);
     }
@@ -52,36 +90,34 @@ export class Empresas {
             // duration: 6000
         });
         loader.present();
-        this.mainService.getEmpresasBySlug(rub.slug).toPromise()
-            .then(response => {
-                this.empresas = response.json();
+        // this.mainService.getEmpresasBySlug(rub.slug).toPromise()
+        //     .then(response => {
+        //         this.empresas = response.json();
+        //         loader.dismissAll();
+        //
+        //     });
+        this.mainService.getEmpresasBySlug(rub.slug, this.usuarioId).subscribe(
+            (data) => {
+                this.empresas = data;
+                this.errorNoConexion = false;
                 loader.dismissAll();
 
-            });
+            },
+            (err) => {
+                console.log('error timeout');
+
+                this.errorNoConexion = true;
+                //this.publicaciones = [];
+                loader.dismissAll();
+
+            },
+        );
     }
 
     ionViewDidLoad() {
         console.log('Hello Empresas Page');
     }
 
-
-    goToPerfil(empresa) {
-
-        this.navCtrl.push(EmpresaPerfilPage, {empresa: empresa});
-
-        // let modal = this.mainService.modalCreate(EmpresaPerfilPage, {
-        //     empresa: empresa,
-        //     icono: 'pizza'
-        // });
-        //
-        // modal.present();
-        //
-        // modal.onDidDismiss((data: any[]) => {
-        //     if (data) {
-        //         console.log(data);
-        //     }
-        // });
-    }
 
     dismiss() {
         this.viewCtrl.dismiss();

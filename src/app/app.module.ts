@@ -1,11 +1,10 @@
 import {NgModule} from '@angular/core';
-import { Http } from '@angular/http';
+import {Http} from '@angular/http';
 import {IonicApp, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
 import {AboutPage} from '../pages/about/about';
 import {ContactPage} from '../pages/contact/contact';
 import {HomePage} from '../pages/home/home';
-import {TabsPage} from '../pages/tabs/tabs';
 import {EmpresaPerfilPage} from "../pages/empresaPerfil/empresaPerfil";
 import {LoginPage} from "../pages/login/login";
 import {PrincipalPage} from "../pages/principal/principal";
@@ -37,6 +36,12 @@ import {ModalComentario} from "../pages/principal/modal.comentario.component";
 import {FavoritosPage} from "../pages/favoritos/favoritos";
 import {TuEmpresaAquiPage} from "../pages/tu-empresa-aqui/tu-empresa-aqui";
 import {ContactoPage} from "../pages/contacto/contacto";
+import {CheckInPage} from "../pages/check-in/check-in";
+import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
+import {CalendarioPage} from "../pages/calendario/calendario";
+import {RecomendadosPage} from "../pages/recomendados/recomendados";
+import {GeolocalizacionPage} from "../pages/geolocalizacion/geolocalizacion";
+import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
 
 
 @NgModule({
@@ -45,7 +50,6 @@ import {ContactoPage} from "../pages/contacto/contacto";
         AboutPage,
         ContactPage,
         HomePage,
-        TabsPage,
         EmpresaPerfilPage,
         LoginPage,
         PrincipalPage,
@@ -53,7 +57,7 @@ import {ContactoPage} from "../pages/contacto/contacto";
         ModalSearch,
         ItemListEmpresa,
         Progress,
-        Progressbar ,
+        Progressbar,
         Bar,
         ToggleDirective,
         ModalPreviewPublicacion,
@@ -68,7 +72,13 @@ import {ContactoPage} from "../pages/contacto/contacto";
         FavoritosPage,
         ContactoPage,
         TuEmpresaAquiPage,
-        ModalComentario
+        ModalComentario,
+        CheckInPage,
+        BuscarAmigosPage,
+        CalendarioPage,
+        RecomendadosPage,
+        GeolocalizacionPage,
+        ItemEmpresaComponent
     ],
     imports: [
         TranslateModule.forRoot({
@@ -84,7 +94,6 @@ import {ContactoPage} from "../pages/contacto/contacto";
         AboutPage,
         ContactPage,
         HomePage,
-        TabsPage,
         EmpresaPerfilPage,
         LoginPage,
         PrincipalPage,
@@ -99,11 +108,17 @@ import {ContactoPage} from "../pages/contacto/contacto";
         FavoritosPage,
         ContactoPage,
         TuEmpresaAquiPage,
-        ModalComentario
-        
+        ModalComentario,
+        CheckInPage,
+        BuscarAmigosPage,
+        CalendarioPage,
+        RecomendadosPage,
+        GeolocalizacionPage,
+        ItemEmpresaComponent
+
     ],
-    providers: [Storage, MainService,GeocodingService, MapService, UserData],
-    schemas:[
+    providers: [Storage, MainService, GeocodingService, MapService, UserData],
+    schemas: [
         // ItemListEmpresa,
         // Progressbar
     ]

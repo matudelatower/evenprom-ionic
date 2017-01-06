@@ -10,6 +10,11 @@ import {FavoritosPage} from "../pages/favoritos/favoritos";
 import {TuEmpresaAquiPage} from "../pages/tu-empresa-aqui/tu-empresa-aqui";
 import {ContactoPage} from "../pages/contacto/contacto";
 import {MainService} from "./main.service";
+import {RecomendadosPage} from "../pages/recomendados/recomendados";
+import {CheckInPage} from "../pages/check-in/check-in";
+import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
+import {CalendarioPage} from "../pages/calendario/calendario";
+import {GeolocalizacionPage} from "../pages/geolocalizacion/geolocalizacion";
 
 
 @Component({
@@ -40,23 +45,31 @@ export class MyApp {
             nombre: 'Favoritos',
         },
         {
-            function: this.nada,
+            function: function () {
+                this.openPage(RecomendadosPage)
+            }.bind(this),
             icono: 'notifications',
             nombre: 'Recomendados',
         },
 
         {
-            function: this.nada,
+            function: function () {
+                this.openPage(CheckInPage)
+            }.bind(this),
             icono: 'checkmark-circle-outline',
             nombre: 'Check In',
         },
         {
-            function: this.nada,
+            function: function () {
+                this.openPage(BuscarAmigosPage)
+            }.bind(this),
             icono: 'people',
             nombre: 'Buscar Amigos',
         },
         {
-            function: this.nada,
+            function: function () {
+                this.openPage(CalendarioPage)
+            }.bind(this),
             icono: 'calendar',
             nombre: 'Calendario',
         },
@@ -66,7 +79,9 @@ export class MyApp {
             nombre: 'CALIFICANOS EN GOOGLE PLAY',
         },
         {
-            function: this.nada,
+            function: function () {
+                this.openPage(GeolocalizacionPage)
+            }.bind(this),
             icono: 'pin',
             nombre: 'Geolocalización',
         },

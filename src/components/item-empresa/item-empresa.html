@@ -1,0 +1,24 @@
+<ion-col class="promocion-imagen">
+    <ion-card *ngIf="empresa">
+
+        <div class="empresa-imagen" (click)="goToPerfil(empresa)">
+            <img [src]="empresa.image_name?empresa.image_name:'assets/img/empty.png'"/>
+        </div>
+        <h2 class="card-title">
+            <b> {{empresa.nombre | uppercase }}</b>
+            <ion-icon name='checkmark-circle' item-right [ngStyle]="{color: empresa.color}"></ion-icon>
+        </h2>
+        <ion-row no-padding>
+            <ion-col>
+                <ion-note>{{empresa.likes}} Likes</ion-note>
+            </ion-col>
+            <ion-col text-right>
+                <button ion-button clear color="danger" icon-center (click)="addEmpresaFav(empresa.id)">
+                    <ion-icon name='heart-outline' *ngIf="!empresa.like_persona"></ion-icon>
+                    <ion-icon name='heart' *ngIf="empresa.like_persona"></ion-icon>
+                </button>
+            </ion-col>
+        </ion-row>
+
+    </ion-card>
+</ion-col>

@@ -223,7 +223,7 @@ export class PrincipalPage {
         });
         loader.present();
 
-        this.mainservice.getEmpresas().toPromise()
+        this.mainservice.getAllEmpresas().toPromise()
             .then(response => {
                 let param = {
                     empresas: response.json()

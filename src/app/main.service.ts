@@ -71,12 +71,12 @@ export class MainService {
     }
 
     getPublicaciones(userId) {
-        return this.http.get(this.routeServices.publicaciones + '/' + userId+ '/persona')
+        return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona')
         // ...and calling .json() on the response to return data
             .map((res: Response) => res.json())
             .delay(500)
             .timeout(7500)
-        ;
+            ;
 
 
     }
@@ -100,9 +100,24 @@ export class MainService {
         return this.http.get(this.routeServices.rubros);
     }
 
-    getEmpresasBySlug(slug) {
+    getEmpresasBySlug(slug, userId) {
 
-        return this.http.get(this.routeServices.empresasporslugs + slug);
+        // return this.http.get(this.routeServices.empresasporslugs + slug);
+        return this.http.get(this.routeServices.empresasporslugs + slug + '/personas/' + userId)
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500)
+            ;
+    }
+
+    getEmpresas(userId) {
+        return this.http.get(this.routeServices.empresas + '/' + userId + '/persona')
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500)
+            ;
     }
 
     postPerfil(user) {
@@ -188,7 +203,7 @@ export class MainService {
     }
 
 
-    getEmpresas() {
+    getAllEmpresas() {
 
         return this.http.get(this.routeServices.empresas);
     }
