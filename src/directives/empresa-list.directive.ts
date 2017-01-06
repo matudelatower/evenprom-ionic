@@ -1,7 +1,7 @@
-import { Component, Input } from '@angular/core';
-import {ToastController,NavController} from "ionic-angular";
+import {Component, Input} from '@angular/core';
+import {ToastController, NavController} from "ionic-angular";
 import {MainService} from "../app/main.service";
-import { SocialSharing } from 'ionic-native';
+import {SocialSharing} from 'ionic-native';
 import {ModalComentario} from "../pages/principal/modal.comentario.component";
 import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 
@@ -13,13 +13,13 @@ import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 })
 export class ItemListEmpresa {
 
-    @Input() empresa;
+    @Input() publicacion;
     @Input() isFirst;
 
 
-    constructor(public toastCtrl:ToastController,
-                public mainservice:MainService,
-                public navController:NavController) {
+    constructor(public toastCtrl: ToastController,
+                public mainservice: MainService,
+                public navController: NavController) {
 
     }
 
@@ -37,23 +37,23 @@ export class ItemListEmpresa {
     }
 
 
-    modalComentario(publiacion) {
+    modalComentario(publicacion) {
 
-        console.log(publiacion);
+        console.log(publicacion);
         let modal = this.mainservice.modalCreate(ModalComentario, {
-            publicacion: publiacion
+            publicacion: publicacion
         });
 
         modal.present();
 
-        modal.onDidDismiss((data:any[]) => {
+        modal.onDidDismiss((data: any[]) => {
             if (data) {
                 console.log(data);
             }
         });
     }
 
-    sharedTwitter(message:string, image?:string, url?:string) {
+    sharedTwitter(message: string, image?: string, url?: string) {
 
 
         SocialSharing.shareViaTwitter(message, image, url).then(() => {
@@ -69,7 +69,7 @@ export class ItemListEmpresa {
         });
     }
 
-    share(message:string, subject?:string, image?:string, url?:string) {
+    share(message: string, subject?: string, image?: string, url?: string) {
         console.log(message, subject, image, url);
 
         SocialSharing.share(message, '@evenprom', image, url).then(() => {
@@ -87,13 +87,20 @@ export class ItemListEmpresa {
 
     addPublicacionFav(id) {
 
+        this.mainservice.getUser().then((user) => {
 
-        this.mainservice.getUser().then((user)=> {
+            this.mainservice.postFavPublicacion(id, user.userID).subscribe((data) => {
+                let mensaje = 'Agregado a favoritos';
 
-            alert( JSON.stringify(user));
-            this.mainservice.postFavPublicacion(id, user.id).subscribe((data)=> {
+                if (data.publicacion.like_persona == true) {
+                    this.publicacion.likes += 1;
+                } else {
+                    this.publicacion.likes -= 1;
+                    mensaje = 'Quitado de favoritos';
+                }
+                this.publicacion.like_persona = data.publicacion.like_persona;
                 let toast = this.toastCtrl.create({
-                    message: 'Agregado a favoritos',
+                    message: mensaje,
                     duration: 2000,
                     position: 'bottom'
                 });

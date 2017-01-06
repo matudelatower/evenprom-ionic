@@ -34,6 +34,9 @@ import {DefaultImageDirective} from "../directives/image-default.directive";
 import {TranslateStaticLoader} from "ng2-translate/index";
 import {UserData} from "../pages/login/user-data";
 import {ModalComentario} from "../pages/principal/modal.comentario.component";
+import {FavoritosPage} from "../pages/favoritos/favoritos";
+import {TuEmpresaAquiPage} from "../pages/tu-empresa-aqui/tu-empresa-aqui";
+import {ContactoPage} from "../pages/contacto/contacto";
 
 
 @NgModule({
@@ -62,8 +65,10 @@ import {ModalComentario} from "../pages/principal/modal.comentario.component";
         ModalMapa,
         MapaEmpresaComponent,
         DefaultImageDirective,
+        FavoritosPage,
+        ContactoPage,
+        TuEmpresaAquiPage,
         ModalComentario
-
     ],
     imports: [
         TranslateModule.forRoot({
@@ -91,6 +96,9 @@ import {ModalComentario} from "../pages/principal/modal.comentario.component";
         MapComponent,
         GeosearchComponent,
         ModalMapa,
+        FavoritosPage,
+        ContactoPage,
+        TuEmpresaAquiPage,
         ModalComentario
         
     ],

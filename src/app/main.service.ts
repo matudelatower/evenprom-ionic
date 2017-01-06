@@ -24,15 +24,15 @@ export class MainService {
 
     public publicaciones;
 
-    public routeServices:any = {};
+    public routeServices: any = {};
 
     public modalCont;
 
 
-    user:any;
+    user: any;
 
 
-    constructor(http:Http, modalCont:ModalController) {
+    constructor(http: Http, modalCont: ModalController) {
 
         this.publicaciones = [];
 
@@ -58,7 +58,7 @@ export class MainService {
 
     getUser() {
 
-        return  NativeStorage.getItem('userData');
+        return NativeStorage.getItem('userData');
 
     }
 
@@ -70,23 +70,22 @@ export class MainService {
         }
     }
 
-    getPublicaciones() {
-
-        return this.http.get(this.routeServices.publicaciones)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+    getPublicaciones(userId) {
+        return this.http.get(this.routeServices.publicaciones + '/' + userId+ '/persona')
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             .delay(500)
             .timeout(7500)
-        //...errors if any
-        //.catch((error:any) => console.log(error));
+        ;
+
 
     }
 
     getPromoCalendario() {
 
         return this.http.get(this.routeServices.promoCalendario)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json());
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json());
 
     }
 
@@ -108,48 +107,52 @@ export class MainService {
 
     postPerfil(user) {
 
-        return this.http.post(this.routeServices.registrars, user);
+        return this.http.post(this.routeServices.registrars, user)
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500)
+            ;
     }
 
     postFavEmpresa(empresaId, personaId) {
 
         return this.http.post(this.service + 'api/favears/' + empresaId + '/empresas/' + personaId)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postFavPublicacion(pubId, personaId) {
 
         return this.http.post(this.service + 'api/favears/' + pubId + '/publicacions/' + personaId)
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postRegistrarLlamada(empresaId, personaId) {
         return this.http.post(this.service + '/api/registros/' + empresaId + '/llamadas/' + personaId + '/empresas')
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
     postRegistrarLlamadaPublicacion(publicacionId, personaId) {
         return this.http.post(this.service + '/api/registros/' + publicacionId + '/llamadas/' + personaId + '/publicacions')
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             //...errors if any
-            .catch((error:any) => Observable.throw(error.json().error || 'Server error'));
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
 
     postComentarPublicacion(publicacionId, personaId, texto) {
         return this.http.post(this.service + 'api/comentars/' + publicacionId + '/publicacions/' + personaId, {
-                texto: texto
-            })
+            texto: texto
+        })
             .delay(500)
             .timeout(5000);
         ;
@@ -158,8 +161,8 @@ export class MainService {
     getComentariosPublicacion(publicacionId) {
 
         return this.http.get(this.service + 'api/comentarios/' + publicacionId + '/publicacion')
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             .delay(500)
             .timeout(6000);
 
@@ -168,8 +171,8 @@ export class MainService {
 
     postComentarEmpresa(empresaId, personaId, texto) {
         return this.http.post(this.service + 'api/comentars/' + empresaId + '/empresas/' + personaId, {
-                texto: texto
-            })
+            texto: texto
+        })
             .delay(500)
             .timeout(6000);
     }
@@ -177,8 +180,8 @@ export class MainService {
     getComentariosEmpresa(publicacionId) {
 
         return this.http.get(this.service + 'api/comentarios/' + publicacionId + '/empresa')
-            // ...and calling .json() on the response to return data
-            .map((res:Response) => res.json())
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
             .delay(500)
             .timeout(6000);
 
@@ -196,6 +199,10 @@ export class MainService {
 
     }
 
+    getFavoritos(personaId) {
+        return this.http.get(this.service + 'api/favoritos/' + personaId + '/personas')
+    }
+
 
     modalCreate(modalClass, parameters = {}) {
         let modal = this.modalCont.create(modalClass, parameters);
@@ -204,7 +211,7 @@ export class MainService {
     };
 
 
-    initRouteServices():void {
+    initRouteServices(): void {
         this.routeServices.publicaciones = this.service + 'api/publicaciones';
         this.routeServices.categorias = this.service + 'api/categorias';
         this.routeServices.empresasporslugs = this.service + 'api/empresasporslugs/';
@@ -214,7 +221,7 @@ export class MainService {
         this.routeServices.rubros = this.service + 'api/rubros';
     }
 
-    public handleError(error:any) {
+    public handleError(error: any) {
         console.error('An error occurred', error);
         return false;
     }

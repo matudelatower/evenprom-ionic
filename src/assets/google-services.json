@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "902289846212",
+    "project_id": "firebase-evenpromapp"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:902289846212:android:ef661246fee44ff3",
+        "android_client_info": {
+          "package_name": "com.evenprom.evenpromapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "902289846212-f7l9t7t261pauhkrkr8vuhvhue0q7c30.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.evenprom.evenpromapp",
+            "certificate_hash": "D315ED84C87641183DDEE482DA910329F23C0004"
+          }
+        },
+        {
+          "client_id": "902289846212-2sp3sa7lo9bvd2u56j1gmcu59g8sq5ph.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNCTIzG75UJqjDKtGIJknbdiCiA_i7qxY"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

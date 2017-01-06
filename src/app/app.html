@@ -51,7 +51,7 @@
                 <!--<ion-icon name="ionic" item-right></ion-icon>-->
             <!--</button>-->
 
-            <button style="border: none !important;" menuClose ion-item *ngFor="let menu of menues">
+            <button style="border: none !important;" menuClose ion-item *ngFor="let menu of menues" (click)="menu.function()">
                 <ion-icon  color="danger" [name]="menu.icono" item-left></ion-icon>
                 {{ menu.nombre |uppercase }}
             </button>

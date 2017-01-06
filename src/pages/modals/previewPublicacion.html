@@ -46,7 +46,7 @@
             <ion-col center width-20>
                 <button danger ion-button icon-left clear color="danger">
                     <ion-icon name='heart'></ion-icon>
-                    <div>12</div>
+                    <div>{{publicacion.likes}}</div>
                 </button>
 
             </ion-col>
@@ -60,8 +60,9 @@
                     <button ion-button icon-only clear color="danger">
                         <ion-icon name="checkmark-circle-outline"></ion-icon>
                     </button>
-                    <button ion-button icon-only clear color="danger">
-                        <ion-icon name="heart-outline"></ion-icon>
+                    <button ion-button icon-only clear color="danger" (click)="addPublicacionFav(publicacion.id)">
+                        <ion-icon name='heart-outline' *ngIf="!publicacion.like_persona"></ion-icon>
+                        <ion-icon name='heart' *ngIf="publicacion.like_persona"></ion-icon>
                     </button>
                 </div>
                 <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"

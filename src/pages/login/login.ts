@@ -1,14 +1,9 @@
 import {Component} from '@angular/core';
-import {NavController, Nav,LoadingController} from 'ionic-angular';
-// import {FormBuilder, Validators, ControlGroup} from '@angular/common';
-import {Validators, FormBuilder} from '@angular/forms';
+import {NavController, Nav, LoadingController} from 'ionic-angular';
 import {TranslateService} from 'ng2-translate';
-import {TabsPage} from '../tabs/tabs';
-// import {Storage} from '@ionic/storage';
-import { Facebook,NativeStorage } from 'ionic-native';
+import {Facebook, NativeStorage, BackgroundGeolocation, GooglePlus} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {PrincipalPage} from "../principal/principal";
-// import {MyApp} from "../../app/app.component";
 import {UserData} from "./user-data";
 
 
@@ -22,22 +17,15 @@ export class LoginPage {
     public rootPage: any;
     public local: any;
 
-    public user: String = '';
-    public pass: String = '';
-    public loginForm;
-
-
-
 
     lenguaje: String = 'Español';
 
-    constructor(public navController: NavController, public nav: Nav, form: FormBuilder, public loadingCtrl:LoadingController,
-                public translate: TranslateService, public mainService:MainService, public userData: UserData) {
-        this.loginForm = form.group({
-            username: ['', Validators.required],
-            password: ['', Validators.required],
-            rememberMe: ['', Validators.required]
-        });
+    constructor(public navController: NavController,
+                public nav: Nav,
+                public loadingCtrl: LoadingController,
+                public translate: TranslateService,
+                public mainService: MainService,
+                public userData: UserData) {
 
         this.translate.setDefaultLang('en');
         this.translate.use('es');
@@ -48,32 +36,7 @@ export class LoginPage {
         console.log(translate);
     }
 
-    ngOnInit () {
-        NativeStorage.getItem('userData')
-            .then(
-                data => {
-                    if (data){
-
-                    }
-                },
-                error => {
-
-                }
-            );
-    }
-
-    login() {
-        console.log(this.user + ' ' + this.pass);
-        if (this.user == 'admin' && this.pass == '1') {
-            //alert('si');
-            console.log('si');
-
-            this.local.set('user', true);
-            this.nav.setRoot(TabsPage);
-        } else {
-            console.log(this.user + ' ' + this.pass);
-        }
-
+    ngOnInit() {
     }
 
     cambiarLeguaje() {
@@ -94,11 +57,11 @@ export class LoginPage {
                 console.log(rta.status)
                 if (rta.status == 'connected') {
                     Facebook.api('/me?fields=id,name,email,first_name,last_name,gender', [])
-                        .then(rta=> {
+                        .then(rta => {
                             console.log("rta", JSON.stringify(rta));
                             console.log("userid", rta.id);
                             Facebook.api('/me/picture?type=large&redirect=false', [])
-                                .then(pictureData=> {
+                                .then(pictureData => {
                                     console.log("pictureData", JSON.stringify(pictureData));
                                     let user = {
                                         avatar: pictureData.data.url,
@@ -110,17 +73,7 @@ export class LoginPage {
 
                                     };
 
-                                    NativeStorage.setItem('userData', user)
-                                        .then(
-                                            () => {
-                                                console.log('Stored item!');
-                                                this.crearPerfil();
-                                                this.userData.signup(user);
-
-                                            },
-                                            error => console.error('Error storing item', error)
-                                        )
-                                    ;
+                                    this.crearPerfil(user);
 
 
                                 })
@@ -141,7 +94,7 @@ export class LoginPage {
             });
     }
 
-    crearPerfil() {
+    crearPerfil(user) {
 
         let loader = this.loadingCtrl.create({
             content: "Ingresando a EvenProm",
@@ -149,62 +102,82 @@ export class LoginPage {
         });
         loader.present();
 
-        let user = {
-            avatar: '',
-            sexo: '',
-            nombre: '',
-            apellido: '',
-            email: '',
-            fbId: '',
-            facebookAccessToken:''
-        };
+        this.mainService.postPerfil(user).subscribe(
+            data => {
+                console.log("Register Data", JSON.stringify(data));
 
-        NativeStorage.getItem('userData')
-            .then(
-                data => {
-                    user.avatar = data.avatar;
-                    user.sexo = data.sexo;
-                    user.nombre = data.nombre;
-                    user.apellido = data.apellido;
-                    user.email = data.email;
-                    user.fbId = data.fbId;
-                    console.log('user', JSON.stringify(user));
-                    this.mainService.postPerfil(user).subscribe(
-                        data => {
-                            console.log("Register Data", JSON.stringify(data));
-                            NativeStorage.setItem('userData', {
-                                    avatar: user.avatar,
-                                    nombre: user.nombre,
-                                    apellido: user.apellido,
-                                    email: user.email,
-                                    fbId: user.fbId,
-                                    userID: data.id,
-                                    sexo: data.sexo
+                user = {
+                    avatar: user.avatar,
+                    nombre: user.nombre,
+                    apellido: user.apellido,
+                    email: user.email,
+                    fbId: user.fbId,
+                    userID: data.id,
+                    sexo: data.sexo
 
-                                })
-                                .then(
-                                    (setDataValues) => {
-                                        //envia a la pantalla principal
-                                       // this.redirectPrincipal(setDataValues.isNew);
+                };
+
+                NativeStorage.setItem('userData', user)
+                    .then(
+                        () => {
+                            //envia a la pantalla principal
+                            // this.redirectPrincipal(setDataValues.isNew);
 
 
-
-
-                                        this.nav.setRoot(PrincipalPage );
-
-
-
-                                    },
-                                    error =>alert(JSON.stringify(error))
-                                );
+                            loader.dismissAll();
+                            this.userData.signup(user);
+                            this.nav.setRoot(PrincipalPage);
 
 
                         },
-                        error => alert(JSON.stringify(error)));
+                        error => alert(JSON.stringify(error))
+                    );
 
-                },
-                error => console.error(error)
-            );
 
+            },
+            error => {
+                console.log(JSON.stringify(error));
+                Facebook.logout();
+                NativeStorage.remove('userData');
+                BackgroundGeolocation.stop();
+                loader.dismissAll();
+                this.rootPage = LoginPage;
+            }
+        );
+
+    }
+
+    loginGoogle() {
+        // GooglePlus.trySilentLogin();
+        GooglePlus.login({
+            'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
+            'webClientId': '902289846212-2sp3sa7lo9bvd2u56j1gmcu59g8sq5ph.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+            'offline': true
+        })
+            .then(
+                rta => {
+                    console.log("rta",JSON.stringify(rta));
+                    let user = {
+                        avatar: rta.imageUrl,
+                        sexo: rta.gender,
+                        nombre: rta.givenName,
+                        apellido: rta.familyName,
+                        email: rta.email,
+                        gId: rta.userId
+
+                    };
+
+                    this.crearPerfil(user);
+                }
+            )
+            .catch(error => {
+                console.error(error);
+                console.error('login google', JSON.stringify(error));
+            })
+        ;
+    }
+
+    omitir() {
+        this.nav.setRoot(PrincipalPage);
     }
 }

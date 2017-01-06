@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
-import {Platform, NavParams, ViewController,LoadingController, ToastController} from 'ionic-angular';
+import {Platform, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
 import {MapService} from "../../directives/map/map.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {Subscription} from "rxjs/Subscription";
@@ -14,24 +14,26 @@ import {MainService} from "../../app/main.service";
 export class ModalPreviewPublicacion {
 
     @Output() mapLoaded = new EventEmitter();
-    @ViewChild('contenedorMapa') contenedorMapa:ElementRef;
-    publicacion:any;
-    comentarios:any;
-    subscription:Subscription;
-    comentario:any;
+    @ViewChild('contenedorMapa') contenedorMapa: ElementRef;
+    publicacion: any;
+    comentarios: any;
+    subscription: Subscription;
+    comentario: any;
 
-    map:any;
-    lat:any;
-    lng:any;
+    map: any;
+    lat: any;
+    lng: any;
 
-    constructor(public platform:Platform,
-                public params:NavParams,
-                public viewCtrl:ViewController,
-                public mapService:MapService,
-                public geocoder:GeocodingService,
-                public loadingCtrl:LoadingController,
-                public toastCtrl:ToastController,
-                public mainService:MainService) {
+    faveada: any;
+
+    constructor(public platform: Platform,
+                public params: NavParams,
+                public viewCtrl: ViewController,
+                public mapService: MapService,
+                public geocoder: GeocodingService,
+                public loadingCtrl: LoadingController,
+                public toastCtrl: ToastController,
+                public mainService: MainService) {
 
         this.publicacion = this.params.get('publicacion');
 
@@ -94,7 +96,7 @@ export class ModalPreviewPublicacion {
             });
             loader.present();
 
-            this.mainService.postComentarPublicacion(this.publicacion.id, 3, this.comentario).subscribe((data)=> {
+            this.mainService.postComentarPublicacion(this.publicacion.id, 3, this.comentario).subscribe((data) => {
                 this.comentario = '';
                 loader.dismissAll();
                 console.log('comente', this.comentario);
@@ -104,7 +106,7 @@ export class ModalPreviewPublicacion {
                 });
                 loader.present();
                 this.getComentarios(this.publicacion.id, loader);
-            }, (error)=> {
+            }, (error) => {
                 let toast = this.toastCtrl.create({
                     message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
                     duration: 3250,
@@ -119,10 +121,10 @@ export class ModalPreviewPublicacion {
     }
 
     getComentarios(publicacionId, loader) {
-        this.mainService.getComentariosPublicacion(publicacionId).subscribe((data)=> {
+        this.mainService.getComentariosPublicacion(publicacionId).subscribe((data) => {
             this.comentarios = data;
             loader.dismissAll();
-        }, (error)=> {
+        }, (error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
                 message: "No se han podido cargar los comentarios.",
@@ -157,5 +159,36 @@ export class ModalPreviewPublicacion {
     dismiss() {
         this.map.remove();
         this.viewCtrl.dismiss();
+    }
+
+    addPublicacionFav(id) {
+
+
+        this.mainService.getUser().then((user) => {
+
+            this.mainService.postFavPublicacion(id, user.userID).subscribe(
+                (data) => {
+
+                    let mensaje = 'Agregado a favoritos';
+                    if (data.publicacion.like_persona == true) {
+                        this.publicacion.likes += 1;
+                    } else {
+                        this.publicacion.likes -= 1;
+                        mensaje = 'Quitado de favoritos';
+                    }
+                    this.publicacion.like_persona = data.publicacion.like_persona;
+                    let toast = this.toastCtrl.create({
+                        message: mensaje,
+                        duration: 2000,
+                        position: 'bottom'
+                    });
+
+                    toast.present(toast);
+
+
+                });
+        });
+
+
     }
 }

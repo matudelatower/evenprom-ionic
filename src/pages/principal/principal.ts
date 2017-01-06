@@ -68,37 +68,73 @@ export class PrincipalPage {
         });
         loader.present();
 
-        this.mainservice.getPublicaciones().subscribe((data)=> {
-                this.publicaciones = data;
-                this.errorNoConexion = false;
+        this.mainservice.getUser().then((user)=>{
+            this.mainservice.getPublicaciones(user.userID).subscribe((data)=> {
+                    this.publicaciones = data;
+                    this.errorNoConexion = false;
 
-            }, (err)=> {
-                console.log('error timeout');
+                }, (err)=> {
+                    console.log('error timeout');
 
-                this.errorNoConexion = true;
-                //this.publicaciones = [];
-                loader.dismissAll();
-                if (refresher) {
-                    refresher.complete();
+                    this.errorNoConexion = true;
+                    //this.publicaciones = [];
+                    loader.dismissAll();
+                    if (refresher) {
+                        refresher.complete();
+                    }
+
+                    let toast = this.toastCtrl.create({
+                        message: "Error en la conección a internet",
+                        duration: 2000,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                },
+                () => {
+                    loader.dismissAll();
+                    this.errorNoConexion = false;
+                    if (refresher) {
+                        refresher.complete();
+                    }
+
                 }
+            );
+        }, ()=>{
 
-                let toast = this.toastCtrl.create({
-                    message: "Error en la conección a internet",
-                    duration: 2000,
-                    position: 'center'
-                });
+            this.mainservice.getPublicaciones(null).subscribe((data)=> {
+                    this.publicaciones = data;
+                    this.errorNoConexion = false;
 
-                toast.present(toast);
-            },
-            () => {
-                loader.dismissAll();
-                this.errorNoConexion = false;
-                if (refresher) {
-                    refresher.complete();
+                }, (err)=> {
+                    console.log('error timeout');
+
+                    this.errorNoConexion = true;
+                    //this.publicaciones = [];
+                    loader.dismissAll();
+                    if (refresher) {
+                        refresher.complete();
+                    }
+
+                    let toast = this.toastCtrl.create({
+                        message: "Error en la conección a internet",
+                        duration: 2000,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                },
+                () => {
+                    loader.dismissAll();
+                    this.errorNoConexion = false;
+                    if (refresher) {
+                        refresher.complete();
+                    }
+
                 }
+            );
 
-            }
-        );
+        });
 
 
         this.mainservice.getPromoCalendario().subscribe((data)=> {
