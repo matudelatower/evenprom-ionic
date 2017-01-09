@@ -161,31 +161,47 @@ export class EmpresaPerfilPage {
             });
             loader.present();
 
-            console.log(this.empresa);
-
-            this.mainService.postComentarEmpresa(this.empresa.id, 3, this.comentario).subscribe((data)=> {
-                this.comentario = '';
-                loader.dismissAll();
-                console.log('comente', this.comentario);
-                loader = this.loadingCtrl.create({
-                    content: "Cargando comentarios",
-                });
-
-                loader.present();
-                this.getComentarios(loader);
-            }, (error)=>{
+            this.mainService.getUser().then((user)=> {
+                this.comentarEmpresa(user, loader);
+            }, (error)=> {
+                console.log(error);
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se han podido cargar los comentarios.",
+                    message: this.mainService.mensajeUserAnonimo,
                     duration: 3250,
                     position: 'center'
                 });
 
-                toast.present(toast);
             });
         }
 
     }
+
+    comentarEmpresa(user, loader) {
+
+
+        this.mainService.postComentarEmpresa(this.empresa.id, user.userID, this.comentario).subscribe((data) => {
+            this.comentario = '';
+            loader.dismissAll();
+            console.log('comente', this.comentario);
+            loader = this.loadingCtrl.create({
+                content: "Cargando comentarios",
+                // duration: 6000
+            });
+            loader.present();
+            this.getComentarios(loader);
+        }, (error) => {
+            let toast = this.toastCtrl.create({
+                message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                duration: 3250,
+                position: 'center'
+            });
+
+            toast.present(toast);
+            loader.dismissAll();
+        });
+    }
+
 
     getComentarios( loader) {
         this.mainService.getComentariosEmpresa(this.empresa.id).subscribe((data)=> {

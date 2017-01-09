@@ -28,6 +28,8 @@ export class MainService {
 
     public modalCont;
 
+    public mensajeUserAnonimo = "Useted no puede realizar esta acción.";
+
 
     user: any;
 
