@@ -107,53 +107,55 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
-            console.log('Device UUID is: ' + Device.uuid);
 
-            var push = Push.init({
-                android: {
-                    senderID: '614567548763'
-                },
-                ios: {
-                    alert: 'true',
-                    badge: true,
-                    sound: 'false'
-                }
-            });
-
-            push.on('registration', function (data) {
-                console.log('registrationId', data.registrationId);
-            });
-
-            // BackgroundGeolocation is highly configurable. See platform specific configuration options
-            let config = {
-                url: 'http://192.168.0.113:3000/locations',
-                startOnBoot: true,
-                desiredAccuracy: 10,
-                stationaryRadius: 20,
-                distanceFilter: 30,
-                debug: true, //  enable this hear sounds for background-geolocation life-cycle.
-                stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-            };
-
-            BackgroundGeolocation.configure((location) => {
-                console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
-
-                if (platform.is('ios')) {
-                    // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
-                    // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
-                    // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-                    BackgroundGeolocation.finish(); // FOR IOS ONLY
-                }
-
-            }, (error) => {
-                console.log('BackgroundGeolocation error');
-            }, config);
-
-            // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
-            BackgroundGeolocation.start();
 
 
             if (this.prod) {
+
+                console.log('Device UUID is: ' + Device.uuid);
+
+                var push = Push.init({
+                    android: {
+                        senderID: '614567548763'
+                    },
+                    ios: {
+                        alert: 'true',
+                        badge: true,
+                        sound: 'false'
+                    }
+                });
+
+                push.on('registration', function (data) {
+                    console.log('registrationId', data.registrationId);
+                });
+
+                // BackgroundGeolocation is highly configurable. See platform specific configuration options
+                let config = {
+                    url: 'http://192.168.0.113:3000/locations',
+                    startOnBoot: true,
+                    desiredAccuracy: 10,
+                    stationaryRadius: 20,
+                    distanceFilter: 30,
+                    debug: true, //  enable this hear sounds for background-geolocation life-cycle.
+                    stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+                };
+
+                BackgroundGeolocation.configure((location) => {
+                    console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
+
+                    if (platform.is('ios')) {
+                        // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
+                        // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
+                        // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+                        BackgroundGeolocation.finish(); // FOR IOS ONLY
+                    }
+
+                }, (error) => {
+                    console.log('BackgroundGeolocation error');
+                }, config);
+
+                // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
+                BackgroundGeolocation.start();
 
                 let loader = this.loadingCtrl.create({
                     content: "Ingresando a EvenProm",

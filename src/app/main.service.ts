@@ -204,6 +204,16 @@ export class MainService {
 
     }
 
+    getImagenesEmpresa(empresa) {
+
+        return this.http.get(this.service + 'api/fotos/'+empresa+'/empresa')
+            // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(6000);
+
+    }
+
 
     getAllEmpresas() {
 
@@ -236,6 +246,8 @@ export class MainService {
         this.routeServices.promoCalendario = this.service + 'api/promo/calendario';
         this.routeServices.registrars = this.service + 'api/registrars';
         this.routeServices.rubros = this.service + 'api/rubros';
+        this.routeServices.uploadImage = this.service + 'api/fotos/';
+
     }
 
     public handleError(error: any) {

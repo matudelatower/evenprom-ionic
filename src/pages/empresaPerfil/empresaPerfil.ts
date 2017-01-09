@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
 import {DomSanitizer} from '@angular/platform-browser';
-import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer} from 'ionic-native';
+import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker, Transfer} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 
 
@@ -11,26 +11,27 @@ import {MainService} from "../../app/main.service";
 })
 export class EmpresaPerfilPage {
 
-    empresa: any;
-    public link_youtube: any = "";
-    public icono: any = "home";
+    empresa:any;
+    public link_youtube:any = "";
+    public icono:any = "home";
 
     comentario:any;
-    comentarios: any[];
-    noticias: any[];
+    comentarios:any[];
+    imagenes:any[];
+    noticias:any[];
 
-    constructor(navParams: NavParams,
-                public navController: NavController,
-                sanitizer: DomSanitizer,
-                public viewCtrl: ViewController,
-                public loadingCtrl: LoadingController,
+    constructor(navParams:NavParams,
+                public navController:NavController,
+                sanitizer:DomSanitizer,
+                public viewCtrl:ViewController,
+                public loadingCtrl:LoadingController,
                 public toastCtrl:ToastController,
-                public mainService: MainService) {
+                public mainService:MainService) {
         console.log("Passed params", navParams.data.empresa);
 
         if (!this.empresa) {
             this.empresa = navParams.data.empresa;
-            console.log( this.empresa);
+            console.log(this.empresa);
             let loader = this.loadingCtrl.create({
                 content: "Cargando comentarios",
                 // duration: 6000
@@ -38,6 +39,8 @@ export class EmpresaPerfilPage {
             loader.present();
 
             this.getComentarios(loader);
+
+            this.getImagenes();
 
             this.link_youtube = sanitizer.bypassSecurityTrustResourceUrl(navParams.data.empresa.link_youtube);
             this.icono = navParams.data.icono;
@@ -63,7 +66,7 @@ export class EmpresaPerfilPage {
         window.open(url, "_system");
     }
 
-    shareWhastApp(message: string, image?: string, url?: string) {
+    shareWhastApp(message:string, image?:string, url?:string) {
 
         SocialSharing.shareViaWhatsApp(message, image, url).then(() => {
 
@@ -72,7 +75,7 @@ export class EmpresaPerfilPage {
         });
     }
 
-    shareFacebook(message: string, image?: string, url?: string) {
+    shareFacebook(message:string, image?:string, url?:string) {
 
         console.log(message, image, url);
 
@@ -105,7 +108,7 @@ export class EmpresaPerfilPage {
 
     }
 
-    share(message: string, subject?: string, image?: string, url?: string) {
+    share(message:string, subject?:string, image?:string, url?:string) {
 
         SocialSharing.share(message, '@evenprom', image, url).then(() => {
 
@@ -136,7 +139,7 @@ export class EmpresaPerfilPage {
 
     sendMail(mail) {
         if (mail) {
-            EmailComposer.isAvailable().then((available: boolean) => {
+            EmailComposer.isAvailable().then((available:boolean) => {
                 if (available) {
                     //Now we know we can send
                 }
@@ -172,6 +175,8 @@ export class EmpresaPerfilPage {
                     position: 'center'
                 });
 
+                toast.present();
+
             });
         }
 
@@ -203,11 +208,11 @@ export class EmpresaPerfilPage {
     }
 
 
-    getComentarios( loader) {
+    getComentarios(loader) {
         this.mainService.getComentariosEmpresa(this.empresa.id).subscribe((data)=> {
             this.comentarios = data;
             loader.dismissAll();
-        }, (error)=>{
+        }, (error)=> {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
                 message: "No se han podido cargar los comentarios.",
@@ -216,6 +221,92 @@ export class EmpresaPerfilPage {
             });
 
             toast.present(toast);
+        });
+    }
+
+    getImagenes() {
+        let loader = this.loadingCtrl.create({
+            content: "Cargando comentarios",
+            // duration: 6000
+        });
+        loader.present();
+
+        this.mainService.getImagenesEmpresa(this.empresa.id).subscribe((data)=> {
+            this.imagenes = data;
+            loader.dismissAll();
+        }, (error)=> {
+            loader.dismissAll();
+            let toast = this.toastCtrl.create({
+                message: "No se han podido cargar las imagenes.",
+                duration: 3250,
+                position: 'center'
+            });
+
+            toast.present(toast);
+        });
+    }
+
+    openFileChooser() {
+
+        this.mainService.getUser().then((user)=> {
+            this.uploadImg(user.userID, this.empresa.id);
+        }, (error)=> {
+
+        });
+
+    }
+
+    uploadImg (userID, empresaId){
+
+        let options = {maximumImagesCount:1};
+        let loader = this.loadingCtrl.create({
+            content: "Subiendo imagen.",
+            // duration: 6000
+        });
+
+
+
+        const fileTransfer = new Transfer();
+
+        ImagePicker.getPictures(options).then((results) => {
+
+            if (results.length > 0){
+                let imagenURL = results[0];
+                loader.present();
+                fileTransfer.upload(imagenURL, this.mainService.routeServices.uploadImage+empresaId+"/personas/"+userID+"/empresas").then((data)=>{
+                    let toast = this.toastCtrl.create({
+                        message: "Imagen subida",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                    loader.dismissAll();
+
+                }, (error)=>{
+                    let toast = this.toastCtrl.create({
+                        message: "No se ha podido subir la imagen ",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present();
+                    loader.dismissAll();
+                });
+            }
+
+
+
+
+
+        }, (err) => {
+            let toast = this.toastCtrl.create({
+                message: "Error en la lectura de imágenes",
+                duration: 1500,
+                position: 'center'
+            });
+            loader.dismissAll();
+            toast.present();
         });
     }
 }
