@@ -4,8 +4,6 @@ import {ModalController} from 'ionic-angular';
 import {Observable} from 'rxjs/Rx';
 import {NativeStorage} from "ionic-native";
 
-// import 'rxjs/add/operator/map';
-
 @Injectable()
 export class MainService {
 
@@ -228,6 +226,25 @@ export class MainService {
 
     getFavoritos(personaId) {
         return this.http.get(this.service + 'api/favoritos/' + personaId + '/personas')
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(6000);
+    }
+
+    getCheckIns(personaId) {
+        return this.http.get(this.service + 'api/checkins/' + personaId + '/personas')
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(6000);
+    }
+
+    postCheckInPublicacion(pubId, personaId) {
+
+        return this.http.post(this.service + 'api/checkins/' + pubId + '/publicacions/' + personaId)
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            //...errors if any
+            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
 

@@ -39,7 +39,7 @@
 
                 <button ion-button icon-left clear color="danger">
                     <ion-icon name='checkmark-circle'></ion-icon>
-                    <div>12</div>
+                    <div>{{publicacion.checkins}}</div>
                 </button>
 
             </ion-col>
@@ -57,8 +57,9 @@
             <ion-col>
                 <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
                 <div class="btn-flotantes-publicacion">
-                    <button ion-button icon-only clear color="danger">
-                        <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    <button ion-button icon-only clear color="danger" (click)="checkInPublicacion(publicacion.id)">
+                        <ion-icon name="checkmark-circle-outline" *ngIf="!publicacion.checkin_persona"></ion-icon>
+                        <ion-icon name="checkmark-circle" *ngIf="publicacion.checkin_persona"></ion-icon>
                     </button>
                     <button ion-button icon-only clear color="danger" (click)="addPublicacionFav(publicacion.id)">
                         <ion-icon name='heart-outline' *ngIf="!publicacion.like_persona"></ion-icon>

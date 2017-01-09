@@ -34,11 +34,18 @@ export class FavoritosPage {
 
                 console.log(JSON.stringify(userData));
 
-                this.mainService.getFavoritos(userData.userID).toPromise()
-                    .then(response => {
-                        this.favoritos = response.json();
-                        loader.dismissAll();
-                    });
+                this.mainService.getFavoritos(userData.userID)
+                    .subscribe(
+                        (response) => {
+                            this.favoritos = response;
+                            loader.dismissAll();
+
+                        },
+                        (err) => {
+                            console.log('error timeout');
+                            loader.dismissAll();
+                        }
+                    );
             },
             error => {
                 console.log(JSON.stringify('favoritos.error', error));

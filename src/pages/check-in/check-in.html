@@ -18,9 +18,20 @@
 
 
 <ion-content padding>
-    <ion-row>
-        <ion-col text-center>
-            <h1><b class="ep-celeste">Próxima</b><b class="ep-fucsia">mente</b></h1>
-        </ion-col>
-    </ion-row>
+    <ion-list>
+        <div *ngFor="let item of checkIns">
+
+            <ion-item *ngIf="item.publicacion">
+                <h2>{{ item.publicacion.nombre_empresa }} </h2>
+                <p>{{item.publicacion.titulo}}</p>
+                <button ion-button clear item-right (click)="itemSelected(item)">Ver</button>
+            </ion-item>
+
+            <ion-item *ngIf="item.empresa">
+                <h2>{{ item.empresa.nombre }} </h2>
+
+            </ion-item>
+        </div>
+
+    </ion-list>
 </ion-content>

@@ -1,7 +1,7 @@
 {
   "name": "evenprom-ionicv2",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "author": "Sergio Sanabria",
+  "homepage": "http://evenprom.com/",
   "private": true,
   "scripts": {
     "ionic:serve": "ionic-app-scripts serve",

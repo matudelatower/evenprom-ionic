@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Platform, Events, LoadingController} from 'ionic-angular';
 import {
     StatusBar, BackgroundGeolocation, Device, Push, Facebook, NativeStorage, AppRate,
-    GooglePlus
+    GooglePlus, Market
 } from 'ionic-native';
 import {PrincipalPage} from "../pages/principal/principal";
 import {LoginPage} from "../pages/login/login";
@@ -45,11 +45,9 @@ export class MyApp {
             nombre: 'Favoritos',
         },
         {
-            function: function () {
-                this.openPage(RecomendadosPage)
-            }.bind(this),
+            function: this.recomiendanos,
             icono: 'notifications',
-            nombre: 'Recomendados',
+            nombre: 'Recomiéndanos',
         },
 
         {
@@ -247,6 +245,10 @@ export class MyApp {
         };
 
         AppRate.promptForRating(false);
+    }
+
+    recomiendanos(){
+        Market.open('com.evenprom.evenpromapp');
     }
 
     logout() {

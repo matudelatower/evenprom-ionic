@@ -96,9 +96,9 @@ export class ModalPreviewPublicacion {
             });
             loader.present();
 
-            this.mainService.getUser().then((user)=> {
+            this.mainService.getUser().then((user) => {
                 this.comentarPublicacion(user, loader);
-            }, (error)=> {
+            }, (error) => {
                 console.log(error);
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
@@ -196,6 +196,37 @@ export class ModalPreviewPublicacion {
                         mensaje = 'Quitado de favoritos';
                     }
                     this.publicacion.like_persona = data.publicacion.like_persona;
+                    let toast = this.toastCtrl.create({
+                        message: mensaje,
+                        duration: 2000,
+                        position: 'bottom'
+                    });
+
+                    toast.present(toast);
+
+
+                });
+        });
+
+
+    }
+
+    checkInPublicacion(id) {
+
+
+        this.mainService.getUser().then((user) => {
+
+            this.mainService.postCheckInPublicacion(id, user.userID).subscribe(
+                (data) => {
+
+                    let mensaje = 'Hiciste CheckIn';
+                    if (data.publicacion.checkin_persona == true) {
+                        this.publicacion.checkins += 1;
+                    } else {
+                        this.publicacion.checkins -= 1;
+                        mensaje = 'Eliminaste el CheckIn';
+                    }
+                    this.publicacion.checkin_persona = data.publicacion.checkin_persona;
                     let toast = this.toastCtrl.create({
                         message: mensaje,
                         duration: 2000,

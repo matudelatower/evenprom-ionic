@@ -73,6 +73,7 @@
                 </ion-col>
                 <ion-col *ngFor="let img of imagenes" class="text-center" width-50>
                     <img class="img-responsive" [src]="img.imagen_usuario_empresa">
+                    <ion-note>{{ img.persona.nombre}} {{img.persona.apellido}}</ion-note>
                 </ion-col>
 
 
