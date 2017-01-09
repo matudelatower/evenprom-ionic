@@ -10,7 +10,6 @@ import {FavoritosPage} from "../pages/favoritos/favoritos";
 import {TuEmpresaAquiPage} from "../pages/tu-empresa-aqui/tu-empresa-aqui";
 import {ContactoPage} from "../pages/contacto/contacto";
 import {MainService} from "./main.service";
-import {RecomendadosPage} from "../pages/recomendados/recomendados";
 import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";

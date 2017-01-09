@@ -39,7 +39,6 @@ import {ContactoPage} from "../pages/contacto/contacto";
 import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
-import {RecomendadosPage} from "../pages/recomendados/recomendados";
 import {GeolocalizacionPage} from "../pages/geolocalizacion/geolocalizacion";
 import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
 import {ModalImageDefault} from "../directives/img/image-default.modal";
@@ -78,7 +77,6 @@ import {ModalImageDefault} from "../directives/img/image-default.modal";
         CheckInPage,
         BuscarAmigosPage,
         CalendarioPage,
-        RecomendadosPage,
         GeolocalizacionPage,
         ItemEmpresaComponent,
         ModalImageDefault
@@ -115,7 +113,6 @@ import {ModalImageDefault} from "../directives/img/image-default.modal";
         CheckInPage,
         BuscarAmigosPage,
         CalendarioPage,
-        RecomendadosPage,
         GeolocalizacionPage,
         ItemEmpresaComponent,
         ModalImageDefault
