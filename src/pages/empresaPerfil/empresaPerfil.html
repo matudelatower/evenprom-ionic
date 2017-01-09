@@ -71,9 +71,19 @@
                     <ion-icon style="font-size:50px;" name="camera"></ion-icon>
                     <br>Añadir una foto
                 </ion-col>
-                <ion-col *ngFor="let img of imagenes" class="text-center" width-50>
-                    <img class="img-responsive" [src]="img.imagen_usuario_empresa">
-                    <ion-note>{{ img.persona.nombre}} {{img.persona.apellido}}</ion-note>
+                <ion-col  *ngFor="let img of imagenes" class="text-center" width-50>
+                    <img [preview]="true" style="max-height: 140px;" class="img-responsive" [src]="img.imagen_usuario_empresa">
+                    <!--<ion-note>{{ img.persona.nombre}} {{img.persona.apellido}}</ion-note>-->
+
+                        <ion-item style="border: none !important;">
+                            <ion-avatar item-left>
+                                <img [src]="mainService.getAvatar(img.fbId, img.gId)" [default]="'assets/img/avatar.png'">
+                            </ion-avatar>
+                            <p>{{ img.persona.nombre}} </p>
+                            <p>{{ img.persona.apellido}} </p>
+
+                        </ion-item>
+
                 </ion-col>
 
 

@@ -29,7 +29,7 @@ import {MapComponent} from '../directives/map/map.component';
 import {GeosearchComponent} from '../directives/map/geosearch.component';
 import {ModalMapa} from '../pages/principal/modalMapa.component';
 import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
-import {DefaultImageDirective} from "../directives/image-default.directive";
+import {DefaultImageDirective} from "../directives/img/image-default.directive";
 import {TranslateStaticLoader} from "ng2-translate/index";
 import {UserData} from "../pages/login/user-data";
 import {ModalComentario} from "../pages/principal/modal.comentario.component";
@@ -42,6 +42,7 @@ import {CalendarioPage} from "../pages/calendario/calendario";
 import {RecomendadosPage} from "../pages/recomendados/recomendados";
 import {GeolocalizacionPage} from "../pages/geolocalizacion/geolocalizacion";
 import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
+import {ModalImageDefault} from "../directives/img/image-default.modal";
 
 
 @NgModule({
@@ -69,6 +70,7 @@ import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
         ModalMapa,
         MapaEmpresaComponent,
         DefaultImageDirective,
+        ModalImageDefault,
         FavoritosPage,
         ContactoPage,
         TuEmpresaAquiPage,
@@ -78,7 +80,8 @@ import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
         CalendarioPage,
         RecomendadosPage,
         GeolocalizacionPage,
-        ItemEmpresaComponent
+        ItemEmpresaComponent,
+        ModalImageDefault
     ],
     imports: [
         TranslateModule.forRoot({
@@ -114,7 +117,8 @@ import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
         CalendarioPage,
         RecomendadosPage,
         GeolocalizacionPage,
-        ItemEmpresaComponent
+        ItemEmpresaComponent,
+        ModalImageDefault
 
     ],
     providers: [Storage, MainService, GeocodingService, MapService, UserData],
