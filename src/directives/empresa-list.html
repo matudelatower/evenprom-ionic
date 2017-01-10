@@ -13,7 +13,7 @@
     <ion-row (click)="pagePublicacion(publicacion)">
         <ion-col style=" margin-left: 3.0%;" width-100>
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                <ion-icon [na   me]="publicacion.categorias[0]?publicacion.categorias[0].icono:'ice-cream'"></ion-icon>
+                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'ice-cream'"></ion-icon>
                 | {{publicacion.nombre_empresa | uppercase}}
 
             </h1>

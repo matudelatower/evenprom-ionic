@@ -20,14 +20,14 @@
         </ion-buttons>
     </ion-navbar>
     <ion-toolbar>
-        <ion-segment [(ngModel)]="tipoPublicacion">
-            <ion-segment-button value="all" style="text-transform: lowercase;">
+        <ion-segment [(ngModel)]="tabs">
+            <ion-segment-button value="0" style="text-transform: lowercase;" (click)="selectedTab()">
                 <b class="ep-celeste">even</b><b class="ep-fucsia">prom</b>
             </ion-segment-button>
-            <ion-segment-button value="oferta" (click)="pageEmpresas()">
+            <ion-segment-button value="1" (click)="selectedTab()">
                 <ion-icon name="home"></ion-icon>
             </ion-segment-button>
-            <ion-segment-button value="sitios">
+            <ion-segment-button value="2" (click)="selectedTab()">
                 <ion-icon name="notifications-outline"></ion-icon>
             </ion-segment-button>
         </ion-segment>
@@ -35,71 +35,154 @@
 </ion-header>
 
 <ion-content class="principal">
-    <ion-refresher (ionRefresh)="doRefresh($event)">
-        <ion-refresher-content
-                pullingIcon="arrow-dropdown"
-                pullingText="Suelte para actualizar"
-                refreshingSpinner="circles"
-                refreshingText="Actualizando...">
-        </ion-refresher-content>
-    </ion-refresher>
+    <div [ngSwitch]="tabBody">
+        <ion-slides pager #mySlider (ionDidChange)="onSlideChanged()">
 
-    <ion-grid no-padding no-padding *ngIf="errorNoConexion">
-        <ion-row no-padding>
-            <ion-col text-center width-100 no-padding>
-                <h1>
-                    No hay conexión a internet.
-                </h1>
-                <h4>
-                    Arrastre la parte superior hacia abajo para actualizar
-                </h4>
-            </ion-col>
-        </ion-row>
-        <ion-row no-padding>
-            <ion-col text-center width-100 no-padding>
-                <img src="assets/img/noconexion.png">
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+            <ion-slide *ngSwitchCase="tabBody">
+                <ion-refresher (ionRefresh)="doRefresh($event)">
+                    <ion-refresher-content
+                            pullingIcon="arrow-dropdown"
+                            pullingText="Suelte para actualizar"
+                            refreshingSpinner="circles"
+                            refreshingText="Actualizando...">
+                    </ion-refresher-content>
+                </ion-refresher>
 
-    <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
-        <ion-row no-padding>
-            <ion-col text-center width-100 no-padding>
-                <h1 [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
-                    {{promoCalendario.titulo}}
+                <ion-grid no-padding no-padding *ngIf="errorNoConexion">
+                    <ion-row no-padding>
+                        <ion-col text-center width-100 no-padding>
+                            <h1>
+                                No hay conexión a internet.
+                            </h1>
+                            <h4>
+                                Arrastre la parte superior hacia abajo para actualizar
+                            </h4>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding>
+                        <ion-col text-center width-100 no-padding>
+                            <img src="assets/img/noconexion.png">
+                        </ion-col>
+                    </ion-row>
+                </ion-grid>
 
-                </h1>
+                <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
+                    <ion-row no-padding>
+                        <ion-col text-center width-100 no-padding>
+                            <h1 [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
+                                {{promoCalendario.titulo}}
 
-            </ion-col>
-        </ion-row>
+                            </h1>
 
-        <ion-row no-padding class="img-publicacion-content">
-            <ion-col no-padding>
-                <img style="width: 100%;" [src]="promoCalendario.imagen_publicacion"/>
-                <div class="img-promo-subtitle">
-                    {{ promoCalendario.nombre_empresa | uppercase}}
-                </div>
+                        </ion-col>
+                    </ion-row>
 
-            </ion-col>
-        </ion-row>
+                    <ion-row no-padding class="img-publicacion-content">
+                        <ion-col no-padding>
+                            <img style="width: 100%;" [src]="promoCalendario.imagen_publicacion"/>
+                            <div class="img-promo-subtitle">
+                                {{ promoCalendario.nombre_empresa | uppercase}}
+                            </div>
 
-
-    </ion-grid>
-    <ion-list *ngIf="publicaciones">
-
-
-        <item-list-empresa
-                *ngFor="let publicacion of (publicaciones | filterPublicaciones:tipoPublicacion); let isFirst = first"
-                [publicacion]="publicacion" [isFirst]="isFirst">
+                        </ion-col>
+                    </ion-row>
 
 
-        </item-list-empresa>
-    </ion-list>
+                </ion-grid>
+                <ion-list *ngIf="publicaciones">
+
+
+                    <item-list-empresa
+                            *ngFor="let publicacion of (publicaciones | filterPublicaciones:tipoPublicacion); let isFirst = first"
+                            [publicacion]="publicacion" [isFirst]="isFirst">
+                    </item-list-empresa>
+
+                </ion-list>
+            </ion-slide>
+
+            <ion-slide *ngSwitchCase="tabBody">
+                <h2>Empresas</h2>
+            </ion-slide>
+            <ion-slide *ngSwitchCase="tabBody">
+                <h2>Notificaciones</h2>
+                Configura tus notificaciones por:
+                <ion-row>
+                    <ion-col width-33>
+                        <ion-item>
+                            <ion-label>Gaming</ion-label>
+                            <ion-select [(ngModel)]="pais">
+                                <ion-option value="nes">NES</ion-option>
+                            </ion-select>
+                            <ion-select [(ngModel)]="provincia">
+                                <ion-option value="nes">NES</ion-option>
+                            </ion-select>
+                            <ion-select [(ngModel)]="departamento">
+                                <ion-option value="nes">NES</ion-option>
+                            </ion-select>
+                            <ion-select [(ngModel)]="localidad">
+                                <ion-option value="nes">NES</ion-option>
+                            </ion-select>
+                        </ion-item>
+                    </ion-col>
+                    <ion-col width-33>
+                        <ion-label>Descuentos</ion-label>
+                        <ion-select [(ngModel)]="descuentos">
+                            <ion-option value="nes">NES</ion-option>
+                        </ion-select>
+                    </ion-col>
+                    <ion-col width-33>
+                        <ion-label>Eventos</ion-label>
+                        <ion-select [(ngModel)]="eventos">
+                            <ion-option value="si">SI</ion-option>
+                            <ion-option value="no">NO</ion-option>
+                        </ion-select>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col width-33>
+                        <ion-label>Empresas</ion-label>
+                        <ion-select [(ngModel)]="pais">
+                            <ion-option value="nes">NES</ion-option>
+                        </ion-select>
+                    </ion-col>
+                    <ion-col width-33>
+                        <ion-label>Gastronomicos</ion-label>
+                        <ion-select [(ngModel)]="pais">
+                            <ion-option value="nes">NES</ion-option>
+                        </ion-select>
+                    </ion-col>
+                    <ion-col width-33>
+                        <ion-label>Compras</ion-label>
+                        <ion-select [(ngModel)]="pais">
+                            <ion-option value="nes">NES</ion-option>
+                        </ion-select>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col width-33>
+                        <ion-label>Entretenimiento</ion-label>
+                        <ion-select [(ngModel)]="pais">
+                            <ion-option value="nes">NES</ion-option>
+                        </ion-select>
+                    </ion-col>
+                    <ion-col width-33>
+                        <ion-label>Turisticos</ion-label>
+                        <ion-select [(ngModel)]="pais">
+                            <ion-option value="nes">NES</ion-option>
+                        </ion-select>
+                    </ion-col>
+                    <ion-col width-33>
+                        <ion-label>Segun tu onda</ion-label>
+                        <ion-select [(ngModel)]="notificacionesOnda">
+                            <ion-option *ngFor="let onda of ondas" value="onda.slug">{{onda.nombre}}</ion-option>
+                        </ion-select>
+                    </ion-col>
+                </ion-row>
+            </ion-slide>
+        </ion-slides>
+    </div>
 
     <ion-fab right bottom>
-        <!--<button ion-fab color="light" (click)="modalSearch({charNum: 0})">-->
-        <!--<ion-icon name="options"></ion-icon>-->
-        <!--</button>-->
         <button mini ion-fab color="dark" (click)="modalUbicaciones()">
             <ion-icon name="pin"></ion-icon>
         </button>

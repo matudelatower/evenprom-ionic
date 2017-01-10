@@ -247,6 +247,13 @@ export class MainService {
             .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
     }
 
+    getOndas() {
+        return this.http.get(this.service + 'api/ondas')
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(6000);
+    }
+
 
     modalCreate(modalClass, parameters = {}) {
         let modal = this.modalCont.create(modalClass, parameters);
