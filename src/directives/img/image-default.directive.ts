@@ -15,6 +15,7 @@ export class DefaultImageDirective {
     @Input() src:string;
     @Input() default:string;
     @Input() preview:boolean = false;
+    @Input() srcPreview:string;
 
     constructor(public mainService:MainService) {
 
@@ -32,14 +33,18 @@ export class DefaultImageDirective {
 
     openPreview() {
 
-        console.log(this.preview);
+        console.log(this.srcPreview);
+        console.log(this.src);
         if (this.preview) {
-            let modal = this.mainService.modalCreate(ModalImageDefault, {srcImage:this.src});
+
+
+            let modal = this.mainService.modalCreate(ModalImageDefault, {srcImage:this.srcPreview});
 
             modal.present();
         }
     }
 
     loadImg(){
+        console.log('cargado en directive');
     }
 }

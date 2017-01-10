@@ -9,8 +9,8 @@
 
 
 
-<ion-grid class="publiacion" no-padding *ngIf="publicacion.premium" no-padding>
-    <ion-row (click)="pagePublicacion(publicacion)">
+<ion-grid class="publiacion" *ngIf="publicacion.premium" no-padding>
+    <ion-row (click)="pagePublicacion(publicacion)" text-left>
         <ion-col style=" margin-left: 3.0%;" width-100>
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
                 <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'ice-cream'"></ion-icon>
@@ -20,8 +20,8 @@
 
         </ion-col>
     </ion-row>
-    <ion-row (click)="pagePublicacion(publicacion)">
-        <ion-col class="margen-publicacion-izq-premium">
+    <ion-row (click)="pagePublicacion(publicacion)" text-left>
+        <ion-col style="margin-left: 15.0%;" class="margen-publicacion-izq-premium">
             <p>{{publicacion.descripcion}}</p>
         </ion-col>
     </ion-row>

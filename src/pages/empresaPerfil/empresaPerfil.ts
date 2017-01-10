@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
 import {DomSanitizer} from '@angular/platform-browser';
-import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker, Transfer} from 'ionic-native';
+import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker, Transfer, Crop} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 
 
@@ -256,47 +256,55 @@ export class EmpresaPerfilPage {
 
     }
 
-    uploadImg (userID, empresaId){
+    uploadImg(userID, empresaId) {
 
-        let options = {maximumImagesCount:1};
+        let options = {maximumImagesCount: 1};
         let loader = this.loadingCtrl.create({
             content: "Subiendo imagen.",
             // duration: 6000
         });
 
 
-
         const fileTransfer = new Transfer();
 
         ImagePicker.getPictures(options).then((results) => {
 
-            if (results.length > 0){
+            if (results.length > 0) {
                 let imagenURL = results[0];
-                loader.present();
-                fileTransfer.upload(imagenURL, this.mainService.routeServices.uploadImage+empresaId+"/personas/"+userID+"/empresas").then((data)=>{
-                    let toast = this.toastCtrl.create({
-                        message: "Imagen subida",
-                        duration: 1500,
-                        position: 'center'
-                    });
 
-                    toast.present(toast);
-                    loader.dismissAll();
+                Crop.crop(imagenURL, {quality: 75})
+                    .then(
+                        newImage => {
+                            //let url = newImage.substring(0, newImage.indexOf('?'));
+                            //let url = newImage.substring(0, newImage.indexOf('?'));
+                            loader.present();
+                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas").then((data)=> {
+                                let toast = this.toastCtrl.create({
+                                    message: "Imagen subida",
+                                    duration: 1500,
+                                    position: 'center'
+                                });
 
-                }, (error)=>{
-                    let toast = this.toastCtrl.create({
-                        message: "No se ha podido subir la imagen ",
-                        duration: 1500,
-                        position: 'center'
-                    });
+                                toast.present(toast);
+                                loader.dismissAll();
 
-                    toast.present();
-                    loader.dismissAll();
-                });
+                                this.getImagenes();
+
+                            }, (error)=> {
+                                let toast = this.toastCtrl.create({
+                                    message: "No se ha podido subir la imagen ",
+                                    duration: 1500,
+                                    position: 'center'
+                                });
+
+                                toast.present();
+                                loader.dismissAll();
+                            });
+                        },
+                        error => alert("Error cropping image")
+                    );
+
             }
-
-
-
 
 
         }, (err) => {
