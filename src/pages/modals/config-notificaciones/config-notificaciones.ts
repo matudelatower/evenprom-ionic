@@ -24,39 +24,7 @@ export class ConfigNotificaciones {
     }
 
     ngOnInit() {
-        let data = [
-            {
-                active: false,
-                id: 1,
-                text: "Gastronomía",
 
-            },
-            {
-                active: false,
-                id: 2,
-                text: "Hoteles",
-
-            }
-        ];
-
-        let data1 = [
-            {
-                active: false,
-                id: 2,
-                text: "Onda 1",
-
-            },
-            {
-                active: false,
-                id: 2,
-                text: "Onda 2",
-
-            }
-        ];
-        this.dataList = [
-            new Data('Categorias', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', 'ondas', 'ios-add-circle-outline', false, data),
-            new Data('Ondas', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', 'categorias', 'ios-add-circle-outline', true, data1),
-        ];
 
     }
 

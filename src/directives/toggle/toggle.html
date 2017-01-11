@@ -7,31 +7,26 @@
                   [name]="d.showDetails?'arrow-dropdown':'arrow-dropup'"></ion-icon>
     </ion-item-divider>
 
-    <ion-item [hidden]="d.showDetails" *ngFor="let item of d.items">
+    <ion-searchbar [(ngModel)]="d.search" [hidden]="d.showDetails" [placeholder]="'Buscar ' + d.title" *ngIf="d.autocomplete"  [showCancelButton]="true"></ion-searchbar>
 
-        <ion-label primary *ngIf="item.active" >{{item.text}}</ion-label>
-        <ion-label *ngIf="!item.active" >{{item.text}}</ion-label>
-        <ion-checkbox  [(ngModel)]="item.active"></ion-checkbox>
-    </ion-item>
+    <ion-list *ngIf="!d.autocomplete">
+        <ion-item [hidden]="d.showDetails" *ngFor="let item of d.items" icon-right>
 
+            <ion-label color="primary" *ngIf="item.active">{{item.text}}</ion-label>
+            <ion-label *ngIf="!item.active">{{item.text}}</ion-label>
+            <ion-checkbox [(ngModel)]="item.active"></ion-checkbox>
 
+        </ion-item>
+    </ion-list>
+
+    <ion-list *ngIf="d.autocomplete">
+        <ion-item  [hidden]="d.showDetails" *ngFor="let item of d.items | filterPublicaciones: d.search" icon-right>
+
+            <ion-label color="primary" *ngIf="item.active">{{item.text}}</ion-label>
+            <ion-label *ngIf="!item.active">{{item.text}}</ion-label>
+            <ion-checkbox [(ngModel)]="item.active"></ion-checkbox>
+
+        </ion-item>
+
+    </ion-list>
 </ion-item-group>
-
-
-<!--<ion-list *ngFor="let d of data" (click)="toggleDetails(d)">-->
-
-<!--<ion-header-list>-->
-
-<!--<ion-icon primary item-right [name]="d.icon"></ion-icon>-->
-
-<!--{{d.items.length}}-->
-
-
-<!--</ion-header-list>-->
-
-<!--<ion-item [hidden]="d && d.showDetails" *ngFor="let item of d.items">-->
-<!--<ion-label>{{item.text}}</ion-label>-->
-<!--<ion-toggle [(ngModel)]="item.active"></ion-toggle>-->
-<!--</ion-item>-->
-
-<!--</ion-list>-->

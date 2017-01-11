@@ -70,15 +70,20 @@ export class MainService {
         }
     }
 
-    getPublicaciones(userId) {
-        return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona')
+    getPublicaciones(userId, fields?: any) {
+
+        if ((typeof fields === "undefined")){
+            fields = "";
+        }else{
+            fields = "?"+ fields;
+        }
+
+        return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona'+ fields)
         // ...and calling .json() on the response to return data
             .map((res: Response) => res.json())
             .delay(500)
             .timeout(7500)
             ;
-
-
     }
 
     getPromoCalendario() {
@@ -97,7 +102,18 @@ export class MainService {
 
     getRubros() {
 
-        return this.http.get(this.routeServices.rubros);
+        return this.http.get(this.routeServices.rubros)
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500);
+    }
+
+    getLocalidades() {
+
+        return this.http.get(this.routeServices.localidades)
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500);
     }
 
     getEmpresasBySlug(slug, userId) {
@@ -271,6 +287,7 @@ export class MainService {
         this.routeServices.registrars = this.service + 'api/registrars';
         this.routeServices.rubros = this.service + 'api/rubros';
         this.routeServices.uploadImage = this.service + 'api/fotos/';
+        this.routeServices.localidades = this.service + 'api/localidades/publicaciones';
 
     }
 

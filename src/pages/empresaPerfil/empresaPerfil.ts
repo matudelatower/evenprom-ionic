@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
 import {DomSanitizer} from '@angular/platform-browser';
-import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker, Transfer, Crop} from 'ionic-native';
+import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker, Transfer, Crop, Geolocation} from 'ionic-native';
 import {MainService} from "../../app/main.service";
+import {GeocodingService} from "../../directives/map/geocode.service";
 
 
 @Component({
@@ -26,6 +27,7 @@ export class EmpresaPerfilPage {
                 public viewCtrl:ViewController,
                 public loadingCtrl:LoadingController,
                 public toastCtrl:ToastController,
+                public geocoder:GeocodingService,
                 public mainService:MainService) {
         console.log("Passed params", navParams.data.empresa);
 
@@ -244,6 +246,67 @@ export class EmpresaPerfilPage {
 
             toast.present(toast);
         });
+    }
+
+    comoLlegar() {
+        let loader = this.loadingCtrl.create({
+            content: "Abriendo mapa",
+            // duration: 6000
+        });
+        loader.present();
+
+        Geolocation.getCurrentPosition().then((resp) => {
+            // resp.coords.latitude
+            // resp.coords.longitude
+
+            let actual = resp.coords.latitude + ", " + resp.coords.longitude;
+
+            let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
+
+            location.subscribe(location => {
+
+                loader.dismissAll();
+                if (!location.valid) {
+                    return;
+                }
+                // let address = location.address;
+
+                var newBounds = location.viewBounds;
+                //this.mapService.changeBounds(newBounds);
+
+
+                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+
+                let destino = lat + ", " + lng;
+
+                let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
+
+
+                window.open(url, "_system");
+
+            }, error =>{
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido abrir el mapa.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
+
+        }).catch((error) => {
+            loader.dismissAll();
+            let toast = this.toastCtrl.create({
+                message: "No se ha podido abrir el mapa.",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+        });
+
     }
 
     openFileChooser() {

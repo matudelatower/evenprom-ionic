@@ -36,6 +36,10 @@ export class PrincipalPage {
     notificacionesOnda:any;
     ondas: any;
 
+    showSearch:Boolean = false;
+
+    search = "";
+
     constructor(private navController: NavController,
                 public mainservice: MainService,
                 public loadingCtrl: LoadingController,
@@ -44,9 +48,6 @@ export class PrincipalPage {
         this.mapService = mapService;
 
         this.doRefresh(false);
-
-
-
 
     }
 
@@ -72,7 +73,12 @@ export class PrincipalPage {
         this.tabBody = +this.tabs;
     }
 
-    doRefresh(refresher) {
+    cancelarBusqueda(){
+        console.log('cencelar');
+        this.showSearch = false;
+    }
+
+    doRefresh(refresher, fields?) {
 
         let loader = this.loadingCtrl.create({
             content: "Cargando Promos",
@@ -81,7 +87,7 @@ export class PrincipalPage {
         loader.present();
 
         this.mainservice.getUser().then((user) => {
-            this.mainservice.getPublicaciones(user.userID).subscribe((data) => {
+            this.mainservice.getPublicaciones(user.userID,fields).subscribe((data) => {
                     this.publicaciones = data;
                     this.errorNoConexion = false;
 
@@ -114,7 +120,7 @@ export class PrincipalPage {
             );
         }, () => {
 
-            this.mainservice.getPublicaciones(null).subscribe((data) => {
+            this.mainservice.getPublicaciones(null, fields).subscribe((data) => {
                     this.publicaciones = data;
                     this.errorNoConexion = false;
 
@@ -166,18 +172,18 @@ export class PrincipalPage {
     }
 
 
-    modalSearch(characterNum) {
-
-        console.log(characterNum);
+    modalSearch() {
 
         let modal = this.mainservice.modalCreate(ModalSearch);
 
         modal.present();
 
-        modal.onDidDismiss((data: any[]) => {
-            if (data) {
-                console.log(data);
-            }
+        modal.onDidDismiss((data) => {
+
+
+            let fields = "fields=" + JSON.stringify(data);
+
+            this.doRefresh(false, fields);
         });
     }
 
@@ -241,7 +247,6 @@ export class PrincipalPage {
                     empresas: response.json()
                 }
 
-                console.log(param);
                 let modal = this.mainservice.modalCreate(ModalMapa, param);
 
                 loader.dismissAll();
@@ -249,7 +254,6 @@ export class PrincipalPage {
 
                 modal.onDidDismiss((data: any[]) => {
                     if (data) {
-                        console.log(data);
                     }
                 });
             });

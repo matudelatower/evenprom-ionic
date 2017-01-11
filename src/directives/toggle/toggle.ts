@@ -21,4 +21,6 @@ export class ToggleDirective {
             data.icon = 'ios-remove-circle-outline';
         }
     }
+
+
 }

@@ -35,10 +35,10 @@ export class Empresas {
             // duration: 6000
         });
         loader.present();
-        mainService.getRubros().toPromise()
-            .then(
-                response => this.rubros = response.json()
-            );
+        mainService.getRubros().subscribe(
+            response => this.rubros = response
+        );
+
         // aca
 
         this.mainService.getUser().then((user) => {

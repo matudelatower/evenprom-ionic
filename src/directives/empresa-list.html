@@ -13,7 +13,7 @@
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
         <ion-col style=" margin-left: 3.0%;" width-100>
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'ice-cream'"></ion-icon>
+                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'checkmark'"></ion-icon>
                 | {{publicacion.nombre_empresa | uppercase}}
 
             </h1>
@@ -65,10 +65,10 @@
 <ion-grid class="publiacion" *ngIf="!publicacion.premium" no-padding>
 
     <ion-row (click)="pagePublicacion(publicacion)">
-        <ion-col width-50>
+        <ion-col style=" margin-left: 3.0%;"  width-50 text-left>
 
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'ice-cream'"></ion-icon>
+                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'checkmark'"></ion-icon>
                 | {{publicacion.nombre_empresa | uppercase}}
 
 

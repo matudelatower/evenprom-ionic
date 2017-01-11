@@ -1,9 +1,8 @@
 import {Component} from '@angular/core';
 import { Platform, NavParams, ViewController} from 'ionic-angular';
-
+import {NativeStorage} from 'ionic-native';
 import { Data } from '../../directives/toggle/data';
-// import { ToggleDirective } from '../../directives/toggle/toggle';
-// import { Progressbar } from '../../directives/progress-bar/progressbar.component';
+import {MainService} from "../../app/main.service";
 
 @Component({
     selector: 'page-search',
@@ -16,6 +15,7 @@ export class ModalSearch {
 
     constructor(public platform:Platform,
                 public params:NavParams,
+                public mainService:MainService,
                 public viewCtrl:ViewController) {
         var characters = [
             {
@@ -50,38 +50,29 @@ export class ModalSearch {
             }
         ];
 
-        let data = [
-            {
-                active: false,
-                id: 1,
-                text: "Gastronomía",
+        let rubros = [];
 
+        let ondas = [];
+
+        let localidades = [];
+
+        NativeStorage.getItem('filterPublicaciones').then(
+            (listas) => {
+                console.log(listas);
+                this.cargarParametros(listas, rubros, ondas, localidades);
             },
-            {
-                active: false,
-                id: 2,
-                text: "Hoteles",
+            (error)=> {
+
+                this.cargarParametros(false, rubros, ondas, localidades);
 
             }
-        ];
+        );
 
-        let data1 = [
-            {
-                active: false,
-                id: 2,
-                text: "Onda 1",
 
-            },
-            {
-                active: false,
-                id: 2,
-                text: "Onda 2",
-
-            }
-        ];
         this.dataList = [
-            new Data('Categorias', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', 'ondas', 'ios-add-circle-outline', false, data),
-            new Data('Ondas', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. ', 'categorias', 'ios-add-circle-outline', true, data1),
+            new Data('Rubros', '', 'ios-add-circle-outline', 'rubro', true, rubros, false),
+            new Data('Ondas', ' ', 'ios-add-circle-outline', 'onda', true, ondas, false),
+            new Data('Localidaddes', ' ', 'ios-add-circle-outline', 'localidad', true, localidades, true),
         ];
 
         this.character = characters[this.params.get('charNum')];
@@ -95,6 +86,65 @@ export class ModalSearch {
         });
     }
 
+    buscarItemBusqueda(id, listas, clase) {
+        for (let list of listas) {
+            if (list.clase == clase) {
+                for (let item of list.data) {
+                    if (item == id) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        return false;
+    }
+
+
+    cargarParametros(listas, rubros, ondas, localidades) {
+        this.mainService.getRubros().subscribe(
+            (response) => {
+                for (let r of response) {
+                    rubros.push({
+                        id: r.id,
+                        text: r.nombre,
+                        icon: r.icon,
+                        active: listas ? this.buscarItemBusqueda(r.id, listas, 'rubro') : false
+                    });
+                }
+            }
+        );
+
+
+        this.mainService.getOndas().subscribe(
+            (response) => {
+                for (let r of response) {
+                    ondas.push({
+                        id: r.id,
+                        text: r.nombre,
+                        icon: r.icon,
+                        active: listas ? this.buscarItemBusqueda(r.id, listas, 'onda') : false
+                    });
+                }
+            }
+        );
+
+
+        this.mainService.getLocalidades().subscribe(
+            (response) => {
+                for (let r of response) {
+                    localidades.push({
+                        id: r.id,
+                        text: r.descripcion,
+                        icon: "",
+                        active: listas ? this.buscarItemBusqueda(r.id, listas, 'localidad') : false
+                    });
+                }
+            }
+        );
+
+    }
+
     dismiss(buscar) {
 
         var params = [];
@@ -105,12 +155,21 @@ export class ModalSearch {
                 let filtros = v.items.filter(c => c.active).map(c => c.id);
 
                 params.push({
-                    filtros
+                    clase: v.slug,
+                    data: filtros
                 })
             });
 
 
-            this.viewCtrl.dismiss(params);
+            NativeStorage.setItem('filterPublicaciones', params)
+                .then(
+                    () => {
+                        this.viewCtrl.dismiss(params);
+                    },
+                    error => {
+                    });
+
+
         } else {
 
             this.viewCtrl.dismiss(false);
