@@ -1,27 +1,30 @@
-<ion-grid  *ngIf="isFirst" >
+<ion-grid *ngIf="isFirst">
     <ion-row>
         <ion-col text-left>
-          <b class="ep-gris">  {{getMesByFecha (publicacion.rango_fecha.fecha_desde)}}.</b>
+            <b class="ep-gris"> {{getMesByFecha (publicacion.rango_fecha.fecha_desde)}}.</b>
         </ion-col>
     </ion-row>
 </ion-grid>
 
 
-
-
 <ion-grid class="publiacion" *ngIf="publicacion.premium" no-padding>
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
-        <ion-col style=" margin-left: 3.0%;" width-100>
+        <ion-col width-10>
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'checkmark'"></ion-icon>
-                | {{publicacion.nombre_empresa | uppercase}}
+                <ion-icon class="borde-icono-publiacion" [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'checkmark'"></ion-icon>
+            </h1>
+        </ion-col>
+        <ion-col width-90>
+            <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
+
+                {{publicacion.nombre_empresa | uppercase}}
 
             </h1>
 
         </ion-col>
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
-        <ion-col style="margin-left: 15.0%;" class="margen-publicacion-izq-premium">
+        <ion-col  offset-10 >
             <p>{{publicacion.descripcion}}</p>
         </ion-col>
     </ion-row>
@@ -40,7 +43,7 @@
     </ion-row>
     <ion-row no-padding>
         <ion-col text-center>
-            <button (click)="modalComentario(publicacion)"  ion-button clear small color="primary" icon-center>
+            <button (click)="modalComentario(publicacion)" ion-button clear small color="primary" icon-center>
                 <ion-icon name='ios-text-outline'></ion-icon>
 
             </button>
@@ -52,7 +55,8 @@
             </button>
         </ion-col>
         <ion-col text-center>
-            <button (click)="share(publicacion.nombre_empresa, '@evenprom', publicacion.imagen_publicacion, publicacion.contacto_empresa.web)" ion-button clear small color="secondary" icon-center>
+            <button (click)="share(publicacion.nombre_empresa, '@evenprom', publicacion.imagen_publicacion, publicacion.contacto_empresa.web)"
+                    ion-button clear small color="secondary" icon-center>
                 <ion-icon name='share'></ion-icon>
 
             </button>
@@ -65,23 +69,32 @@
 <ion-grid class="publiacion" *ngIf="!publicacion.premium" no-padding>
 
     <ion-row (click)="pagePublicacion(publicacion)">
-        <ion-col style=" margin-left: 3.0%;"  width-50 text-left>
-
-            <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                <ion-icon [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'checkmark'"></ion-icon>
-                | {{publicacion.nombre_empresa | uppercase}}
-
-
-            </h1>
+        <ion-col width-50 no-padding text-left>
             <ion-row>
-                <ion-col class="margen-publicacion-izq-premium-no">
+                <ion-col no-padding width-20>
+                    <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
+                        <ion-icon class="borde-icono-publiacion"
+                                  [name]="publicacion.categorias[0]?publicacion.categorias[0].icono:'checkmark'"></ion-icon>
+                    </h1>
+                </ion-col>
+                <ion-col no-padding width-80>
+                    <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
+                        {{publicacion.nombre_empresa | uppercase}}
+                    </h1>
+                </ion-col>
+            </ion-row>
+
+
+            <ion-row>
+                <ion-col offset-20>
                     <p>{{publicacion.descripcion}}</p>
                 </ion-col>
             </ion-row>
         </ion-col>
 
         <ion-col width-50 text-right>
-            <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color, 'font-size': '4em', 'font-weight': 'bold', 'white-space':'normal'}"
+            <h1 class="h1-empresa"
+                [ngStyle]="{'color': publicacion.color, 'font-size': '4em', 'font-weight': 'bold', 'white-space':'normal'}"
                 *ngIf="publicacion.promocion" class="promo" text-center>
                 {{publicacion.promocion | uppercase}}
             </h1>
@@ -101,14 +114,15 @@
             </button>
         </ion-col>
         <ion-col (click)="addPublicacionFav(publicacion.id)" text-center>
-            <button  ion-button clear small color="danger" icon-center>
+            <button ion-button clear small color="danger" icon-center>
                 <ion-icon name='heart-outline' *ngIf="!publicacion.like_persona"></ion-icon>
                 <ion-icon name='heart' *ngIf="publicacion.like_persona"></ion-icon>
 
             </button>
         </ion-col>
         <ion-col text-center>
-            <button (click)="share(publicacion.nombre_empresa, '@evenprom', null, publicacion.contacto_empresa.web)" ion-button clear small color="secondary" icon-center>
+            <button (click)="share(publicacion.nombre_empresa, '@evenprom', null, publicacion.contacto_empresa.web)"
+                    ion-button clear small color="secondary" icon-center>
                 <ion-icon name='share'></ion-icon>
 
             </button>

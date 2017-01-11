@@ -180,10 +180,13 @@ export class PrincipalPage {
 
         modal.onDidDismiss((data) => {
 
+            if (data){
+                let fields = "fields=" + JSON.stringify(data);
 
-            let fields = "fields=" + JSON.stringify(data);
+                this.doRefresh(false, fields);
+            }
 
-            this.doRefresh(false, fields);
+
         });
     }
 

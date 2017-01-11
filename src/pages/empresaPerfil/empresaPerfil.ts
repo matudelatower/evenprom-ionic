@@ -249,6 +249,18 @@ export class EmpresaPerfilPage {
     }
 
     comoLlegar() {
+        if (!this.empresa.direccion){
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene cargada la dirección",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+
+            return false;
+        }
+
         let loader = this.loadingCtrl.create({
             content: "Abriendo mapa",
             // duration: 6000
@@ -267,6 +279,13 @@ export class EmpresaPerfilPage {
 
                 loader.dismissAll();
                 if (!location.valid) {
+                    let toast = this.toastCtrl.create({
+                        message: "La empresa no tiene cargada la dirección",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
                     return;
                 }
                 // let address = location.address;
@@ -279,6 +298,14 @@ export class EmpresaPerfilPage {
                 let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
 
                 let destino = lat + ", " + lng;
+
+                let toast = this.toastCtrl.create({
+                    message: "Ruta encontrada.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
 
                 let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
 
