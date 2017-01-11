@@ -71,13 +71,13 @@
     <ion-row (click)="pagePublicacion(publicacion)">
         <ion-col width-50 no-padding text-left>
             <ion-row>
-                <ion-col no-padding width-20>
+                <ion-col width-20>
                     <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
                         <ion-icon class="borde-icono-publiacion"
                                   [name]="publicacion.rubros[0]?publicacion.rubros[0].icono:'checkmark'"></ion-icon>
                     </h1>
                 </ion-col>
-                <ion-col no-padding width-80>
+                <ion-col  width-80>
                     <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
                         {{publicacion.nombre_empresa | uppercase}}
                     </h1>

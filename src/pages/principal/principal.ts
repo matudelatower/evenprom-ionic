@@ -3,11 +3,12 @@ import {ToastController, Slides} from "ionic-angular";
 import {ModalSearch} from '../../pages/modals/search';
 import {MainService} from "../../app/main.service";
 import 'leaflet';
-import {NavController, LoadingController} from 'ionic-angular';
+import {NavController, LoadingController, Searchbar} from 'ionic-angular';
 import {Empresas} from "../empresas/empresas";
 import {MapService} from './../../directives/map/map.service';
 import {GeosearchComponent} from './../../directives/map/geosearch.component';
 import {ModalMapa} from './modalMapa.component';
+
 
 @Component({
     selector: 'page-principal',
@@ -40,7 +41,9 @@ export class PrincipalPage {
 
     search = "";
 
-    constructor(private navController: NavController,
+    @ViewChild('searchP') searchP:Searchbar;
+
+   constructor(private navController: NavController,
                 public mainservice: MainService,
                 public loadingCtrl: LoadingController,
                 public toastCtrl: ToastController,
@@ -77,6 +80,19 @@ export class PrincipalPage {
         console.log('cencelar');
         this.showSearch = false;
     }
+
+    mostrarBusqueda(){
+        this.showSearch = true;
+
+        console.log( this.searchP);
+
+        setTimeout(() => {
+            this.searchP.setFocus();
+        },150);
+
+    }
+
+
 
     doRefresh(refresher, fields?) {
 
