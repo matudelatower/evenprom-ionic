@@ -3,7 +3,7 @@ import {Platform, NavParams, ViewController, LoadingController, ToastController}
 import {MapService} from "../../directives/map/map.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {Subscription} from "rxjs/Subscription";
-import {CallNumber} from 'ionic-native';
+import {CallNumber, Geolocation} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 
 
@@ -239,6 +239,94 @@ export class ModalPreviewPublicacion {
                 });
         });
 
+
+    }
+
+    comoLlegar() {
+        if (!this.publicacion.direccion_empresa) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene cargada la dirección",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+
+            return false;
+        }
+
+        let loader = this.loadingCtrl.create({
+            content: "Abriendo mapa",
+            // duration: 6000
+        });
+        loader.present();
+
+        Geolocation.getCurrentPosition().then((resp) => {
+            // resp.coords.latitude
+            // resp.coords.longitude
+
+            let actual = resp.coords.latitude + ", " + resp.coords.longitude;
+
+            let location = this.geocoder.geocode(this.publicacion.direccion_empresa.calle + " " + this.publicacion.direccion_empresa.altura + ", " + this.publicacion.direccion_empresa.localidad);
+
+            location.subscribe(location => {
+
+                loader.dismissAll();
+                if (!location.valid) {
+                    let toast = this.toastCtrl.create({
+                        message: "La empresa no tiene cargada la dirección",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                    return;
+                }
+                // let address = location.address;
+
+                var newBounds = location.viewBounds;
+                //this.mapService.changeBounds(newBounds);
+
+
+                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+
+                let destino = lat + ", " + lng;
+
+                let toast = this.toastCtrl.create({
+                    message: "Ruta encontrada.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+
+                let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
+
+
+                window.open(url, "_system");
+
+            }, error => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido abrir el mapa.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
+
+        }).catch((error) => {
+            loader.dismissAll();
+            let toast = this.toastCtrl.create({
+                message: "No se ha podido abrir el mapa.",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+        });
 
     }
 }

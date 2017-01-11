@@ -57,13 +57,7 @@ export class ItemListEmpresa {
 
 
         SocialSharing.shareViaTwitter(message, image, url).then(() => {
-            let toast = this.toastCtrl.create({
-                message: 'Comentario',
-                duration: 2000,
-                position: 'bottom'
-            });
 
-            toast.present(toast);
         }).catch(() => {
             // Error!
         });
@@ -73,13 +67,7 @@ export class ItemListEmpresa {
         console.log(message, subject, image, url);
 
         SocialSharing.share(message, '@evenprom', image, url).then(() => {
-            let toast = this.toastCtrl.create({
-                message: 'Comentario',
-                duration: 2000,
-                position: 'bottom'
-            });
 
-            toast.present(toast);
         }).catch(() => {
             // Error!
         });

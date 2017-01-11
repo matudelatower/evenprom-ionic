@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import {ViewController} from "ionic-angular/index";
 import {NavParams} from "ionic-angular/index";
-import { Data } from '../../../directives/toggle/data';
 
 /*
  Generated class for the ConfigNotificaciones page.
