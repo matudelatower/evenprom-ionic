@@ -253,14 +253,14 @@ export class MyApp {
     logout() {
 
         Facebook.logout().then(function (response) {
-            NativeStorage.remove('userData');
+            NativeStorage.clear();
         }, function (error) {
             console.log(error);
         });
 
         GooglePlus.logout()
             .then(function (response) {
-                NativeStorage.remove('userData');
+                NativeStorage.clear();
             }, function (error) {
                 console.log(error);
             });
