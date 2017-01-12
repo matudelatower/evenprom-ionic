@@ -231,7 +231,10 @@ export class MainService {
 
     getAllEmpresas() {
 
-        return this.http.get(this.routeServices.empresas);
+        return this.http.get(this.routeServices.empresas)
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(6000);
     }
 
     getNoticiasEmpresa(empresaId) {

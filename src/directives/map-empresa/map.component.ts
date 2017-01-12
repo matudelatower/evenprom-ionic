@@ -1,7 +1,7 @@
 import {Component, ElementRef, Output, Input, EventEmitter} from '@angular/core';
 import {LoadingController} from 'ionic-angular';
 import {BrowserDomAdapter} from '@angular/platform-browser/src/browser/browser_adapter';
-import {ViewController} from 'ionic-angular';
+import {NavController} from 'ionic-angular';
 import {MapService} from '../map/map.service';
 import {GeocodingService} from '../map/geocode.service';
 // import {GeosearchComponent} from '../map/geosearch.component';
@@ -36,7 +36,7 @@ export class MapaEmpresaComponent {
     constructor(private elRef: ElementRef,
                 mapService: MapService,
                 geocoder: GeocodingService,
-                public viewCtrl: ViewController,
+                private navController: NavController,
                 public mainService: MainService,
                 public loadingCtrl: LoadingController,
                 public elementRef: ElementRef) {
@@ -154,18 +154,11 @@ export class MapaEmpresaComponent {
     }
 
     goToPerfil(empresa) {
-        //console.log('soyyo', id);
-        let modal = this.mainService.modalCreate(EmpresaPerfilPage, {
+
+        this.navController.push(EmpresaPerfilPage, {
             empresa: empresa,
             icono: 'pizza'
         });
 
-        modal.present();
-
-        modal.onDidDismiss((data: any[]) => {
-            if (data) {
-                console.log(data);
-            }
-        });
     }
 }

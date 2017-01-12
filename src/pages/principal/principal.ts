@@ -118,7 +118,7 @@ export class PrincipalPage {
                     }
 
                     let toast = this.toastCtrl.create({
-                        message: "Error en la conección a internet",
+                        message: "Error en la conexión a internet",
                         duration: 2000,
                         position: 'center'
                     });
@@ -151,7 +151,7 @@ export class PrincipalPage {
                     }
 
                     let toast = this.toastCtrl.create({
-                        message: "Error en la conección a internet",
+                        message: "Error en la conexión a internet",
                         duration: 2000,
                         position: 'center'
                     });
@@ -260,21 +260,24 @@ export class PrincipalPage {
         });
         loader.present();
 
-        this.mainservice.getAllEmpresas().toPromise()
-            .then(response => {
+        this.mainservice.getAllEmpresas()
+            .subscribe(response => {
                 let param = {
-                    empresas: response.json()
-                }
-
-                let modal = this.mainservice.modalCreate(ModalMapa, param);
+                    empresas: response
+                };
 
                 loader.dismissAll();
-                modal.present();
 
-                modal.onDidDismiss((data: any[]) => {
-                    if (data) {
-                    }
+                this.navController.push(ModalMapa, param);
+
+            }, error=>{
+                let toast = this.toastCtrl.create({
+                    message: "Error en la conexión a internet",
+                    duration: 2000,
+                    position: 'center'
                 });
+
+                toast.present(toast);
             });
 
     }
