@@ -10,6 +10,8 @@ export class ModalImageDefault {
 
     srcImage:any;
 
+    ready = false;
+
     constructor(public params:NavParams,
                 public viewCtrl:ViewController,
                 public mainService:MainService) {
@@ -26,6 +28,10 @@ export class ModalImageDefault {
         this.viewCtrl.dismiss(false);
     }
 
+
+    //cargando(){
+    //    this.ready = true;
+    //}
 
 
 

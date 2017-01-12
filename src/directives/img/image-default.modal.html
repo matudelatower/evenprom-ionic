@@ -16,6 +16,8 @@
 
 <ion-content>
 
-    <ion-img cache="true" [src]="srcImage" style="width: 100% !important; height: 100%;"></ion-img>
+    <!--<img [hidden]="!ready" (load)="cargando()" [src]="srcImage" style="width: 100% !important; height: 100%;">-->
+    <img [src]="srcImage" style="width: 100% !important; height: 100%;">
 
+    <!--<ion-spinner [hidden]="ready" style="font-size: 5em; top: 50%" name="bubbles" text-center></ion-spinner>-->
 </ion-content>

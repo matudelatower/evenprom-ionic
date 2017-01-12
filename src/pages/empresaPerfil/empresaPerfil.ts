@@ -341,7 +341,13 @@ export class EmpresaPerfilPage {
         this.mainService.getUser().then((user)=> {
             this.uploadImg(user.userID, this.empresa.id);
         }, (error)=> {
+            let toast = this.toastCtrl.create({
+                message: this.mainService.mensajeUserAnonimo,
+                duration: 1500,
+                position: 'center'
+            });
 
+            toast.present();
         });
 
     }
@@ -391,7 +397,7 @@ export class EmpresaPerfilPage {
                                 loader.dismissAll();
                             });
                         },
-                        error => alert("Error cropping image")
+                        error => this.uploadImg(userID, empresaId)
                     );
 
             }

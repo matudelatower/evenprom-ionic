@@ -8,7 +8,15 @@ import {ModalImageDefault} from "./image-default.modal";
         '(error)': 'updateUrl()',
         '(click)': 'openPreview()',
         '(load)': 'loadImg()',
-        '[src]': 'src'
+        '[src]': 'src',
+        '[style.content]': 'backgroundImage',
+        '[style.margin]': '"0 auto"',
+        '[style.display]': 'display',
+        '[style.padding]': 'padding',
+        '[style.max-width]': 'size',
+        '[style.max-height]': 'size',
+
+
     }
 })
 export class DefaultImageDirective {
@@ -16,9 +24,12 @@ export class DefaultImageDirective {
     @Input() default:string;
     @Input() preview:boolean = false;
     @Input() srcPreview:string;
+    backgroundImage = 'url("assets/img/spinner.gif")';
+    size = '35px';
+    display = 'block';
+    padding = '5px';
 
     constructor(public mainService:MainService) {
-
 
     }
 
@@ -38,13 +49,17 @@ export class DefaultImageDirective {
         if (this.preview) {
 
 
-            let modal = this.mainService.modalCreate(ModalImageDefault, {srcImage:this.srcPreview});
+            let modal = this.mainService.modalCreate(ModalImageDefault, {srcImage: this.srcPreview});
 
             modal.present();
         }
     }
 
-    loadImg(){
+    loadImg() {
         console.log('cargado en directive');
+        this.backgroundImage = 'none';
+        this.size = '';
+        this.display = '';
+        this.padding = '';
     }
 }
