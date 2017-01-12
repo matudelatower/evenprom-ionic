@@ -1,22 +1,9 @@
-<!--<ion-header>-->
-<!--<ion-toolbar>-->
-<!--<ion-title>-->
-<!--{{publicacion.nombre_empresa}}-->
-<!--</ion-title>-->
-<!--<ion-buttons start>-->
-<!--<button ion-button (click)="dismiss()">-->
-<!--<ion-icon name="arrow-back" ></ion-icon>-->
-<!--</button>-->
-<!--</ion-buttons>-->
-<!--</ion-toolbar>-->
-<!--</ion-header>-->
-
 <ion-header class="header-preview-publicacion">
-    <ion-navbar *ngIf="publicacion.color" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
+    <ion-navbar *ngIf="publicacion.premium" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
 
         <ion-title text-right>evenprom</ion-title>
     </ion-navbar>
-    <ion-navbar *ngIf="!publicacion.color" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
+    <ion-navbar *ngIf="!publicacion.premium" [ngStyle]="{'background-color':'#5c666f', 'color':'#FFF'}">
 
         <ion-title text-right>evenprom</ion-title>
     </ion-navbar>
@@ -29,7 +16,10 @@
             <ion-col center text-left width-60>
                 <ion-note>
                     <h1>
-                        <b [ngStyle]="{'color':publicacion.color}">{{publicacion.nombre_empresa | uppercase }}</b>
+                        <b [ngStyle]="{'color':publicacion.color}" *ngIf="publicacion.premium">{{publicacion.nombre_empresa
+                            | uppercase }}</b>
+                        <b [ngStyle]="{'color':'#5c666f'}" *ngIf="!publicacion.premium">{{publicacion.nombre_empresa |
+                            uppercase }}</b>
                     </h1>
                 </ion-note>
 
@@ -53,7 +43,7 @@
 
         </ion-row>
 
-        <ion-row class="img-publicacion-content">
+        <ion-row class="img-publicacion-content-modal">
             <ion-col>
                 <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
                 <div class="btn-flotantes-publicacion">
@@ -66,14 +56,27 @@
                         <ion-icon name='heart' *ngIf="publicacion.like_persona"></ion-icon>
                     </button>
                 </div>
-                <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
-                     [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
-                    {{publicacion.promocion | uppercase}}
+                <div *ngIf="publicacion.premium">
+                    <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
+                         [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
+                        {{publicacion.promocion | uppercase}}
+                    </div>
+                    <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
+                         [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
+                        {{publicacion.titulo | uppercase}}
+                    </div>
                 </div>
-                <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
-                     [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
-                    {{publicacion.titulo | uppercase}}
+                <div *ngIf="!publicacion.premium">
+                    <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
+                         [ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">
+                        {{publicacion.promocion | uppercase}}
+                    </div>
+                    <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
+                         [ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">
+                        {{publicacion.titulo | uppercase}}
+                    </div>
                 </div>
+
             </ion-col>
         </ion-row>
         <ion-row class="publicacion-fecha-border" text-center>
@@ -99,7 +102,7 @@
         <ion-row text-center>
             <ion-col no-padding>
                 <div #contenedorMapa>
-                    <div style="height: 100%;" id="contenedor-mapa-publicacion">
+                    <div style="height: 100%;" id="contenedor-mapa-publicacion" *ngIf="publicacion.direccion_empresa">
                     </div>
                 </div>
             </ion-col>

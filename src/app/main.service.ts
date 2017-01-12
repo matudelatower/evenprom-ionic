@@ -72,13 +72,13 @@ export class MainService {
 
     getPublicaciones(userId, fields?: any) {
 
-        if ((typeof fields === "undefined")){
+        if ((typeof fields === "undefined")) {
             fields = "";
-        }else{
-            fields = "?"+ fields;
+        } else {
+            fields = "?" + fields;
         }
 
-        return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona'+ fields)
+        return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona' + fields)
         // ...and calling .json() on the response to return data
             .map((res: Response) => res.json())
             .delay(500)
@@ -103,6 +103,14 @@ export class MainService {
     getRubros() {
 
         return this.http.get(this.routeServices.rubros)
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500);
+    }
+
+    getSubRubros(slug?) {
+
+        return this.http.get(this.service + 'api/subrubros/' + slug + '/slugrubro')
             .map((res: Response) => res.json())
             .delay(500)
             .timeout(7500);
@@ -220,8 +228,8 @@ export class MainService {
 
     getImagenesEmpresa(empresa) {
 
-        return this.http.get(this.service + 'api/fotos/'+empresa+'/empresa')
-            // ...and calling .json() on the response to return data
+        return this.http.get(this.service + 'api/fotos/' + empresa + '/empresa')
+        // ...and calling .json() on the response to return data
             .map((res: Response) => res.json())
             .delay(500)
             .timeout(6000);
@@ -268,6 +276,13 @@ export class MainService {
 
     getOndas() {
         return this.http.get(this.service + 'api/ondas')
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(6000);
+    }
+
+    getDescuentos() {
+        return this.http.get(this.service + 'api/descuentos')
             .map((res: Response) => res.json())
             .delay(500)
             .timeout(6000);

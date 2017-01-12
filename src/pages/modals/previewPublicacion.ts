@@ -49,12 +49,7 @@ export class ModalPreviewPublicacion {
         loader.present();
         this.getComentarios(this.publicacion.id, loader);
 
-        if (this.publicacion.direccion_empresa.length != 0) {
-            let mapId = 'map-id';
-
-            this.contenedorMapa.nativeElement.innerHTML = '<div style="height:150px;" id="' + mapId + '"></div>';
-
-            this.map = this.mapService.createMap(mapId);
+        if (this.publicacion.direccion_empresa) {
 
             let location = this.geocoder.geocode(this.publicacion.direccion_empresa.calle + " " + this.publicacion.direccion_empresa.altura + ", " + this.publicacion.direccion_empresa.localidad);
 
@@ -63,6 +58,13 @@ export class ModalPreviewPublicacion {
                 if (!location.valid) {
                     return;
                 }
+
+                let mapId = 'map-id';
+
+                this.contenedorMapa.nativeElement.innerHTML = '<div style="height:150px;" id="' + mapId + '"></div>';
+
+                this.map = this.mapService.createMap(mapId);
+
                 // let address = location.address;
 
                 var newBounds = location.viewBounds;

@@ -26,7 +26,7 @@ export class MyApp {
     user: any;
     pages = [];
 
-    prod = true;
+    prod = false;
 
     menues: any = [
         {
@@ -103,9 +103,6 @@ export class MyApp {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
-
-
-
 
             if (this.prod) {
 

@@ -25,14 +25,25 @@ export class ItemListEmpresa {
 
 
     getMesByFecha(fecha) {
+
+        let fechaHumana = fecha.split("-");
+
+        var hoy = new Date();
+        var fechaPubli = new Date(fechaHumana[2], fechaHumana[1] - 1, fechaHumana[1]);
+
+        console.log(hoy.getTime() === fechaPubli.getTime()); // prints true (correct)
+
+        if (hoy.getTime() >= fechaPubli.getTime()) {
+            fecha = hoy.getDate() + '-' + hoy.getMonth() + 1 + '-' + hoy.getFullYear();
+        }
+
         let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
 
         let arrayFecha = fecha.split("-");
 
         let mes = meses[parseInt(arrayFecha[1]) - 1];
 
-        return arrayFecha[1] + " " + mes.substring(0, 3);
-        ;
+        return arrayFecha[0] + " " + mes.substring(0, 3);
 
     }
 

@@ -1,31 +1,32 @@
-<ion-grid *ngIf="isFirst">
+<ion-grid class="publicacion" *ngIf="publicacion.premium" no-padding>
     <ion-row>
         <ion-col text-left>
-            <b class="ep-gris"> {{getMesByFecha (publicacion.rango_fecha.fecha_desde)}}.</b>
+            <b class="ep-gris" *ngIf="!publicacion.hora_inicio"> {{getMesByFecha
+                (publicacion.rango_fecha.fecha_desde)}}.
+            </b>
+            <b class="ep-gris" *ngIf="publicacion.hora_inicio"> {{publicacion.hora_inicio}}
+            </b>
         </ion-col>
     </ion-row>
-</ion-grid>
-
-
-<ion-grid class="publiacion" *ngIf="publicacion.premium" no-padding>
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
         <ion-col width-10>
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                <ion-icon class="borde-icono-publiacion" [name]="publicacion.rubros[0]?publicacion.rubros[0].icono:'checkmark'"></ion-icon>
+                <ion-icon class="borde-icono-publicacion"
+                          [name]="publicacion.rubros[0]?publicacion.rubros[0].icono:'checkmark'"></ion-icon>
             </h1>
         </ion-col>
         <ion-col width-90>
             <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
 
-                {{publicacion.nombre_empresa | uppercase}}
+                <strong>{{publicacion.nombre_empresa | uppercase}}</strong>
 
             </h1>
 
         </ion-col>
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
-        <ion-col  offset-10 >
-            <p>{{publicacion.descripcion}}</p>
+        <ion-col offset-10>
+            <ion-note>{{publicacion.descripcion}}</ion-note>
         </ion-col>
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" class="img-publicacion-content">
@@ -66,20 +67,28 @@
 </ion-grid>
 
 
-<ion-grid class="publiacion" *ngIf="!publicacion.premium" no-padding>
-
+<ion-grid class="publicacion" *ngIf="!publicacion.premium" no-padding>
+    <ion-row>
+        <ion-col text-left>
+            <b class="ep-gris" *ngIf="!publicacion.hora_inicio"> {{getMesByFecha
+                (publicacion.rango_fecha.fecha_desde)}}.
+            </b>
+            <b class="ep-gris" *ngIf="publicacion.hora_inicio"> {{publicacion.hora_inicio}}
+            </b>
+        </ion-col>
+    </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)">
         <ion-col width-50 no-padding text-left>
             <ion-row>
                 <ion-col width-20>
-                    <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                        <ion-icon class="borde-icono-publiacion"
+                    <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f'}">
+                        <ion-icon class="borde-icono-publicacion"
                                   [name]="publicacion.rubros[0]?publicacion.rubros[0].icono:'checkmark'"></ion-icon>
                     </h1>
                 </ion-col>
-                <ion-col  width-80>
-                    <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color}">
-                        {{publicacion.nombre_empresa | uppercase}}
+                <ion-col width-80>
+                    <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f'}">
+                        <strong>{{publicacion.nombre_empresa | uppercase}}</strong>
                     </h1>
                 </ion-col>
             </ion-row>
@@ -87,18 +96,18 @@
 
             <ion-row>
                 <ion-col offset-20>
-                    <p>{{publicacion.descripcion}}</p>
+                    <ion-note>{{publicacion.descripcion}}</ion-note>
                 </ion-col>
             </ion-row>
         </ion-col>
 
         <ion-col width-50 text-right>
             <h1 class="h1-empresa"
-                [ngStyle]="{'color': publicacion.color, 'font-size': '4em', 'font-weight': 'bold', 'white-space':'normal'}"
+                [ngStyle]="{'color': '#5c666f', 'font-size': '4em', 'font-weight': 'bold', 'white-space':'normal'}"
                 *ngIf="publicacion.promocion" class="promo" text-center>
                 {{publicacion.promocion | uppercase}}
             </h1>
-            <h1 class="h1-empresa" [ngStyle]="{'color': publicacion.color, padding:'5px'}"
+            <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f', padding:'5px'}"
                 *ngIf="!publicacion.promocion" class="promo" text-center>
                 {{publicacion.titulo | uppercase}}
             </h1>

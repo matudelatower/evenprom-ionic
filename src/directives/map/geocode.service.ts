@@ -24,21 +24,22 @@ export class GeocodingService {
                 //if (result.status !== 'OK') { throw new Error('unable to geocode address'); }
 
                 var location = new Location();
-                if (result.status !== 'OK') {
-                    location.valid =false;
-                    return location;
-                }else{
+                if (result.status == 'OK') {
                     location.valid = true;
+                } else {
+
+                    location.valid = false;
+                    return location;
                 }
                 location.address = result.results[0].formatted_address;
                 location.latitude = result.results[0].geometry.location.lat;
                 location.longitude = result.results[0].geometry.location.lng;
 
                 var viewPort = result.results[0].geometry.viewport;
-                location.viewBounds = new  L.LatLngBounds(
-                  {lat: viewPort.southwest.lat, lng: viewPort.southwest.lng},
-                  {lat: viewPort.northeast.lat, lng: viewPort.northeast.lng});
-                  
+                location.viewBounds = new L.LatLngBounds(
+                    {lat: viewPort.southwest.lat, lng: viewPort.southwest.lng},
+                    {lat: viewPort.northeast.lat, lng: viewPort.northeast.lng});
+
                 return location;
             });
     }

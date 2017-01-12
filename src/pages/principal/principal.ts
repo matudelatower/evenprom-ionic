@@ -33,17 +33,33 @@ export class PrincipalPage {
 
     myDate = new Date();
 
-    // filtros
-    notificacionesOnda:any;
-    ondas: any;
+    // notificaciones
+    notificacionesOnda: any;
+    notificacionesLocalidad: any;
+    notificacionesDescuentos: any;
+    notificacionesRubro: any;
+    notificacionesCompras: any;
+    notificacionesEntretenimiento: any;
+    notificacionesGastronomia: any;
+    notificacionesEmpresa: any;
+    notificacionesEventos: any;
 
-    showSearch:Boolean = false;
+    rubros = [];
+    ondas = [];
+    localidades = [];
+    descuentos = [];
+    empresas = [];
+    servicios = [];
+    entretenimiento = [];
+    gastronomia = [];
+
+    showSearch: Boolean = false;
 
     search = "";
 
-    @ViewChild('searchP') searchP:Searchbar;
+    @ViewChild('searchP') searchP: Searchbar;
 
-   constructor(private navController: NavController,
+    constructor(private navController: NavController,
                 public mainservice: MainService,
                 public loadingCtrl: LoadingController,
                 public toastCtrl: ToastController,
@@ -66,8 +82,8 @@ export class PrincipalPage {
         if (this.tabs == "1") {
             this.pageEmpresas();
         }
-        else if(this.tabs == "2"){
-            this.getOndas();
+        else if (this.tabs == "2") {
+            this.cargarNotificaciones();
         }
     }
 
@@ -76,22 +92,21 @@ export class PrincipalPage {
         this.tabBody = +this.tabs;
     }
 
-    cancelarBusqueda(){
+    cancelarBusqueda() {
         console.log('cencelar');
         this.showSearch = false;
     }
 
-    mostrarBusqueda(){
+    mostrarBusqueda() {
         this.showSearch = true;
 
-        console.log( this.searchP);
+        console.log(this.searchP);
 
         setTimeout(() => {
             this.searchP.setFocus();
-        },150);
+        }, 150);
 
     }
-
 
 
     doRefresh(refresher, fields?) {
@@ -103,7 +118,7 @@ export class PrincipalPage {
         loader.present();
 
         this.mainservice.getUser().then((user) => {
-            this.mainservice.getPublicaciones(user.userID,fields).subscribe((data) => {
+            this.mainservice.getPublicaciones(user.userID, fields).subscribe((data) => {
                     this.publicaciones = data;
                     this.errorNoConexion = false;
 
@@ -196,7 +211,7 @@ export class PrincipalPage {
 
         modal.onDidDismiss((data) => {
 
-            if (data){
+            if (data) {
                 let fields = "fields=" + JSON.stringify(data);
 
                 this.doRefresh(false, fields);
@@ -261,24 +276,22 @@ export class PrincipalPage {
         loader.present();
 
         this.mainservice.getAllEmpresas()
-            .subscribe(response => {
-                let param = {
-                    empresas: response
-                };
+            .subscribe(
+                (response) => {
+                    let param = {
+                        empresas: response
+                    }
 
-                loader.dismissAll();
+                    let modal = this.mainservice.modalCreate(ModalMapa, param);
 
-                this.navController.push(ModalMapa, param);
+                    loader.dismissAll();
+                    modal.present();
 
-            }, error=>{
-                let toast = this.toastCtrl.create({
-                    message: "Error en la conexión a internet",
-                    duration: 2000,
-                    position: 'center'
+                    modal.onDidDismiss((data: any[]) => {
+                        if (data) {
+                        }
+                    });
                 });
-
-                toast.present(toast);
-            });
 
     }
 
@@ -302,6 +315,65 @@ export class PrincipalPage {
                     loader.dismissAll();
                 }
             );
+    }
+
+
+    // notificaciones
+    cargarNotificaciones() {
+
+        this.mainservice.getLocalidades().subscribe(
+            (response) => {
+                this.localidades = response;
+            }
+        );
+
+        this.mainservice.getRubros().subscribe(
+            (response) => {
+                this.rubros = response;
+            }
+        );
+
+
+        this.mainservice.getOndas().subscribe(
+            (response) => {
+                this.ondas = response;
+            }
+        );
+
+        this.mainservice.getDescuentos().subscribe(
+            (response) => {
+                this.descuentos = response;
+            }
+        );
+
+        this.mainservice.getAllEmpresas().subscribe(
+            (response) => {
+                this.empresas = response;
+            }
+        );
+
+        this.mainservice.getSubRubros('gastronomia').subscribe(
+            (response) => {
+                this.gastronomia = response;
+            }
+        );
+
+        this.mainservice.getSubRubros('recreacion-diversion').subscribe(
+            (response) => {
+                this.entretenimiento = response;
+            }
+        );
+
+        this.mainservice.getSubRubros('servicios').subscribe(
+            (response) => {
+                this.servicios = response;
+            }
+        );
+
+    }
+
+    guardarPerfil() {
+        console.log(this.notificacionesDescuentos)
     }
 
 }
