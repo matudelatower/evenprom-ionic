@@ -1,10 +1,10 @@
 <ion-grid class="publicacion" *ngIf="publicacion.premium" no-padding>
     <ion-row>
         <ion-col text-left>
-            <b class="ep-gris" *ngIf="!publicacion.hora_inicio" *ngIf="fecha>=publicacion.rango_fecha.fecha_desde">
+            <b class="ep-gris" *ngIf="!publicacion.hora_inicio" ion-text>
                 {{ getMesByFecha(publicacion.rango_fecha.fecha_desde) }}.
             </b>
-            <b class="ep-gris" *ngIf="publicacion.hora_inicio"> {{publicacion.hora_inicio}}
+            <b class="ep-gris" *ngIf="publicacion.hora_inicio" ion-text> {{publicacion.hora_inicio}}
             </b>
         </ion-col>
     </ion-row>
@@ -27,7 +27,7 @@
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
         <ion-col offset-10>
             <!--<ion-note>{{publicacion.descripcion}}</ion-note>-->
-            <span color="ep-gris-claro">{{publicacion.descripcion | truncate : [20] }}</span>
+            <span color="ep-gris-claro" ion-text>{{publicacion.descripcion | truncate : [20] }}</span>
         </ion-col>
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" class="img-publicacion-content">
@@ -71,10 +71,10 @@
 <ion-grid class="publicacion" *ngIf="!publicacion.premium" no-padding>
     <ion-row>
         <ion-col text-left>
-            <b class="ep-gris" *ngIf="!publicacion.hora_inicio">
+            <b class="ep-gris" *ngIf="!publicacion.hora_inicio" ion-text>
                 {{getMesByFecha(publicacion.rango_fecha.fecha_desde) }}.
             </b>
-            <b class="ep-gris" *ngIf="publicacion.hora_inicio"> {{publicacion.hora_inicio}}
+            <b class="ep-gris" *ngIf="publicacion.hora_inicio" ion-text> {{publicacion.hora_inicio}}
             </b>
         </ion-col>
     </ion-row>
@@ -95,7 +95,7 @@
             </ion-row>
             <ion-row>
                 <ion-col offset-20>
-                    <span color="ep-gris-claro">{{publicacion.descripcion | truncate : [30] }}</span>
+                    <span color="ep-gris-claro" ion-text>{{publicacion.descripcion | truncate : [30] }}</span>
                     <!--<ion-note [innerHTML]="publicacion.cuerpo | truncate : [30] "></ion-note>-->
                 </ion-col>
             </ion-row>

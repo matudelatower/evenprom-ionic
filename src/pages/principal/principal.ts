@@ -276,22 +276,24 @@ export class PrincipalPage {
         loader.present();
 
         this.mainservice.getAllEmpresas()
-            .subscribe(
-                (response) => {
-                    let param = {
-                        empresas: response
-                    }
+            .subscribe(response => {
+                let param = {
+                    empresas: response
+                };
 
-                    let modal = this.mainservice.modalCreate(ModalMapa, param);
+                loader.dismissAll();
 
-                    loader.dismissAll();
-                    modal.present();
+                this.navController.push(ModalMapa, param);
 
-                    modal.onDidDismiss((data: any[]) => {
-                        if (data) {
-                        }
-                    });
+            }, error => {
+                let toast = this.toastCtrl.create({
+                    message: "Error en la conexión a internet",
+                    duration: 2000,
+                    position: 'center'
                 });
+
+                toast.present(toast);
+            });
 
     }
 

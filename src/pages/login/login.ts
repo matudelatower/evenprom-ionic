@@ -138,6 +138,7 @@ export class LoginPage {
             error => {
                 console.log(JSON.stringify(error));
                 Facebook.logout();
+                GooglePlus.logout();
                 NativeStorage.remove('userData');
                 BackgroundGeolocation.stop();
                 loader.dismissAll();

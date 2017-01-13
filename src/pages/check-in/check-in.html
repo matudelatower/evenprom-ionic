@@ -20,16 +20,14 @@
 <ion-content padding>
     <ion-list>
         <div *ngFor="let item of checkIns">
-
-            <ion-item *ngIf="item.publicacion">
+            <ion-item *ngIf="item.publicacion" style="border:none !important; padding: 10px">
                 <h2>{{ item.publicacion.nombre_empresa }} </h2>
                 <p>{{item.publicacion.titulo}}</p>
                 <button ion-button clear item-right (click)="itemSelected(item)">Ver</button>
             </ion-item>
 
-            <ion-item *ngIf="item.empresa">
+            <ion-item *ngIf="item.empresa" style="border:none !important; padding: 10px">
                 <h2>{{ item.empresa.nombre }} </h2>
-
             </ion-item>
         </div>
 
