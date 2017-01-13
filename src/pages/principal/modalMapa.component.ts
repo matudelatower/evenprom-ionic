@@ -18,7 +18,6 @@ export class ModalMapa {
     }
 
     dismiss () {
-        this.mapService.remove();
         this.viewCtrl.dismiss(false);
     }
 

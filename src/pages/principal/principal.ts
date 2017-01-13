@@ -373,7 +373,14 @@ export class PrincipalPage {
     }
 
     guardarPerfil() {
-        console.log(this.notificacionesDescuentos)
+        console.log(this.notificacionesDescuentos);
+        let toast = this.toastCtrl.create({
+            message: 'Perfil Guardado',
+            duration: 2000,
+            position: 'center'
+        });
+
+        toast.present(toast);
     }
 
 }

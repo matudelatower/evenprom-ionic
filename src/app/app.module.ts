@@ -21,8 +21,6 @@ import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 import {Empresas} from "../pages/empresas/empresas";
 import {CommentText} from "../directives/comment-text";
 import {FilterPublicaciones} from "../filters/filter-publicaciones";
-// import {GeocodingService} from "../services/mapbox/geocoding.service";
-// import {MapService} from "../services/mapbox/map.service";
 import {GeocodingService} from "../directives/map/geocode.service";
 import {MapService} from "../directives/map/map.service";
 import {MapComponent} from '../directives/map/map.component';
@@ -39,9 +37,9 @@ import {ContactoPage} from "../pages/contacto/contacto";
 import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
-import {GeolocalizacionPage} from "../pages/geolocalizacion/geolocalizacion";
 import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
 import {ModalImageDefault} from "../directives/img/image-default.modal";
+import {Truncate} from "../pipes/truncate";
 
 
 @NgModule({
@@ -77,9 +75,9 @@ import {ModalImageDefault} from "../directives/img/image-default.modal";
         CheckInPage,
         BuscarAmigosPage,
         CalendarioPage,
-        GeolocalizacionPage,
         ItemEmpresaComponent,
-        ModalImageDefault
+        ModalImageDefault,
+        Truncate
     ],
     imports: [
         TranslateModule.forRoot({
@@ -113,10 +111,8 @@ import {ModalImageDefault} from "../directives/img/image-default.modal";
         CheckInPage,
         BuscarAmigosPage,
         CalendarioPage,
-        GeolocalizacionPage,
         ItemEmpresaComponent,
         ModalImageDefault
-
     ],
     providers: [Storage, MainService, GeocodingService, MapService, UserData],
     schemas: [

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {Platform, Events, LoadingController} from 'ionic-angular';
 import {
     StatusBar, BackgroundGeolocation, Device, Push, Facebook, NativeStorage, AppRate,
-    GooglePlus, Market
+    GooglePlus, Market, GoogleAnalytics
 } from 'ionic-native';
 import {PrincipalPage} from "../pages/principal/principal";
 import {LoginPage} from "../pages/login/login";
@@ -13,7 +13,6 @@ import {MainService} from "./main.service";
 import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
-import {GeolocalizacionPage} from "../pages/geolocalizacion/geolocalizacion";
 
 
 @Component({
@@ -26,7 +25,7 @@ export class MyApp {
     user: any;
     pages = [];
 
-    prod = false;
+    prod = true;
 
     menues: any = [
         {
@@ -77,13 +76,6 @@ export class MyApp {
         },
         {
             function: function () {
-                this.openPage(GeolocalizacionPage)
-            }.bind(this),
-            icono: 'pin',
-            nombre: 'Geolocalización',
-        },
-        {
-            function: function () {
                 this.openPage(TuEmpresaAquiPage)
             }.bind(this),
             icono: 'call',
@@ -105,6 +97,14 @@ export class MyApp {
             StatusBar.styleDefault();
 
             if (this.prod) {
+
+                GoogleAnalytics.startTrackerWithId('UA-90332502-1')
+                    .then(() => {
+                        console.log('Google analytics is ready now');
+                        // Tracker is ready
+                        // You can now track pages or set additional information such as AppVersion or UserId
+                    })
+                    .catch(e => console.log('Error starting GoogleAnalytics', e));
 
                 console.log('Device UUID is: ' + Device.uuid);
 

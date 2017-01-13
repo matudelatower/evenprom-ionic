@@ -15,6 +15,9 @@ export class ItemListEmpresa {
 
     @Input() publicacion;
     @Input() isFirst;
+    @Input() fecha;
+
+    grupoFecha:any;
 
 
     constructor(public toastCtrl: ToastController,
@@ -30,8 +33,6 @@ export class ItemListEmpresa {
 
         var hoy = new Date();
         var fechaPubli = new Date(fechaHumana[2], fechaHumana[1] - 1, fechaHumana[1]);
-
-        console.log(hoy.getTime() === fechaPubli.getTime()); // prints true (correct)
 
         if (hoy.getTime() >= fechaPubli.getTime()) {
             fecha = hoy.getDate() + '-' + hoy.getMonth() + 1 + '-' + hoy.getFullYear();

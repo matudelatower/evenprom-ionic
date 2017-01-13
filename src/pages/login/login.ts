@@ -151,7 +151,7 @@ export class LoginPage {
         // GooglePlus.trySilentLogin();
         GooglePlus.login({
             'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-            'webClientId': '902289846212-2sp3sa7lo9bvd2u56j1gmcu59g8sq5ph.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+            'webClientId': '902289846212-8pvgc0clqfbna83kp1iqrpm71c2u4h45.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
             'offline': true
         })
             .then(

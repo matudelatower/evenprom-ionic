@@ -1,8 +1,8 @@
 <ion-grid class="publicacion" *ngIf="publicacion.premium" no-padding>
     <ion-row>
         <ion-col text-left>
-            <b class="ep-gris" *ngIf="!publicacion.hora_inicio"> {{getMesByFecha
-                (publicacion.rango_fecha.fecha_desde)}}.
+            <b class="ep-gris" *ngIf="!publicacion.hora_inicio" *ngIf="fecha>=publicacion.rango_fecha.fecha_desde">
+                {{ getMesByFecha(publicacion.rango_fecha.fecha_desde) }}.
             </b>
             <b class="ep-gris" *ngIf="publicacion.hora_inicio"> {{publicacion.hora_inicio}}
             </b>
@@ -26,7 +26,8 @@
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
         <ion-col offset-10>
-            <ion-note>{{publicacion.descripcion}}</ion-note>
+            <!--<ion-note>{{publicacion.descripcion}}</ion-note>-->
+            <span color="ep-gris-claro">{{publicacion.descripcion | truncate : [20] }}</span>
         </ion-col>
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" class="img-publicacion-content">
@@ -34,11 +35,11 @@
             <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
             <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
                  [ngStyle]="{'background-color':publicacion.color}">
-                {{publicacion.promocion | uppercase}}
+                <span>{{publicacion.promocion | uppercase}}</span>
             </div>
             <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
                  [ngStyle]="{'background-color':publicacion.color}">
-                {{publicacion.titulo | uppercase}}
+                <span>{{publicacion.titulo | uppercase}}</span>
             </div>
         </ion-col>
     </ion-row>
@@ -70,8 +71,8 @@
 <ion-grid class="publicacion" *ngIf="!publicacion.premium" no-padding>
     <ion-row>
         <ion-col text-left>
-            <b class="ep-gris" *ngIf="!publicacion.hora_inicio"> {{getMesByFecha
-                (publicacion.rango_fecha.fecha_desde)}}.
+            <b class="ep-gris" *ngIf="!publicacion.hora_inicio">
+                {{getMesByFecha(publicacion.rango_fecha.fecha_desde) }}.
             </b>
             <b class="ep-gris" *ngIf="publicacion.hora_inicio"> {{publicacion.hora_inicio}}
             </b>
@@ -92,11 +93,10 @@
                     </h1>
                 </ion-col>
             </ion-row>
-
-
             <ion-row>
                 <ion-col offset-20>
-                    <ion-note>{{publicacion.descripcion}}</ion-note>
+                    <span color="ep-gris-claro">{{publicacion.descripcion | truncate : [30] }}</span>
+                    <!--<ion-note [innerHTML]="publicacion.cuerpo | truncate : [30] "></ion-note>-->
                 </ion-col>
             </ion-row>
         </ion-col>

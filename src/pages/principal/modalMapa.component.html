@@ -1,11 +1,19 @@
 <ion-header>
 
-    <ion-navbar>
+    <ion-toolbar>
+        <ion-buttons start>
+            <button ion-button color="primary" (click)="dismiss(false)">
+                <ion-icon name="close"></ion-icon>
+            </button>
+        </ion-buttons>
 
-        <ion-title text-center>Mapa de Empresas</ion-title>
-    </ion-navbar>
+        <ion-title>
+            Mapa de Empresas
+        </ion-title>
+
+    </ion-toolbar>
 </ion-header>
 
 <ion-content>
-          <empresas-map [empresas]="empresas" style="width:100%;"></empresas-map>
+    <empresas-map [empresas]="empresas" style="width:100%;"></empresas-map>
 </ion-content>

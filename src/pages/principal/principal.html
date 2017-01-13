@@ -1,26 +1,24 @@
 <ion-header>
     <ion-navbar>
-        <!--<button ion-button menuToggle end>
-          <ion-icon name="menu"></ion-icon>
-        </button>
-        <ion-title>Page Uno</ion-title>-->
         <button *ngIf="!showSearch" ion-button menuToggle>
-            <img src="assets/img/logos/favicon.png" style="width: 50%; margin-left: -20%; position: absolute;">
-            <ion-icon name="menu"></ion-icon>
+            <img src="assets/img/logos/favicon.png"
+                 class="logo-menu">
+            <ion-icon name="menu" color="ep-gris-claro" class="btn-menu-hamb"></ion-icon>
         </button>
 
-        <!--<ion-title>-->
-        <!--WhatsOn Offers & Events-->
-        <!--</ion-title>-->
+        <!--TODO
+        buscador que hizo sergio por ciudad.
+        -->
         <ion-searchbar #searchP [hidden]="!showSearch" [(ngModel)]="search" (ionBlur)="cancelarBusqueda($event)"
                        (ionClear)="cancelarBusqueda($event)" (ionCancel)="cancelarBusqueda($event)"
                        placeholder="Buscar publicaciones y eventos"></ion-searchbar>
         <ion-buttons *ngIf="!showSearch" end>
-            <button (click)="modalSearch({charNum: 0})" ion-button icon-only>
-                <ion-icon name="options"></ion-icon>
-            </button>
+            <!--<button (click)="modalSearch({charNum: 0})" ion-button icon-only>-->
+            <!--<ion-icon name="options"></ion-icon>-->
+            <!--</button>-->
             <button (click)="mostrarBusqueda()" ion-button icon-only>
-                <ion-icon name="search"></ion-icon>
+                Posadas
+                <ion-icon name="search" color="ep-gris-claro"></ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
@@ -30,10 +28,10 @@
                 <b class="ep-celeste">even</b><b class="ep-fucsia">prom</b>
             </ion-segment-button>
             <ion-segment-button value="1" (click)="selectedTab()">
-                <ion-icon name="home"></ion-icon>
+                <ion-icon name="home" color="ep-gris-claro"></ion-icon>
             </ion-segment-button>
             <ion-segment-button value="2" (click)="selectedTab()">
-                <ion-icon name="notifications-outline"></ion-icon>
+                <ion-icon name="notifications-outline" color="ep-gris-claro"></ion-icon>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
@@ -44,6 +42,7 @@
         <ion-slides pager #mySlider (ionDidChange)="onSlideChanged()">
 
             <ion-slide *ngSwitchCase="tabBody">
+
                 <ion-refresher (ionRefresh)="doRefresh($event)">
                     <ion-refresher-content
                             pullingIcon="arrow-dropdown"
@@ -94,15 +93,14 @@
 
 
                 </ion-grid>
+
                 <ion-list *ngIf="publicaciones">
-
-
                     <item-list-empresa
                             *ngFor="let publicacion of (publicaciones | filterPublicaciones:search); let isFirst = first"
                             [publicacion]="publicacion" [isFirst]="isFirst">
                     </item-list-empresa>
-
                 </ion-list>
+
             </ion-slide>
 
             <ion-slide *ngSwitchCase="tabBody">
@@ -219,7 +217,7 @@
 
                 <ion-row>
                     <ion-col text-center>
-                        <button ion-button outline round (click)="guardarPerfil()" >Aplicar</button>
+                        <button ion-button outline round (click)="guardarPerfil()">Aplicar</button>
                     </ion-col>
                 </ion-row>
             </ion-slide>
@@ -227,7 +225,10 @@
     </div>
 
     <ion-fab right bottom>
-        <button mini ion-fab color="dark" (click)="modalUbicaciones()">
+        <button mini ion-fab color="ep-gris" (click)="modalSearch({charNum: 0})">
+            <ion-icon name="funnel"></ion-icon>
+        </button>
+        <button mini ion-fab color="ep-gris" (click)="modalUbicaciones()">
             <ion-icon name="pin"></ion-icon>
         </button>
     </ion-fab>
