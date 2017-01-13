@@ -1,7 +1,11 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
 import {DomSanitizer} from '@angular/platform-browser';
-import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker, Transfer, Crop, Geolocation} from 'ionic-native';
+
+/**
+ * Agregar plugin de Camera ionic plugin add cordova-plugin-camera
+ */
+import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker ,Transfer, Crop, Geolocation} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 
@@ -249,7 +253,7 @@ export class EmpresaPerfilPage {
     }
 
     comoLlegar() {
-        if (!this.empresa.direccion){
+        if (!this.empresa.direccion) {
             let toast = this.toastCtrl.create({
                 message: "La empresa no tiene cargada la dirección",
                 duration: 1500,
@@ -312,7 +316,7 @@ export class EmpresaPerfilPage {
 
                 window.open(url, "_system");
 
-            }, error =>{
+            }, error => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
                     message: "No se ha podido abrir el mapa.",
@@ -413,4 +417,68 @@ export class EmpresaPerfilPage {
             toast.present();
         });
     }
+
+    /*** Metodo para subir fotos desde la camara
+
+    camera() {
+
+        this.mainService.getUser().then((user)=> {
+            this.uploadImgCamera(user.userID, this.empresa.id);
+        }, (error)=> {
+            let toast = this.toastCtrl.create({
+                message: this.mainService.mensajeUserAnonimo,
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present();
+        });
+
+    }
+
+    uploadImgCamera(userID, empresaId) {
+
+        let options = {maximumImagesCount: 1};
+        let loader = this.loadingCtrl.create({
+            content: "Subiendo imagen.",
+            // duration: 6000
+        });
+
+
+        const fileTransfer = new Transfer();
+
+        Camera.getPicture(options).then(
+            img => {
+                loader.present();
+                Crop.crop(img, {quality: 75})
+                    .then(
+                        newImage => {
+
+                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas").then((data)=> {
+                                let toast = this.toastCtrl.create({
+                                    message: "Imagen subida",
+                                    duration: 1500,
+                                    position: 'center'
+                                });
+
+                                toast.present(toast);
+                                loader.dismissAll();
+
+                                this.getImagenes();
+
+                            })
+                        });
+
+
+            }, (err) => {
+                let toast = this.toastCtrl.create({
+                    message: "Error en la lectura de imágenes",
+                    duration: 1500,
+                    position: 'center'
+                });
+                loader.dismissAll();
+                toast.present();
+            });
+    }
+    */
 }

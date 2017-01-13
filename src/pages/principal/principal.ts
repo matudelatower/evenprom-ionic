@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
-import {ToastController, Slides} from "ionic-angular";
+import {ToastController, Slides,Events} from "ionic-angular";
 import {ModalSearch} from '../../pages/modals/search';
 import {MainService} from "../../app/main.service";
 import 'leaflet';
@@ -8,6 +8,8 @@ import {Empresas} from "../empresas/empresas";
 import {MapService} from './../../directives/map/map.service';
 import {GeosearchComponent} from './../../directives/map/geosearch.component';
 import {ModalMapa} from './modalMapa.component';
+import { Geolocation} from 'ionic-native';
+import {GeocodingService} from "../../directives/map/geocode.service";
 
 
 @Component({
@@ -17,7 +19,7 @@ import {ModalMapa} from './modalMapa.component';
 export class PrincipalPage {
 
     @Output() locationFound = new EventEmitter();
-    @ViewChild('mySlider') slider: Slides;
+    @ViewChild('mySlider') slider:Slides;
 
 
     tabs = "0";
@@ -27,22 +29,22 @@ export class PrincipalPage {
 
     errorNoConexion = false;
 
-    publicaciones: any[];
+    publicaciones:any[];
 
-    promoCalendario: any;
+    promoCalendario:any;
 
     myDate = new Date();
 
     // notificaciones
-    notificacionesOnda: any;
-    notificacionesLocalidad: any;
-    notificacionesDescuentos: any;
-    notificacionesRubro: any;
-    notificacionesCompras: any;
-    notificacionesEntretenimiento: any;
-    notificacionesGastronomia: any;
-    notificacionesEmpresa: any;
-    notificacionesEventos: any;
+    notificacionesOnda:any;
+    notificacionesLocalidad:any;
+    notificacionesDescuentos:any;
+    notificacionesRubro:any;
+    notificacionesCompras:any;
+    notificacionesEntretenimiento:any;
+    notificacionesGastronomia:any;
+    notificacionesEmpresa:any;
+    notificacionesEventos:any;
 
     rubros = [];
     ondas = [];
@@ -53,24 +55,49 @@ export class PrincipalPage {
     entretenimiento = [];
     gastronomia = [];
 
-    showSearch: Boolean = false;
+    showSearch:Boolean = false;
 
     search = "";
 
-    @ViewChild('searchP') searchP: Searchbar;
+    @ViewChild('searchP') searchP:Searchbar;
 
-    constructor(private navController: NavController,
-                public mainservice: MainService,
-                public loadingCtrl: LoadingController,
-                public toastCtrl: ToastController,
-                public mapService: MapService) {
+    constructor(private navController:NavController,
+                public mainservice:MainService,
+                public loadingCtrl:LoadingController,
+                public toastCtrl:ToastController,
+                public geoService:GeocodingService,
+                public events:Events,
+                public mapService:MapService) {
         this.mapService = mapService;
 
         this.doRefresh(false);
 
+
+        this.events.subscribe(this.mainservice.event_location_detected, (location)=> {
+
+            this.setCurrentLocalidad(location.latitude, location.longitude);
+        });
+
     }
 
     ngOnInit() {
+
+        Geolocation.getCurrentPosition().then((location) => {
+            this.setCurrentLocalidad(location.coords.latitude, location.coords.longitude);
+            //this.setCurrentLocalidad(-27.4338563, -55.8643096);
+        }, error => console.log("error al consultar ciudad actual"));
+
+    }
+
+    setCurrentLocalidad(lat, lng) {
+        let latlng = lat + ',' + lng;
+        this.geoService.getCitys(latlng).subscribe(addr => {
+
+            console.log(location);
+            if (addr.valid) {
+                this.search = addr.address;
+            }
+        }, error =>console.log("error al consultar ciudad actual"));
 
     }
 
@@ -226,7 +253,7 @@ export class PrincipalPage {
 
         modal.present();
 
-        modal.onDidDismiss((data: any[]) => {
+        modal.onDidDismiss((data:any[]) => {
             if (data) {
                 console.log(data);
             }
@@ -243,7 +270,7 @@ export class PrincipalPage {
 
         modal.present();
 
-        modal.onDidDismiss((data: any[]) => {
+        modal.onDidDismiss((data:any[]) => {
             if (data) {
                 console.log(data);
             }

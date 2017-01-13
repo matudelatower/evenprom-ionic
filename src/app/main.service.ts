@@ -28,6 +28,9 @@ export class MainService {
 
     public mensajeUserAnonimo = "Useted no puede realizar esta acción.";
 
+    public event_location_detected ="location:detected";
+
+
 
     user: any;
 

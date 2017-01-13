@@ -137,6 +137,8 @@ export class MyApp {
                 BackgroundGeolocation.configure((location) => {
                     console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
 
+                    this.events.publish(this.mainService.event_location_detected, location);
+
                     if (platform.is('ios')) {
                         // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
                         // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.

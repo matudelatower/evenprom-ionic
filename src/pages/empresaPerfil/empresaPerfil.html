@@ -67,9 +67,19 @@
     <div class="scroll-hidden-x-container">
         <div class="scroll-hidden-x-inner">
             <ion-row>
-                <ion-col (click)="openFileChooser()" class="text-center" width-50>
-                    <ion-icon style="font-size:50px;" name="camera"></ion-icon>
-                    <br>Añadir una foto
+                <ion-col  class="text-center" width-50>
+                    <ion-row>
+                        <ion-col (click)="openFileChooser()" width-100>
+                            <ion-icon style="font-size:50px;" name="images"></ion-icon>
+                            <br>Añadir una foto
+
+                        </ion-col>
+                        <!--<ion-col (click)="camera()" width-50>-->
+                            <!--<ion-icon style="font-size:50px;" name="camera"></ion-icon>-->
+                            <!--<br>Sacar una foto-->
+
+                        <!--</ion-col>-->
+                    </ion-row>
                 </ion-col>
                 <ion-col  *ngFor="let img of imagenes" class="text-center" width-50>
                     <img [preview]="true" [srcPreview]="img.imagen_usuario_empresa" style="max-height: 140px;" class="img-responsive" [src]="img.thumb">
