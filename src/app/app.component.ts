@@ -79,7 +79,7 @@ export class MyApp {
                 this.openPage(TuEmpresaAquiPage)
             }.bind(this),
             icono: 'call',
-            nombre: 'Tu empresa aquí',
+            nombre: 'Registra tu empresa',
         },
         {
             function: function () {

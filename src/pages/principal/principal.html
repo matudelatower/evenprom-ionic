@@ -39,7 +39,7 @@
 
 <ion-content class="principal">
     <div [ngSwitch]="tabBody">
-        <ion-slides pager #mySlider (ionDidChange)="onSlideChanged()">
+        <ion-slides pager="progress" #mySlider (ionSlideDidChange)="onSlideChanged()">
 
             <ion-slide *ngSwitchCase="tabBody">
 
@@ -107,9 +107,16 @@
                 <h2>Empresas</h2>
             </ion-slide>
             <ion-slide *ngSwitchCase="tabBody" class="notificaciones">
-                <h2>Notificaciones</h2>
-                Configura tus notificaciones por:
-
+                <ion-row>
+                    <ion-col text-center>
+                        <h2>Notificaciones</h2>
+                    </ion-col>
+                </ion-row>
+                <ion-row>
+                    <ion-col>
+                        <h3>Configura tus notificaciones por:</h3>
+                    </ion-col>
+                </ion-row>
                 <ion-row>
                     <ion-col width-33>
                         <ion-label>Localidad</ion-label>
@@ -215,9 +222,9 @@
                     </ion-col>
                 </ion-row>
 
-                <ion-row>
+                <ion-row margin-top>
                     <ion-col text-center>
-                        <button ion-button outline round (click)="guardarPerfil()">Aplicar</button>
+                        <button ion-button large round (click)="guardarPerfil()">Aplicar</button>
                     </ion-col>
                 </ion-row>
             </ion-slide>

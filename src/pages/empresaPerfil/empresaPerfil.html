@@ -108,7 +108,7 @@
     <ion-row class="row-novedades">
         <ion-col text-center>
             <h2>Novedades</h2>
-            <ion-slides pager>
+            <ion-slides pager="progress">
 
                 <ion-slide *ngFor="let noticia of noticias">
                     <ion-card>
@@ -145,15 +145,13 @@
             <ion-icon name="person"></ion-icon>
         </ion-col>
         <ion-col text-right>
-            <a (click)="openUrl(empresa.contacto.web)">
-                <span>Sitio Web</span>
-                <span><ion-icon name="globe"></ion-icon></span>
-            </a>
+            <button ion-button round icon-left outline small (click)="openUrl(empresa.contacto.web)">
+                <ion-icon name="globe"></ion-icon> Sitio Web
+            </button>
             <br>
-            <a (click)="comoLlegar()">
-                <span>Cómo Llegar?</span>
-                <span><ion-icon name="pin"></ion-icon></span>
-            </a>
+            <button ion-button round icon-left outline small (click)="comoLlegar()">
+                <ion-icon name="pin"></ion-icon> Cómo Llegar?
+            </button>
 
         </ion-col>
     </ion-row>
