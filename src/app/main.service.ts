@@ -30,6 +30,8 @@ export class MainService {
 
     public event_location_detected ="location:detected";
 
+    public currentLocalidad:any = false;
+
 
 
     user: any;

@@ -81,11 +81,14 @@ export class PrincipalPage {
     }
 
     ngOnInit() {
-
-        Geolocation.getCurrentPosition().then((location) => {
-            this.setCurrentLocalidad(location.coords.latitude, location.coords.longitude);
-            //this.setCurrentLocalidad(-27.4338563, -55.8643096);
-        }, error => console.log("error al consultar ciudad actual"));
+        if (!this.mainservice.currentLocalidad){
+            Geolocation.getCurrentPosition().then((location) => {
+                this.setCurrentLocalidad(location.coords.latitude, location.coords.longitude);
+                //this.setCurrentLocalidad(-27.4338563, -55.8643096);
+            }, error => console.log("error al consultar ciudad actual"));
+        }else{
+            this.search = this.mainservice.currentLocalidad;
+        }
 
     }
 
@@ -96,6 +99,7 @@ export class PrincipalPage {
             console.log(location);
             if (addr.valid) {
                 this.search = addr.address;
+                this.mainservice.currentLocalidad = addr.address;
             }
         }, error => console.log("error al consultar ciudad actual"));
 
@@ -120,7 +124,7 @@ export class PrincipalPage {
     }
 
     cancelarBusqueda() {
-        console.log('cencelar');
+        this.mainservice.currentLocalidad = this.search;
         this.showSearch = false;
     }
 
