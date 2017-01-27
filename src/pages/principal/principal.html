@@ -38,19 +38,23 @@
 </ion-header>
 
 <ion-content class="principal">
+    <div *ngIf ="tabs == 0">
+        <ion-refresher (ionRefresh)="doRefresh($event)">
+            <ion-refresher-content
+                    pullingIcon="arrow-dropdown"
+                    refreshingSpinner="circles"
+                    refreshingText="Actualizando...">
+            </ion-refresher-content>
+        </ion-refresher>
+    </div>
+
+
     <div [ngSwitch]="tabBody">
         <ion-slides pager="progress" #mySlider (ionSlideDidChange)="onSlideChanged()">
 
             <ion-slide *ngSwitchCase="tabBody">
 
-                <ion-refresher (ionRefresh)="doRefresh($event)">
-                    <ion-refresher-content
-                            pullingIcon="arrow-dropdown"
-                            pullingText="Suelte para actualizar"
-                            refreshingSpinner="circles"
-                            refreshingText="Actualizando...">
-                    </ion-refresher-content>
-                </ion-refresher>
+
 
                 <ion-grid no-padding no-padding *ngIf="errorNoConexion">
                     <ion-row no-padding>
@@ -65,7 +69,7 @@
                     </ion-row>
                     <ion-row no-padding>
                         <ion-col text-center width-100 no-padding>
-                            <img src="assets/img/noconexion.png">
+                            <img style="height: 100px;" src="assets/img/noconexion.png">
                         </ion-col>
                     </ion-row>
                 </ion-grid>
@@ -73,9 +77,11 @@
                 <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
                     <ion-row no-padding>
                         <ion-col text-center width-100 no-padding>
-                            <h1 [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
+                            <h1 *ngIf="promoCalendario.color" [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
                                 {{promoCalendario.titulo}}
-
+                            </h1>
+                            <h1 *ngIf="!promoCalendario.color" [ngStyle]="{'background-color': promoCalendario.color, padding:'5px', margin:'0px'}">
+                                {{promoCalendario.titulo}}
                             </h1>
 
                         </ion-col>

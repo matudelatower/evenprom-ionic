@@ -54,7 +54,6 @@ export class Empresas {
                     console.log('error timeout');
 
                     this.errorNoConexion = true;
-                    //this.publicaciones = [];
                     loader.dismissAll();
                 }
             );
@@ -63,15 +62,12 @@ export class Empresas {
             this.mainService.getEmpresas(null).subscribe(
                 (data) => {
                     this.empresas = data;
-                    this.errorNoConexion = false;
                     loader.dismissAll();
 
                 },
                 (err) => {
                     console.log('error timeout');
 
-                    this.errorNoConexion = true;
-                    //this.publicaciones = [];
                     loader.dismissAll();
 
                 },
@@ -79,8 +75,6 @@ export class Empresas {
 
         });
 
-        // console.log(this.rubros);
-        // console.log(this.empresas);
     }
 
     loadEmpresasBySlug(rub) {

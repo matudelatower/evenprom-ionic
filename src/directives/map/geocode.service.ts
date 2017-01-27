@@ -66,10 +66,17 @@ export class GeocodingService {
                      * 4, 5 y 8 es la precision basada en la cantidad de datos que devuelve google
                      */
                     if (addrC.length == 5) {
-                        address = addrC[1].long_name;
+                        if (isNaN(addrC[0].long_name)){
+                            address = addrC[1].long_name;
+                        }else{
+                            address = addrC[2].long_name;
+                        }
+
                     } else if (addrC.length == 4) {
                         address = addrC[1].long_name;
                     } else if (addrC.length == 8) {
+                        address = addrC[2].long_name;
+                    } else if (addrC.length == 6) {
                         address = addrC[2].long_name;
                     } else {
                         addr.valid = false;

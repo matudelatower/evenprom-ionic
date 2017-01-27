@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
-import {ToastController, Slides, Events} from "ionic-angular";
+import {ToastController, Slides, Events, Content} from "ionic-angular";
 import {ModalSearch} from '../../pages/modals/search';
 import {MainService} from "../../app/main.service";
 import 'leaflet';
@@ -20,6 +20,7 @@ export class PrincipalPage {
 
     @Output() locationFound = new EventEmitter();
     @ViewChild('mySlider') slider: Slides;
+    @ViewChild(Content) content: Content;
 
 
     tabs = "0";
@@ -116,6 +117,7 @@ export class PrincipalPage {
         else if (this.tabs == "2") {
             this.cargarNotificaciones();
         }
+        this.content.scrollToTop();
     }
 
     selectedTab() {
@@ -289,7 +291,7 @@ export class PrincipalPage {
 
 
         let toast = this.toastCtrl.create({
-            message: promo.titulo + " Te lo desea: " + promo.nombre_empresa.toUpperCase(),
+            message: promo.titulo + " BY: " + promo.nombre_empresa.toUpperCase(),
             duration: 2000,
             position: 'center'
         });

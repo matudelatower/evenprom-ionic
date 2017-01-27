@@ -17,45 +17,44 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <ion-row class="img-rubro">
-        <img src="assets/img/6.jpg" class="img-responsive">
-    </ion-row>
-    <ion-row>
-        <div class="scroll-hidden-x-container">
-            <div class="scroll-hidden-x-inner">
-                <ion-row>
-                    <div *ngFor="let rubro of rubros" class="div-rubros-btn">
-                        <button *ngIf="!rubroSel" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large
-                                color="light" round class="btn-rubros">
-                            <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
-                        </button>
-                        <button *ngIf="rubroSel && rubro.slug != rubroSel.slug" (click)="loadEmpresasBySlug(rubro)"
-                                ion-button icon-only large color="light" round class="btn-rubros">
-                            <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
-                        </button>
-                        <button *ngIf="rubroSel && rubro.slug == rubroSel.slug" (click)="loadEmpresasBySlug(rubro)"
-                                ion-button icon-only large color="default" round class="btn-rubros">
-                            <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
-                        </button>
-                    </div>
+<ion-row class="img-rubro">
+    <img style="width: 100%;" src="assets/img/6.jpg">
+</ion-row>
+<ion-row>
+    <div class="scroll-hidden-x-container">
+        <div class="scroll-hidden-x-inner">
+            <ion-row>
+                <div *ngFor="let rubro of rubros" class="div-rubros-btn">
+                    <button *ngIf="!rubroSel" (click)="loadEmpresasBySlug(rubro)" ion-button icon-only large
+                            color="light" round class="btn-rubros">
+                        <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
+                    </button>
+                    <button *ngIf="rubroSel && rubro.slug != rubroSel.slug" (click)="loadEmpresasBySlug(rubro)"
+                            ion-button icon-only large color="light" round class="btn-rubros">
+                        <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
+                    </button>
+                    <button *ngIf="rubroSel && rubro.slug == rubroSel.slug" (click)="loadEmpresasBySlug(rubro)"
+                            ion-button icon-only large color="default" round class="btn-rubros">
+                        <ion-icon [name]="rubro.icono?rubro.icono:'home'"></ion-icon>
+                    </button>
+                </div>
 
 
-                </ion-row>
-            </div>
+            </ion-row>
         </div>
+    </div>
+</ion-row>
+<ion-grid>
+
+    <ion-row class="responsive-sm" wrap>
+        <item-empresa
+                *ngFor="let item of empresas"
+                [empresa]="item">
+        </item-empresa>
     </ion-row>
-    <ion-grid>
-
-        <ion-row class="responsive-sm" wrap>
-            <item-empresa
-                    *ngFor="let item of empresas"
-                    [empresa]="item">
-            </item-empresa>
-        </ion-row>
 
 
-    </ion-grid>
-</ion-content>
+</ion-grid>
+
 
 

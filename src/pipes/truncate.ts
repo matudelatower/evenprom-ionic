@@ -1,23 +1,26 @@
-import { Injectable, Pipe } from '@angular/core';
+import {Injectable, Pipe} from '@angular/core';
 
 /*
-  Generated class for the Truncate pipe.
+ Generated class for the Truncate pipe.
 
-  See https://angular.io/docs/ts/latest/guide/pipes.html for more info on
-  Angular 2 Pipes.
-*/
+ See https://angular.io/docs/ts/latest/guide/pipes.html for more info on
+ Angular 2 Pipes.
+ */
 @Pipe({
-  name: 'truncate'
+    name: 'truncate'
 })
 @Injectable()
 export class Truncate {
 
-  transform(value: string, args: string[]) : string {
+    transform(value: string, args: string[]): string {
 
-    let limit = args.length > 0 ? parseInt(args[0], 10) : 10;
+        if (value) {
 
-    let trail = args.length > 1 ? args[1] : '...';
+            let limit = args.length > 0 ? parseInt(args[0], 10) : 10;
 
-    return value.length > limit ? value.substring(0, limit) + trail : value;
-  }
+            let trail = args.length > 1 ? args[1] : '...';
+
+            return value.length > limit ? value.substring(0, limit) + trail : value;
+        }
+    }
 }
