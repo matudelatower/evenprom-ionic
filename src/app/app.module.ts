@@ -2,8 +2,6 @@ import {NgModule} from '@angular/core';
 import {Http} from '@angular/http';
 import {IonicApp, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
-import {AboutPage} from '../pages/about/about';
-import {ContactPage} from '../pages/contact/contact';
 import {HomePage} from '../pages/home/home';
 import {EmpresaPerfilPage} from "../pages/empresaPerfil/empresaPerfil";
 import {LoginPage} from "../pages/login/login";
@@ -40,13 +38,12 @@ import {CalendarioPage} from "../pages/calendario/calendario";
 import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
 import {ModalImageDefault} from "../directives/img/image-default.modal";
 import {Truncate} from "../pipes/truncate";
+import {Config} from "./config";
 
 
 @NgModule({
     declarations: [
         MyApp,
-        AboutPage,
-        ContactPage,
         HomePage,
         EmpresaPerfilPage,
         LoginPage,
@@ -90,8 +87,6 @@ import {Truncate} from "../pipes/truncate";
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
-        AboutPage,
-        ContactPage,
         HomePage,
         EmpresaPerfilPage,
         LoginPage,
@@ -114,7 +109,7 @@ import {Truncate} from "../pipes/truncate";
         ItemEmpresaComponent,
         ModalImageDefault
     ],
-    providers: [Storage, MainService, GeocodingService, MapService, UserData],
+    providers: [Storage, MainService, GeocodingService, MapService, UserData, Config],
     schemas: [
         // ItemListEmpresa,
         // Progressbar

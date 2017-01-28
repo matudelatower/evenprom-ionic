@@ -1,0 +1,9 @@
+export const parameters: Object =
+{
+    apiUrl: "http://evenprom.com/test",
+    apiPath: "/app_dev.php/",
+    telefono: "+5493757518400",
+    googleReverseClientId: "123abc1231abc.apps.googleusercontent.com",
+    googleAnalyticsTrackId : "UA-123123",
+    pushSenderID: '123123123'
+}

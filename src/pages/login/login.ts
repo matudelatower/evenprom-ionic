@@ -5,6 +5,7 @@ import {Facebook, NativeStorage, BackgroundGeolocation, GooglePlus} from 'ionic-
 import {MainService} from "../../app/main.service";
 import {PrincipalPage} from "../principal/principal";
 import {UserData} from "./user-data";
+import {Config} from "../../app/config";
 
 
 @Component({
@@ -16,7 +17,7 @@ export class LoginPage {
 
     public rootPage: any;
     public local: any;
-
+    googleReverseClientId;
 
     lenguaje: String = 'Español';
 
@@ -25,13 +26,12 @@ export class LoginPage {
                 public loadingCtrl: LoadingController,
                 public translate: TranslateService,
                 public mainService: MainService,
-                public userData: UserData) {
+                public userData: UserData,
+                _config: Config) {
 
         this.translate.setDefaultLang('en');
         this.translate.use('es');
-
-        // this.local = new Storage(LocalStorage);
-        // this.local = Storage;
+        this.googleReverseClientId = _config.get('googleReverseClientId');
 
         console.log(translate);
     }
@@ -152,12 +152,12 @@ export class LoginPage {
         // GooglePlus.trySilentLogin();
         GooglePlus.login({
             'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-            'webClientId': '902289846212-8pvgc0clqfbna83kp1iqrpm71c2u4h45.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+            'webClientId': this.googleReverseClientId,
             'offline': true
         })
             .then(
                 rta => {
-                    console.log("rta",JSON.stringify(rta));
+                    console.log("rta", JSON.stringify(rta));
                     let user = {
                         avatar: rta.imageUrl,
                         sexo: rta.gender,

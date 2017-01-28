@@ -60,7 +60,7 @@
   <plugin name="cordova-plugin-splashscreen" spec="~4.0.1"/>
   <plugin name="ionic-plugin-keyboard" spec="~2.2.1"/>
   <plugin name="cordova-plugin-facebook4" spec="~1.7.4">
-    <variable name="APP_ID" value="1608149619490148"/>
+    <variable name="APP_ID" value="1633655593606217"/>
     <variable name="APP_NAME" value="EvenProm"/>
   </plugin>
   <plugin name="cordova-plugin-nativestorage" spec="~2.0.2"/>

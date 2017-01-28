@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {NavController, ViewController, LoadingController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {NavController, ViewController, LoadingController, Slides} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 
 
@@ -14,6 +14,8 @@ import {MainService} from "../../app/main.service";
     templateUrl: 'empresas.html'
 })
 export class Empresas {
+
+    @ViewChild('sliderRubros') slider: Slides;
 
     public rubros: any[];
     public empresas: any[];
@@ -75,6 +77,10 @@ export class Empresas {
 
         });
 
+    }
+
+    ngAfterViewInit() {
+        this.slider.startAutoplay();
     }
 
     loadEmpresasBySlug(rub) {

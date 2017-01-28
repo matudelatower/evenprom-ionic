@@ -13,6 +13,7 @@ import {MainService} from "./main.service";
 import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
+import {Config} from "./config";
 
 
 @Component({
@@ -25,7 +26,10 @@ export class MyApp {
     user: any;
     pages = [];
 
-    prod = true;
+    prod = false;
+    googleReverseClientId: any;
+    googleAnalyticsTrackId: any;
+    pushSenderID: any;
 
     menues: any = [
         {
@@ -90,15 +94,23 @@ export class MyApp {
         },
     ];
 
-    constructor(platform: Platform, public events: Events, public loadingCtrl: LoadingController, public mainService: MainService) {
+    constructor(platform: Platform,
+                public events: Events,
+                public loadingCtrl: LoadingController,
+                public mainService: MainService,
+                _config: Config) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
+            this.googleReverseClientId = _config.get('googleReverseClientId');
+            this.googleAnalyticsTrackId = _config.get('googleAnalyticsTrackId');
+            this.pushSenderID = _config.get('pushSenderID');
+
             if (this.prod) {
 
-                GoogleAnalytics.startTrackerWithId('UA-90332502-1')
+                GoogleAnalytics.startTrackerWithId(this.googleAnalyticsTrackId)
                     .then(() => {
                         console.log('Google analytics is ready now');
                         // Tracker is ready
@@ -110,7 +122,7 @@ export class MyApp {
 
                 var push = Push.init({
                     android: {
-                        senderID: '614567548763'
+                        senderID: this.pushSenderID
                     },
                     ios: {
                         alert: 'true',
@@ -188,7 +200,7 @@ export class MyApp {
                 // Google login
                 GooglePlus.trySilentLogin({
                     'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-                    'webClientId': '902289846212-2sp3sa7lo9bvd2u56j1gmcu59g8sq5ph.apps.googleusercontent.com', // optional clientId of your Web application from Credentials settings of your project - On Android, this MUST be included to get an idToken. On iOS, it is not required.
+                    'webClientId': this.googleReverseClientId,
                     'offline': true
                 })
                     .then(
@@ -245,7 +257,7 @@ export class MyApp {
         AppRate.promptForRating(false);
     }
 
-    recomiendanos(){
+    recomiendanos() {
         Market.open('com.evenprom.evenpromapp');
     }
 

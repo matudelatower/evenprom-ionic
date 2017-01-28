@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams} from 'ionic-angular';
 import {CallNumber, EmailComposer} from "ionic-native";
+import {Config} from "../../app/config";
 
 /*
  Generated class for the Contacto page.
@@ -14,7 +15,13 @@ import {CallNumber, EmailComposer} from "ionic-native";
 })
 export class ContactoPage {
 
-    constructor(public navCtrl: NavController, public navParams: NavParams) {
+    apiUrl;
+    tel;
+
+    constructor(public navCtrl: NavController, public navParams: NavParams,
+    _config: Config) {
+        this.apiUrl = _config.get('apiUrl');
+        this.tel = _config.get('telefono');
     }
 
     ionViewDidLoad() {
@@ -22,14 +29,15 @@ export class ContactoPage {
     }
 
 
-    openUrl(url) {
+    openUrl() {
+        let url = this.apiUrl;
         window.open(url, "_system");
     }
 
     call() {
 
 
-        CallNumber.callNumber('+5493757518400', true)
+        CallNumber.callNumber(this.tel, true)
             .then(() => {
                     console.log('Launched dialer!');
 

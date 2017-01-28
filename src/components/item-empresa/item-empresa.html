@@ -2,7 +2,7 @@
     <ion-card *ngIf="empresa">
 
         <div class="empresa-imagen" (click)="goToPerfil(empresa)">
-            <img [src]="empresa.image_name?empresa.image_name:'assets/img/empty.png'"/>
+            <img [src]="empresa.image_name"/>
         </div>
         <h2 class="card-title">
             <b> {{empresa.nombre | uppercase }}</b>

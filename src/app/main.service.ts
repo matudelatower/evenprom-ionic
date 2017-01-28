@@ -3,22 +3,16 @@ import {Http, Response} from '@angular/http';
 import {ModalController} from 'ionic-angular';
 import {Observable} from 'rxjs/Rx';
 import {NativeStorage} from "ionic-native";
+import {Config} from "./config";
 
 @Injectable()
 export class MainService {
 
-    //public ip = 'http://192.168.0.116';
-    //public ip = 'http://192.168.10.134';
-    //public ip = 'http://192.168.0.117';
-    public ip = 'http://evenprom.com/';
-    // public ip = 'http://dev.evenprom.com/';
-    //public ip = 'http://192.168.1.32';
+    public ip;
 
     public http;
 
-    //public service = this.ip + '/evenprom-backend/web/app_dev.php/';
-    // public service = this.ip + '/whatsoncity-backend/web/app_dev.php/';
-    public service = this.ip;
+    public service;
 
     public publicaciones;
 
@@ -28,16 +22,19 @@ export class MainService {
 
     public mensajeUserAnonimo = "Useted no puede realizar esta acción.";
 
-    public event_location_detected ="location:detected";
+    public event_location_detected = "location:detected";
 
-    public currentLocalidad:any = false;
-
-
+    public currentLocalidad: any = false;
 
     user: any;
 
 
-    constructor(http: Http, modalCont: ModalController) {
+    constructor(http: Http, modalCont: ModalController,
+                _config: Config) {
+
+        this.ip = _config.get('apiUrl');
+
+        this.service = this.ip + _config.get('apiPath');
 
         this.publicaciones = [];
 
