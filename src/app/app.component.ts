@@ -26,7 +26,7 @@ export class MyApp {
     user: any;
     pages = [];
 
-    prod = false;
+    prod = true;
     googleReverseClientId: any;
     googleAnalyticsTrackId: any;
     pushSenderID: any;
@@ -82,7 +82,7 @@ export class MyApp {
             function: function () {
                 this.openPage(TuEmpresaAquiPage)
             }.bind(this),
-            icono: 'call',
+            icono: 'open',
             nombre: 'Registra tu empresa',
         },
         {
