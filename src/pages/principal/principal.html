@@ -89,7 +89,7 @@
 
                     <ion-row no-padding class="img-publicacion-content">
                         <ion-col no-padding>
-                            <img style="width: 100%;" [src]="promoCalendario.imagen_publicacion"/>
+                            <img [preview]="true" [srcPreview]="promoCalendario.imagen_publicacion" style="width: 100%;" [src]="promoCalendario.imagen_publicacion"/>
                             <div class="img-promo-subtitle">
                                 {{ promoCalendario.nombre_empresa | uppercase}}
                             </div>

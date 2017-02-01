@@ -25,7 +25,8 @@
         </ion-col>
     </ion-row>
     <ion-row (click)="pagePublicacion(publicacion)" text-left>
-        <ion-col offset-10>
+        <ion-col width-10></ion-col>
+        <ion-col width-90 style="margin-left: 20px;">
             <!--<ion-note>{{publicacion.descripcion}}</ion-note>-->
             <span color="ep-gris-claro" ion-text>{{publicacion.descripcion | truncate : [20] }}</span>
         </ion-col>
@@ -87,14 +88,15 @@
                                   [name]="publicacion.rubros[0]?publicacion.rubros[0].icono:'checkmark'"></ion-icon>
                     </h1>
                 </ion-col>
-                <ion-col width-80>
+                <ion-col width-80 style="padding-right: 0px;">
                     <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f'}">
                         <strong>{{publicacion.nombre_empresa | uppercase}}</strong>
                     </h1>
                 </ion-col>
             </ion-row>
             <ion-row>
-                <ion-col offset-20>
+                <ion-col width-20></ion-col>
+                <ion-col width-80 style="margin-left: 20px;">
                     <span color="ep-gris-claro" ion-text>{{publicacion.descripcion | truncate : [30] }}</span>
                     <!--<ion-note [innerHTML]="publicacion.cuerpo | truncate : [30] "></ion-note>-->
                 </ion-col>
@@ -103,11 +105,11 @@
 
         <ion-col width-50 text-right>
             <h1 class="h1-empresa"
-                [ngStyle]="{'color': '#5c666f', 'font-size': '4em', 'font-weight': 'bold', 'white-space':'normal'}"
+                [ngStyle]="{'color': '#5c666f', 'font-size': '4em', 'font-weight': '900', 'white-space':'normal'}"
                 *ngIf="publicacion.promocion" class="promo" text-center>
                 {{publicacion.promocion | uppercase}}
             </h1>
-            <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f', padding:'5px'}"
+            <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f', padding:'5px', 'font-weight': '900'}"
                 *ngIf="!publicacion.promocion" class="promo" text-center>
                 {{publicacion.titulo | uppercase}}
             </h1>

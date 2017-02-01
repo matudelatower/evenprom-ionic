@@ -16,10 +16,10 @@
                 <ion-col width-75>
                     <h1 [ngStyle]="{'color': empresa.color, margin:'0px'}">{{ empresa.nombre | uppercase }}</h1>
                 </ion-col>
-                <ion-col width-25>
+                <ion-col width-25 text-center>
                     <ion-row>
                         <ion-col>
-                            <ion-icon *ngIf="empresa.rubros.length >0" [name]="empresa.rubros[0].icono"></ion-icon>
+                            <ion-icon style="font-size: 1.75em;" *ngIf="empresa.rubros.length >0" [name]="empresa.rubros[0].icono"></ion-icon>
 
                         </ion-col>
                         <ion-col>
