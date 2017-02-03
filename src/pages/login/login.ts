@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, Nav, LoadingController} from 'ionic-angular';
-import {TranslateService} from 'ng2-translate';
+// import {TranslateService} from 'ng2-translate';
 import {Facebook, NativeStorage, BackgroundGeolocation, GooglePlus} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {PrincipalPage} from "../principal/principal";
@@ -24,31 +24,19 @@ export class LoginPage {
     constructor(public navController: NavController,
                 public nav: Nav,
                 public loadingCtrl: LoadingController,
-                public translate: TranslateService,
                 public mainService: MainService,
                 public userData: UserData,
                 _config: Config) {
 
-        this.translate.setDefaultLang('en');
-        this.translate.use('es');
+
         this.googleReverseClientId = _config.get('googleReverseClientId');
 
-        console.log(translate);
     }
 
     ngOnInit() {
     }
 
-    cambiarLeguaje() {
-        if (this.lenguaje == 'Español') {
-            this.translate.use('es');
-            this.lenguaje = 'English';
-        } else {
-            this.translate.use('en');
-            this.lenguaje = 'Español';
-        }
 
-    }
 
 
     loginFacebook() {

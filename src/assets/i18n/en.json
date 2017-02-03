@@ -1,5 +1,19 @@
 {
-  "login.user": "User",
-  "login.pass": "Password",
-  "login.remember": "Remember me"
+  "user": "User",
+  "pass": "Password",
+  "remember": "Remember me",
+  "ingresar": "Enter",
+  "salir": "Quit",
+  "loginGoogle": "Sing in with Google",
+  "loginFacebook": "Sing in with Facebook",
+  "elegirLenguaje": "Language",
+  "editarPerfil": "Edit profile",
+  "inicio": "Home",
+  "favoritos": "Favorites",
+  "recomiendanos": "Recommend us",
+  "buscarAmigos": "Search Friends",
+  "calendario": "Calendar",
+  "calificacionGP": "QUALIFY IN GOOGLE PLAY",
+  "registraEmpresa": "Register your company",
+  "contactanos": "Contact Us"
 }

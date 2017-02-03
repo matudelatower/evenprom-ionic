@@ -14,6 +14,7 @@ import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
 import {Config} from "./config";
+import {TranslateService} from "ng2-translate";
 
 
 @Component({
@@ -26,10 +27,11 @@ export class MyApp {
     user: any;
     pages = [];
 
-    prod = true;
+    prod = false;
     googleReverseClientId: any;
     googleAnalyticsTrackId: any;
     pushSenderID: any;
+    lenguaje:any;
 
     menues: any = [
         {
@@ -37,19 +39,19 @@ export class MyApp {
                 this.openPage(PrincipalPage)
             }.bind(this),
             icono: 'home',
-            nombre: 'Inicio',
+            nombre: 'inicio',
         },
         {
             function: function () {
                 this.openPage(FavoritosPage)
             }.bind(this),
             icono: 'star',
-            nombre: 'Favoritos',
+            nombre: 'favoritos',
         },
         {
             function: this.recomiendanos,
             icono: 'notifications',
-            nombre: 'Recomiéndanos',
+            nombre: 'recomiendanos',
         },
 
         {
@@ -64,33 +66,33 @@ export class MyApp {
                 this.openPage(BuscarAmigosPage)
             }.bind(this),
             icono: 'people',
-            nombre: 'Buscar Amigos',
+            nombre: 'buscarAmigos',
         },
         {
             function: function () {
                 this.openPage(CalendarioPage)
             }.bind(this),
             icono: 'calendar',
-            nombre: 'Calendario',
+            nombre: 'calendario',
         },
         {
             function: this.AppRate,
             icono: 'create',
-            nombre: 'CALIFICANOS EN GOOGLE PLAY',
+            nombre: 'calificacionGP',
         },
         {
             function: function () {
                 this.openPage(TuEmpresaAquiPage)
             }.bind(this),
             icono: 'open',
-            nombre: 'Registra tu empresa',
+            nombre: 'registraEmpresa',
         },
         {
             function: function () {
                 this.openPage(ContactoPage)
             }.bind(this),
             icono: 'mail',
-            nombre: 'Contactanos',
+            nombre: 'contactanos',
         },
     ];
 
@@ -98,11 +100,23 @@ export class MyApp {
                 public events: Events,
                 public loadingCtrl: LoadingController,
                 public mainService: MainService,
+                public translate: TranslateService,
                 _config: Config) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
+
+
+            if (navigator.language.indexOf('en') > -1){
+                this.lenguaje = 'en';
+            }else if (navigator.language.indexOf('es') > -1){
+                this.lenguaje = 'es';
+            }
+            console.log(this.lenguaje, navigator.language.indexOf('es'));
+
+            this.translate.setDefaultLang(this.lenguaje);
+            this.translate.use(this.lenguaje);
 
             this.googleReverseClientId = _config.get('googleReverseClientId');
             this.googleAnalyticsTrackId = _config.get('googleAnalyticsTrackId');
@@ -283,6 +297,12 @@ export class MyApp {
 
     openPage(page) {
         this.rootPage = page;
+    }
+
+    cambiarLenguaje() {
+        console.log(this.lenguaje);
+        this.translate.use(this.lenguaje);
+
     }
 
 }

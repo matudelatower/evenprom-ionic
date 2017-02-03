@@ -11,7 +11,7 @@
                 </ion-col>
                 <ion-col text-left width-50>
                     <h1>{{user.nombre}} {{user.apellido}}</h1>
-                    <b style="color:white;">Editar perfil</b>
+                    <b style="color:white;">{{ "editarPerfil" |translate }}</b>
                 </ion-col>
             </ion-row>
             <ion-row  no-padding>
@@ -43,6 +43,14 @@
         </ion-grid>
 
         <ion-list class="menu-items">
+            <ion-item no-lines>
+                <ion-icon name="globe" item-left></ion-icon>
+                <ion-label >{{"elegirLenguaje" | translate}}</ion-label>
+                <ion-select  (ionChange)="cambiarLenguaje()"[(ngModel)]="lenguaje">
+                    <ion-option value="es">Español</ion-option>
+                    <ion-option value="en">English</ion-option>
+                </ion-select>
+            </ion-item>
 
 
             <!--<button menuClose ion-item *ngFor="let p of pages" menuIcon="home" (click)="openPage(p)">-->
@@ -53,13 +61,13 @@
 
             <button style="border: none !important;" menuClose ion-item *ngFor="let menu of menues" (click)="menu.function()">
                 <ion-icon  color="danger" [name]="menu.icono" item-left></ion-icon>
-                {{ menu.nombre |uppercase }}
+                {{ menu.nombre |translate | uppercase }}
             </button>
 
 
             <button menuClose ion-item menuIcon="logout" (click)="logout()">
                 <ion-icon name="log-out" item-left></ion-icon>
-                Salir
+                {{ 'salir' |translate }}
                 <!--<ion-icon name="ionic" item-right></ion-icon>-->
             </button>
 
