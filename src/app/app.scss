@@ -32,6 +32,16 @@
   }
 }
 
+.no-padding-top-button {
+  padding-bottom: 0px !important;
+  padding-top: 0px !important;
+}
+
+.no-margin-top-button {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+}
+
 @font-face {
   font-family: 'Poppins';
   src: url('../assets/fonts/Poppins/Poppins-Regular.ttf');
@@ -41,7 +51,6 @@ body, span, button, h1, h2, h3, h4, h5, h6, ion-note {
   font-family: 'Poppins' !important;
 }
 
-
-.segment-md .segment-button.activated, .segment-md .segment-button.segment-activated{
+.segment-md .segment-button.activated, .segment-md .segment-button.segment-activated {
   border-color: color($colors, ep-celeste);
 }

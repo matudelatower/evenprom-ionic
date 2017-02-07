@@ -4,7 +4,52 @@ page-empresaPerfil{
 	}
 	.row-novedades{
 		margin-bottom: 5%;
+		background-color: #F6F7F8;
 	}
+
+	.icon-rubro{
+		font-size: 1.75em;
+	}
+
+	.novedades-card{
+		background-color: #F6F7F8;
+		width: 100%;
+		margin: 0px;
+	}
+
+	.novedades-card {
+		img {
+			max-height: 180px;
+			width: 100%;
+		}
+
+		ion-card-content{
+			padding: 0px 5px 0px 5px;
+		}
+	}
+
+
+	/* ----------- Galaxy Tab 10.1 ----------- */
+
+	/* Portrait and Landscape */
+	@media(min-device-width: 800px) and (max-device-width: 1280px) {
+
+	}
+
+	/* Portrait */
+	@media(min-device-width: 601px) and(max-device-width: 800px) and (orientation: portrait) {
+		.icon-rubro{
+			font-size: 3.1em;
+		}
+
+		.novedades-card {
+			img {
+				max-height: 300px;
+			}
+		}
+	}
+
+
 }
 
 .video{

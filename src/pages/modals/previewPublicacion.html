@@ -12,10 +12,10 @@
 <ion-content class="modal-preview-publicacion">
 
     <ion-grid>
-        <ion-row>
-            <ion-col center text-left width-60>
+        <ion-row class="no-padding-top-button">
+            <ion-col center text-left width-60 class="no-padding-top-button">
                 <ion-note>
-                    <h1>
+                    <h1 style="margin-top: 10px;">
                         <b [ngStyle]="{'color':publicacion.color}" *ngIf="publicacion.premium">{{publicacion.nombre_empresa
                             | uppercase }}</b>
                         <b [ngStyle]="{'color':'#5c666f'}" *ngIf="!publicacion.premium">{{publicacion.nombre_empresa |
@@ -25,33 +25,34 @@
 
             </ion-col>
 
-            <ion-col center width-20>
+            <ion-col style="margin-bottom: 5px;" center text-right no-padding width-20>
 
-                <button ion-button icon-left clear color="danger">
+                <button style="padding-right: 5px; " ion-button icon-left clear color="danger">
                     <ion-icon name='checkmark-circle'></ion-icon>
-                    <div>{{publicacion.checkins}}</div>
+                    <div style="color: #000;">{{publicacion.checkins}}</div>
                 </button>
 
             </ion-col>
-            <ion-col center width-20>
-                <button danger ion-button icon-left clear color="danger">
+            <ion-col center text-left no-padding width-10  class="no-padding-top-button" style="margin-right: 20px; margin-bottom: 5px;">
+                <button style="padding-left: 5px;" danger ion-button icon-left clear color="danger">
                     <ion-icon name='heart'></ion-icon>
-                    <div>{{publicacion.likes}}</div>
+                    <div style="color: #000;">{{publicacion.likes}}</div>
                 </button>
 
             </ion-col>
 
         </ion-row>
 
-        <ion-row class="img-publicacion-content-modal">
-            <ion-col>
-                <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
+        <ion-row class="img-publicacion-content-modal" class="no-padding-top-button">
+            <ion-col class="no-padding-top-button">
+                <img class="img-publicacion-img" [src]="publicacion.imagen_publicacion"/>
                 <div class="btn-flotantes-publicacion">
-                    <button ion-button icon-only clear color="danger" (click)="checkInPublicacion(publicacion.id)">
+                    <button  ion-button icon-only clear color="danger"
+                            (click)="checkInPublicacion(publicacion.id)">
                         <ion-icon name="checkmark-circle-outline" *ngIf="!publicacion.checkin_persona"></ion-icon>
                         <ion-icon name="checkmark-circle" *ngIf="publicacion.checkin_persona"></ion-icon>
                     </button>
-                    <button ion-button icon-only clear color="danger" (click)="addPublicacionFav(publicacion.id)">
+                    <button  ion-button icon-only clear color="danger" (click)="addPublicacionFav(publicacion.id)">
                         <ion-icon name='heart-outline' *ngIf="!publicacion.like_persona"></ion-icon>
                         <ion-icon name='heart' *ngIf="publicacion.like_persona"></ion-icon>
                     </button>
@@ -80,19 +81,16 @@
             </ion-col>
         </ion-row>
         <ion-row class="publicacion-fecha-border" text-center>
-            <ion-col class="ep-gris" text-right width-40>
-                <p>Fecha</p>
-                <p>Hora</p>
+            <ion-col class="ep-gris no-padding-top-button" text-center>
+                <p>Fecha: {{publicacion.rango_fecha.fecha_desde}} al {{publicacion.rango_fecha.fecha_hasta}} </p>
+                <p>Hora: {{publicacion.rango_fecha.hora_desde}} hasta las {{publicacion.rango_fecha.hora_hasta}}</p>
             </ion-col>
-            <ion-col text-left width-60>
-                <p>{{publicacion.rango_fecha.fecha_desde}} al {{publicacion.rango_fecha.fecha_hasta}} </p>
-                <p>{{publicacion.rango_fecha.hora_desde}} hasta las {{publicacion.rango_fecha.hora_hasta}}</p>
-            </ion-col>
+
         </ion-row>
 
         <ion-row text-center>
-            <ion-col>
-                <p class="ep-gris">DESCRIPCIÓN</p>
+            <ion-col class="no-padding-top-button">
+                <p class="ep-gris">Descripción</p>
                 <div [innerHTML]="publicacion.cuerpo">
 
                 </div>
@@ -107,8 +105,8 @@
                 </div>
             </ion-col>
         </ion-row>
-        <ion-row text-center>
-            <ion-col>
+        <ion-row text-center class="margen-tarjeta">
+            <ion-col class="no-padding-top-button">
 
                 <button color="ep-celeste" large round ion-button icon-only
                         (click)="call(publicacion.id, publicacion.contacto_empresa.telefono)">
@@ -116,7 +114,7 @@
                 </button>
 
 
-                <button color="danger" large round ion-button icon-only (click)="comoLlegar()">
+                <button  color="danger" large round ion-button icon-only (click)="comoLlegar()">
                     <ion-icon name="pin"></ion-icon>
                 </button>
 
@@ -130,7 +128,7 @@
         </ion-row>
 
         <ion-row text-center>
-            <ion-col class="tarjetas-content">
+            <ion-col no-padding-top-button class="tarjetas-content">
 
                 <img src="assets/img/tarjetas/mestro.png" alt="Maestro">
                 <img src="assets/img/tarjetas/paypal2.png" alt="Paypal">
@@ -145,8 +143,8 @@
 
     </ion-grid>
 
-    <ion-list>
-        <ion-item *ngFor="let c of comentarios">
+    <ion-list no-lines>
+        <ion-item *ngFor="let c of comentarios" no-lines>
             <ion-avatar item-left>
                 <img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">
             </ion-avatar>

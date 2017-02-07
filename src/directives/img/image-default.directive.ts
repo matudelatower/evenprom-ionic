@@ -24,13 +24,14 @@ export class DefaultImageDirective {
     @Input() default:string;
     @Input() preview:boolean = false;
     @Input() srcPreview:string;
+    @Input() noError:boolean;
     backgroundImage = 'url("assets/img/spinner.gif")';
     size = '35px';
     display = 'block';
     padding = '5px';
 
     constructor(public mainService:MainService) {
-
+        this.noError = false;
     }
 
     updateUrl() {

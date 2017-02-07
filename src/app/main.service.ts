@@ -53,6 +53,10 @@ export class MainService {
     //}
 
 
+    getUrlEmpresa(id) {
+        return this.service + 'es/' + id + "/sitios";
+    }
+
     setUser(user) {
 
         this.user = user;

@@ -3,6 +3,13 @@ page-principal {
     display: inline-flex;
   }
 
+  .toolbar-md {
+    padding-bottom: 0px !important;
+    padding-top: 0px !important;
+    min-height: 0px;
+
+  }
+
   /* ----------- Galaxy S5 ----------- */
 
   /* Portrait */
@@ -152,9 +159,13 @@ item-list-empresa {
 }
 
 .btn-flotantes-publicacion {
-  top: 5%;
-  right: 5%;
+  top: 13%;
+  right: 4%;
   position: absolute;
+}
+
+btn-flotantes-publicacion >  button{
+  margin: 0px !important;
 }
 
 .img-publicacion-content {
@@ -177,6 +188,11 @@ item-list-empresa {
   border-radius: 5px;
   max-height: none !important;
   width: 100%;
+}
+
+.margen-tarjeta{
+  border-bottom: 1px solid color($colors,ep-gris-claro);
+  border-top: 1px solid color($colors,ep-gris-claro);
 }
 
 .img-publicacion-subtitle {
@@ -215,8 +231,8 @@ item-list-empresa {
 }
 
 .tarjetas-content > img {
-  height: 32px;
-  width: 51px;
+  height: 21px;
+  width: 32px;
 }
 
 .publicacion-fecha-border {
@@ -392,6 +408,24 @@ item-list-empresa {
     width: 100%;
     color: #fff;
   }
+
+  .img-publicacion-img{
+    height: 180px;
+  }
+
+  /* Portrait and Landscape */
+  @media(min-device-width: 800px) and (max-device-width: 1280px) {
+
+  }
+
+  /* Portrait */
+  @media(min-device-width: 601px) and(max-device-width: 800px) and (orientation: portrait) {
+    .img-publicacion-img{
+      height: 300px;
+    }
+  }
+
+
 
 }
 

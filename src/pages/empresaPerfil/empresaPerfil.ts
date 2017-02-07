@@ -5,7 +5,17 @@ import {DomSanitizer} from '@angular/platform-browser';
 /**
  * Agregar plugin de Camera ionic plugin add cordova-plugin-camera
  */
-import {SocialSharing, AppAvailability, Device, CallNumber, EmailComposer,ImagePicker ,Transfer, Crop, Geolocation} from 'ionic-native';
+import {
+    SocialSharing,
+    Device,
+    CallNumber,
+    EmailComposer,
+    ImagePicker,
+    Transfer,
+    Crop,
+    Geolocation,
+    Diagnostic
+} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 
@@ -16,23 +26,23 @@ import {GeocodingService} from "../../directives/map/geocode.service";
 })
 export class EmpresaPerfilPage {
 
-    empresa:any;
-    public link_youtube:any = "";
-    public icono:any = "home";
+    empresa: any;
+    public link_youtube: any = "";
+    public icono: any = "home";
 
-    comentario:any;
-    comentarios:any[];
-    imagenes:any[];
-    noticias:any[];
+    comentario: any;
+    comentarios: any[];
+    imagenes: any[];
+    noticias: any[];
 
-    constructor(navParams:NavParams,
-                public navController:NavController,
-                sanitizer:DomSanitizer,
-                public viewCtrl:ViewController,
-                public loadingCtrl:LoadingController,
-                public toastCtrl:ToastController,
-                public geocoder:GeocodingService,
-                public mainService:MainService) {
+    constructor(navParams: NavParams,
+                public navController: NavController,
+                sanitizer: DomSanitizer,
+                public viewCtrl: ViewController,
+                public loadingCtrl: LoadingController,
+                public toastCtrl: ToastController,
+                public geocoder: GeocodingService,
+                public mainService: MainService) {
         console.log("Passed params", navParams.data.empresa);
 
         if (!this.empresa) {
@@ -72,7 +82,7 @@ export class EmpresaPerfilPage {
         window.open(url, "_system");
     }
 
-    shareWhastApp(message:string, image?:string, url?:string) {
+    shareWhastApp(message: string, image?: string, url?: string) {
 
         SocialSharing.shareViaWhatsApp(message, image, url).then(() => {
 
@@ -81,7 +91,7 @@ export class EmpresaPerfilPage {
         });
     }
 
-    shareFacebook(message:string, image?:string, url?:string) {
+    shareFacebook(message: string, image?: string, url?: string) {
 
         console.log(message, image, url);
 
@@ -93,7 +103,7 @@ export class EmpresaPerfilPage {
             app = 'com.facebook.katana';
         }
 
-        AppAvailability.check(app)
+        SocialSharing.canShareVia(app)
             .then(
                 () => {
                     console.log(app + ' is available')
@@ -106,7 +116,17 @@ export class EmpresaPerfilPage {
                 },
                 () => {
                     console.log(app + ' is NOT available');
-                    this.share(message, image, url);
+                    let toast = this.toastCtrl.create({
+                        message: "No tenés instalado facebook",
+                        duration: 3250,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                    //this.share(message, image, url);
+                    let empresaURL = this.mainService.getUrlEmpresa(this.empresa.id);
+                    let faceURL = "https://m.facebook.com/sharer/sharer.php?u=" + empresaURL;
+                    window.open(faceURL, "_system");
 
                 }
             );
@@ -114,7 +134,7 @@ export class EmpresaPerfilPage {
 
     }
 
-    share(message:string, subject?:string, image?:string, url?:string) {
+    share(message: string, subject?: string, image?: string, url?: string) {
 
         SocialSharing.share(message, '@evenprom', image, url).then(() => {
 
@@ -138,14 +158,14 @@ export class EmpresaPerfilPage {
 
                     }
                 )
-                .catch(() => console.log('Error launching dialer'));
+                .catch((error) => console.log('Error launching dialer', error));
         }
 
     }
 
     sendMail(mail) {
         if (mail) {
-            EmailComposer.isAvailable().then((available:boolean) => {
+            EmailComposer.isAvailable().then((available: boolean) => {
                 if (available) {
                     //Now we know we can send
                 }
@@ -170,9 +190,9 @@ export class EmpresaPerfilPage {
             });
             loader.present();
 
-            this.mainService.getUser().then((user)=> {
+            this.mainService.getUser().then((user) => {
                 this.comentarEmpresa(user, loader);
-            }, (error)=> {
+            }, (error) => {
                 console.log(error);
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
@@ -215,10 +235,10 @@ export class EmpresaPerfilPage {
 
 
     getComentarios(loader) {
-        this.mainService.getComentariosEmpresa(this.empresa.id).subscribe((data)=> {
+        this.mainService.getComentariosEmpresa(this.empresa.id).subscribe((data) => {
             this.comentarios = data;
             loader.dismissAll();
-        }, (error)=> {
+        }, (error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
                 message: "No se han podido cargar los comentarios.",
@@ -237,10 +257,10 @@ export class EmpresaPerfilPage {
         });
         loader.present();
 
-        this.mainService.getImagenesEmpresa(this.empresa.id).subscribe((data)=> {
+        this.mainService.getImagenesEmpresa(this.empresa.id).subscribe((data) => {
             this.imagenes = data;
             loader.dismissAll();
-        }, (error)=> {
+        }, (error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
                 message: "No se han podido cargar las imagenes.",
@@ -253,36 +273,10 @@ export class EmpresaPerfilPage {
     }
 
     comoLlegar() {
-        if (!this.empresa.direccion) {
-            let toast = this.toastCtrl.create({
-                message: "La empresa no tiene cargada la dirección",
-                duration: 1500,
-                position: 'center'
-            });
 
-            toast.present(toast);
-
-            return false;
-        }
-
-        let loader = this.loadingCtrl.create({
-            content: "Abriendo mapa",
-            // duration: 6000
-        });
-        loader.present();
-
-        Geolocation.getCurrentPosition().then((resp) => {
-            // resp.coords.latitude
-            // resp.coords.longitude
-
-            let actual = resp.coords.latitude + ", " + resp.coords.longitude;
-
-            let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
-
-            location.subscribe(location => {
-
-                loader.dismissAll();
-                if (!location.valid) {
+        Diagnostic.isGpsLocationEnabled().then((resp) => {
+            if (resp === true) {
+                if (!this.empresa.direccion) {
                     let toast = this.toastCtrl.create({
                         message: "La empresa no tiene cargada la dirección",
                         duration: 1500,
@@ -290,61 +284,106 @@ export class EmpresaPerfilPage {
                     });
 
                     toast.present(toast);
-                    return;
+
+                    return false;
                 }
-                // let address = location.address;
 
-                var newBounds = location.viewBounds;
-                //this.mapService.changeBounds(newBounds);
+                let loader = this.loadingCtrl.create({
+                    content: "Abriendo mapa",
+                    // duration: 6000
+                });
+                loader.present();
+
+                Geolocation.getCurrentPosition({timeout:8000}).then((resp) => {
+                    // resp.coords.latitude
+                    // resp.coords.longitude
+
+                    let actual = resp.coords.latitude + ", " + resp.coords.longitude;
+
+                    let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
+
+                    location.subscribe(location => {
+
+                        loader.dismissAll();
+                        if (!location.valid) {
+                            let toast = this.toastCtrl.create({
+                                message: "La empresa no tiene cargada la dirección",
+                                duration: 1500,
+                                position: 'center'
+                            });
+
+                            toast.present(toast);
+                            return;
+                        }
+                        // let address = location.address;
+
+                        var newBounds = location.viewBounds;
+                        //this.mapService.changeBounds(newBounds);
 
 
-                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
-                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+                        let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                        let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
 
-                let destino = lat + ", " + lng;
+                        let destino = lat + ", " + lng;
 
+                        let toast = this.toastCtrl.create({
+                            message: "Ruta encontrada.",
+                            duration: 1500,
+                            position: 'center'
+                        });
+
+                        toast.present(toast);
+
+                        let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
+
+
+                        window.open(url, "_system");
+
+                    }, error => {
+                        loader.dismissAll();
+                        let toast = this.toastCtrl.create({
+                            message: "No se ha podido abrir el mapa.",
+                            duration: 1500,
+                            position: 'center'
+                        });
+
+                        toast.present(toast);
+                    });
+
+                }).catch((error) => {
+                    loader.dismissAll();
+                    let toast = this.toastCtrl.create({
+                        message: "No se ha podido abrir el mapa.",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                });
+
+
+            } else {
                 let toast = this.toastCtrl.create({
-                    message: "Ruta encontrada.",
+                    message: "Necesitás habilitar el GPS para realizar esta función",
                     duration: 1500,
                     position: 'center'
                 });
 
                 toast.present(toast);
 
-                let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
-
-
-                window.open(url, "_system");
-
-            }, error => {
-                loader.dismissAll();
-                let toast = this.toastCtrl.create({
-                    message: "No se ha podido abrir el mapa.",
-                    duration: 1500,
-                    position: 'center'
-                });
-
-                toast.present(toast);
-            });
-
+            }
         }).catch((error) => {
-            loader.dismissAll();
-            let toast = this.toastCtrl.create({
-                message: "No se ha podido abrir el mapa.",
-                duration: 1500,
-                position: 'center'
-            });
-
-            toast.present(toast);
+            console.log("isGpsLocationEnabled ERROR:", error);
         });
+
 
     }
 
     openFileChooser() {
 
-        this.mainService.getUser().then((user)=> {
+        this.mainService.getUser().then((user) => {
             this.uploadImg(user.userID, this.empresa.id);
-        }, (error)=> {
+        }, (error) => {
             let toast = this.toastCtrl.create({
                 message: this.mainService.mensajeUserAnonimo,
                 duration: 1500,
@@ -357,6 +396,10 @@ export class EmpresaPerfilPage {
     }
 
     uploadImg(userID, empresaId) {
+        // if (!Diagnostic ){
+        //
+        // }
+        //
 
         let options = {maximumImagesCount: 1};
         let loader = this.loadingCtrl.create({
@@ -378,7 +421,7 @@ export class EmpresaPerfilPage {
                             //let url = newImage.substring(0, newImage.indexOf('?'));
                             //let url = newImage.substring(0, newImage.indexOf('?'));
                             loader.present();
-                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas").then((data)=> {
+                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas").then((data) => {
                                 let toast = this.toastCtrl.create({
                                     message: "Imagen subida",
                                     duration: 1500,
@@ -390,7 +433,7 @@ export class EmpresaPerfilPage {
 
                                 this.getImagenes();
 
-                            }, (error)=> {
+                            }, (error) => {
                                 let toast = this.toastCtrl.create({
                                     message: "No se ha podido subir la imagen ",
                                     duration: 1500,
@@ -420,7 +463,7 @@ export class EmpresaPerfilPage {
 
     /*** Metodo para subir fotos desde la camara
 
-    camera() {
+     camera() {
 
         this.mainService.getUser().then((user)=> {
             this.uploadImgCamera(user.userID, this.empresa.id);
@@ -436,7 +479,7 @@ export class EmpresaPerfilPage {
 
     }
 
-    uploadImgCamera(userID, empresaId) {
+     uploadImgCamera(userID, empresaId) {
 
         let options = {maximumImagesCount: 1};
         let loader = this.loadingCtrl.create({
@@ -480,5 +523,5 @@ export class EmpresaPerfilPage {
                 toast.present();
             });
     }
-    */
+     */
 }

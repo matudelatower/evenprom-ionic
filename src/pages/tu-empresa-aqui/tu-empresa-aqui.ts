@@ -25,7 +25,7 @@ export class TuEmpresaAquiPage {
     }
 
     openUrl() {
-        let url = this.apiUrl + '/empresa/registrar';
+        let url = this.apiUrl + '/es/empresa/registrar';
         window.open(url, "_system");
     }
 

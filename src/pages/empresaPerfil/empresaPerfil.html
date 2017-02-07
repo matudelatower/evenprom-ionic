@@ -19,7 +19,7 @@
                 <ion-col width-25 text-center>
                     <ion-row>
                         <ion-col>
-                            <ion-icon style="font-size: 1.75em;" *ngIf="empresa.rubros.length >0" [name]="empresa.rubros[0].icono"></ion-icon>
+                            <ion-icon class="icon-rubro" *ngIf="empresa.rubros.length >0" [name]="empresa.rubros[0].icono"></ion-icon>
 
                         </ion-col>
                         <ion-col>
@@ -102,23 +102,23 @@
     </div>
     <ion-row>
         <ion-col text-center>
-            <button ion-button>Ver Eventos y Promociones Hoy</button>
+            <button outline ion-button>Ver Eventos y Promociones HOY</button>
         </ion-col>
     </ion-row>
-    <ion-row class="row-novedades">
-        <ion-col text-center>
-            <h2>Novedades</h2>
+    <ion-row class="row-novedades" no-padding *ngIf="noticias && noticias.length > 0">
+        <ion-col text-center no-padding>
+            <h2 style="margin-bottom: 0px; margin-top: 10px;">Novedades</h2>
             <ion-slides pager="progress">
 
                 <ion-slide *ngFor="let noticia of noticias">
-                    <ion-card>
-                        <img [src]="noticia.noticia.image_name"/>
+                    <ion-card class="novedades-card" style="">
+                        <img *ngIf="noticia.image_name" [src]="noticia.image_name"/>
                         <ion-card-content>
                             <ion-card-title>
-                                {{ noticia.noticia.titulo }}
+                                {{ noticia.titulo }}
                             </ion-card-title>
 
-                            <div [innerHTML]="noticia.noticia.cuerpo">
+                            <div [innerHTML]="noticia.cuerpo" text-justify>
 
                             </div>
 
@@ -156,7 +156,7 @@
         </ion-col>
     </ion-row>
     <ion-row>
-        <ion-col text-center>
+        <ion-col text-center no-padding>
             <a (click)="shareWhastApp(empresa.nombre ,empresa.image_name, empresa.contacto.web)"
                style="text-decoration: none;" href="#">
                 <button color="color-whatsapp" large round ion-button icon-only>
@@ -183,8 +183,8 @@
         </ion-col>
     </ion-row>
 
-    <ion-list>
-        <ion-item *ngFor="let c of comentarios">
+    <ion-list no-lines>
+        <ion-item *ngFor="let c of comentarios" no-lines>
             <ion-avatar item-left>
                 <img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">
             </ion-avatar>

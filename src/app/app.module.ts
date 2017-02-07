@@ -39,6 +39,7 @@ import {ItemEmpresaComponent} from "../components/item-empresa/item-empresa";
 import {ModalImageDefault} from "../directives/img/image-default.modal";
 import {Truncate} from "../pipes/truncate";
 import {Config} from "./config";
+import {FirstUpperCase} from "../pipes/firstUpperCase";
 
 
 @NgModule({
@@ -74,7 +75,8 @@ import {Config} from "./config";
         CalendarioPage,
         ItemEmpresaComponent,
         ModalImageDefault,
-        Truncate
+        Truncate,
+        FirstUpperCase
     ],
     imports: [
         TranslateModule.forRoot({

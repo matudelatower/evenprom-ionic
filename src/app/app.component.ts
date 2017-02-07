@@ -27,11 +27,11 @@ export class MyApp {
     user: any;
     pages = [];
 
-    prod = false;
+    prod = true;
     googleReverseClientId: any;
     googleAnalyticsTrackId: any;
     pushSenderID: any;
-    lenguaje:any;
+    lenguaje: any;
 
     menues: any = [
         {
@@ -108,9 +108,9 @@ export class MyApp {
             StatusBar.styleDefault();
 
 
-            if (navigator.language.indexOf('en') > -1){
+            if (navigator.language.indexOf('en') > -1) {
                 this.lenguaje = 'en';
-            }else if (navigator.language.indexOf('es') > -1){
+            } else if (navigator.language.indexOf('es') > -1) {
                 this.lenguaje = 'es';
             }
             console.log(this.lenguaje, navigator.language.indexOf('es'));
@@ -156,7 +156,8 @@ export class MyApp {
                     desiredAccuracy: 10,
                     stationaryRadius: 20,
                     distanceFilter: 30,
-                    debug: true, //  enable this hear sounds for background-geolocation life-cycle.
+                    startForeground: false,
+                    debug: false, //  enable this hear sounds for background-geolocation life-cycle.
                     stopOnTerminate: false, // enable this to clear background location settings when the app terminates
                 };
 

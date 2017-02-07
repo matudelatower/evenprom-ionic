@@ -38,7 +38,10 @@ export class Empresas {
         });
         loader.present();
         mainService.getRubros().subscribe(
-            response => this.rubros = response
+            response => this.rubros = response,
+            (err) => {
+                console.log('error timeout');
+            }
         );
 
         // aca
@@ -83,7 +86,16 @@ export class Empresas {
         this.slider.startAutoplay();
     }
 
-    loadEmpresasBySlug(rub) {
+    slideChanged() {
+        let currentIndex = this.slider.getActiveIndex();
+
+        this.rubroSel = this.rubros[currentIndex];
+    }
+
+
+    loadEmpresasBySlug(rub, index) {
+
+        this.slider.slideTo(index, 500);
         this.rubroSel = rub;
         let loader = this.loadingCtrl.create({
             content: "Cargando",

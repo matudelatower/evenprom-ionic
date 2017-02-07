@@ -36,7 +36,7 @@ export class ContactoPage {
 
     call() {
 
-
+        console.log(this.tel);
         CallNumber.callNumber(this.tel, true)
             .then(() => {
                     console.log('Launched dialer!');

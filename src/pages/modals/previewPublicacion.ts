@@ -42,6 +42,8 @@ export class ModalPreviewPublicacion {
 
     ngOnInit() {
 
+
+
         let loader = this.loadingCtrl.create({
             content: "Cargando comentarios",
             // duration: 6000

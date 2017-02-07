@@ -42,6 +42,17 @@
 
         </ion-grid>
 
+
+        <ion-grid *ngIf="!prod" class="menu-header">
+
+            <ion-row  no-padding>
+                <ion-col no-padding>
+                  HOLIS
+                </ion-col>
+            </ion-row>
+
+        </ion-grid>
+
         <ion-list class="menu-items">
             <ion-item no-lines>
                 <ion-icon name="globe" item-left></ion-icon>
@@ -61,7 +72,7 @@
 
             <button style="border: none !important;" menuClose ion-item *ngFor="let menu of menues" (click)="menu.function()">
                 <ion-icon  color="danger" [name]="menu.icono" item-left></ion-icon>
-                {{ menu.nombre |translate | uppercase }}
+                {{ menu.nombre |translate | fuppercase }}
             </button>
 
 

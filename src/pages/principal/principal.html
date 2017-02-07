@@ -25,7 +25,7 @@
     <ion-toolbar>
         <ion-segment [(ngModel)]="tabs">
             <ion-segment-button value="0" style="text-transform: lowercase; font-size: 1.2em;" (click)="selectedTab()">
-                <b class="ep-celeste">even</b><b class="ep-fucsia">prom</b>
+                <b class="ep-celeste">Even</b><b class="ep-fucsia">Prom</b>
             </ion-segment-button>
             <ion-segment-button value="1" (click)="selectedTab()">
                 <ion-icon name="home" color="ep-gris-claro"></ion-icon>
@@ -53,8 +53,6 @@
         <ion-slides pager="progress" #mySlider (ionSlideDidChange)="onSlideChanged()">
 
             <ion-slide *ngSwitchCase="tabBody">
-
-
 
                 <ion-grid no-padding no-padding *ngIf="errorNoConexion">
                     <ion-row no-padding>
@@ -237,7 +235,8 @@
         </ion-slides>
     </div>
 
-    <ion-fab right bottom>
+
+    <ion-fab right bottom *ngIf ="tabs == 0">
         <button mini ion-fab color="ep-gris" (click)="modalSearch({charNum: 0})">
             <ion-icon name="funnel"></ion-icon>
         </button>
