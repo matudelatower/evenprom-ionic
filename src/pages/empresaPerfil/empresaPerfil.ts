@@ -18,6 +18,7 @@ import {
 } from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
+import {PubliacionesEmpresaActualPage} from "../publiaciones-empresa-actual/publiaciones-empresa-actual";
 
 
 @Component({
@@ -182,6 +183,14 @@ export class EmpresaPerfilPage {
         }
     }
 
+    publicacionesActual() {
+
+        this.navController.push(PubliacionesEmpresaActualPage,
+            {
+                empresa: this.empresa
+            });
+    }
+
     comentar() {
         if (this.comentario) {
             let loader = this.loadingCtrl.create({
@@ -294,7 +303,7 @@ export class EmpresaPerfilPage {
                 });
                 loader.present();
 
-                Geolocation.getCurrentPosition({timeout:8000}).then((resp) => {
+                Geolocation.getCurrentPosition({timeout: 8000}).then((resp) => {
                     // resp.coords.latitude
                     // resp.coords.longitude
 

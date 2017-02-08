@@ -40,6 +40,7 @@ import {ModalImageDefault} from "../directives/img/image-default.modal";
 import {Truncate} from "../pipes/truncate";
 import {Config} from "./config";
 import {FirstUpperCase} from "../pipes/firstUpperCase";
+import {PubliacionesEmpresaActualPage} from "../pages/publiaciones-empresa-actual/publiaciones-empresa-actual";
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import {FirstUpperCase} from "../pipes/firstUpperCase";
         ItemEmpresaComponent,
         ModalImageDefault,
         Truncate,
-        FirstUpperCase
+        FirstUpperCase,
+        PubliacionesEmpresaActualPage
     ],
     imports: [
         TranslateModule.forRoot({
@@ -109,7 +111,8 @@ import {FirstUpperCase} from "../pipes/firstUpperCase";
         BuscarAmigosPage,
         CalendarioPage,
         ItemEmpresaComponent,
-        ModalImageDefault
+        ModalImageDefault,
+        PubliacionesEmpresaActualPage
     ],
     providers: [Storage, MainService, GeocodingService, MapService, UserData, Config],
     schemas: [

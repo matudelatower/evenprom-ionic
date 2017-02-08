@@ -145,7 +145,7 @@ export class PrincipalPage {
     doRefresh(refresher, fields?) {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando Promos",
+            content: "Cargando evenproms",
             // duration: 6000
         });
         loader.present();

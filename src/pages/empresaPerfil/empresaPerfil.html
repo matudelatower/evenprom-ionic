@@ -19,7 +19,8 @@
                 <ion-col width-25 text-center>
                     <ion-row>
                         <ion-col>
-                            <ion-icon class="icon-rubro" *ngIf="empresa.rubros.length >0" [name]="empresa.rubros[0].icono"></ion-icon>
+                            <ion-icon class="icon-rubro" *ngIf="empresa.rubros.length >0"
+                                      [name]="empresa.rubros[0].icono"></ion-icon>
 
                         </ion-col>
                         <ion-col>
@@ -67,7 +68,7 @@
     <div class="scroll-hidden-x-container">
         <div class="scroll-hidden-x-inner">
             <ion-row>
-                <ion-col  class="text-center" width-50>
+                <ion-col class="text-center" width-50>
                     <ion-row>
                         <ion-col (click)="openFileChooser()" width-100>
                             <ion-icon style="font-size:50px;" name="images"></ion-icon>
@@ -75,24 +76,25 @@
 
                         </ion-col>
                         <!--<ion-col (click)="camera()" width-50>-->
-                            <!--<ion-icon style="font-size:50px;" name="camera"></ion-icon>-->
-                            <!--<br>Sacar una foto-->
+                        <!--<ion-icon style="font-size:50px;" name="camera"></ion-icon>-->
+                        <!--<br>Sacar una foto-->
 
                         <!--</ion-col>-->
                     </ion-row>
                 </ion-col>
-                <ion-col  *ngFor="let img of imagenes" class="text-center" width-50>
-                    <img [preview]="true" [srcPreview]="img.imagen_usuario_empresa" style="max-height: 140px;" class="img-responsive" [src]="img.thumb">
+                <ion-col *ngFor="let img of imagenes" class="text-center" width-50>
+                    <img [preview]="true" [srcPreview]="img.imagen_usuario_empresa" style="max-height: 140px;"
+                         class="img-responsive" [src]="img.thumb">
                     <!--<ion-note>{{ img.persona.nombre}} {{img.persona.apellido}}</ion-note>-->
 
-                        <ion-item style="border: none !important;">
-                            <ion-avatar item-left>
-                                <img  [src]="mainService.getAvatar(img.fbId, img.gId)" [default]="'assets/img/avatar.png'">
-                            </ion-avatar>
-                            <p>{{ img.persona.nombre}} </p>
-                            <p>{{ img.persona.apellido}} </p>
+                    <ion-item style="border: none !important;">
+                        <ion-avatar item-left>
+                            <img [src]="mainService.getAvatar(img.fbId, img.gId)" [default]="'assets/img/avatar.png'">
+                        </ion-avatar>
+                        <p>{{ img.persona.nombre}} </p>
+                        <p>{{ img.persona.apellido}} </p>
 
-                        </ion-item>
+                    </ion-item>
 
                 </ion-col>
 
@@ -102,7 +104,7 @@
     </div>
     <ion-row>
         <ion-col text-center>
-            <button outline ion-button>Ver Eventos y Promociones HOY</button>
+            <button (click)="publicacionesActual () " outline ion-button>Ver Eventos y Promociones HOY</button>
         </ion-col>
     </ion-row>
     <ion-row class="row-novedades" no-padding *ngIf="noticias && noticias.length > 0">
@@ -146,11 +148,13 @@
         </ion-col>
         <ion-col text-right>
             <button ion-button round icon-left outline small (click)="openUrl(empresa.contacto.web)">
-                <ion-icon name="globe"></ion-icon> Sitio Web
+                <ion-icon name="globe"></ion-icon>
+                Sitio Web
             </button>
             <br>
             <button ion-button round icon-left outline small (click)="comoLlegar()">
-                <ion-icon name="pin"></ion-icon> Cómo Llegar?
+                <ion-icon name="pin"></ion-icon>
+                Cómo Llegar?
             </button>
 
         </ion-col>

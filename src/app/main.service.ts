@@ -92,6 +92,16 @@ export class MainService {
             ;
     }
 
+    getPublicacionesByEmpresa(empresaId) {
+
+        return this.http.get(this.routeServices.publicacionesporempresas + empresaId)
+        // ...and calling .json() on the response to return data
+            .map((res: Response) => res.json())
+            .delay(500)
+            .timeout(7500);
+
+    }
+
     getPromoCalendario() {
 
         return this.http.get(this.routeServices.promoCalendario)
@@ -312,6 +322,7 @@ export class MainService {
         this.routeServices.rubros = this.service + 'api/rubros';
         this.routeServices.uploadImage = this.service + 'api/fotos/';
         this.routeServices.localidades = this.service + 'api/localidades/publicaciones';
+        this.routeServices.publicacionesporempresas = this.service + 'api/publicacionesporempresas/';
 
     }
 
