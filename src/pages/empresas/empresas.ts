@@ -89,7 +89,10 @@ export class Empresas {
     slideChanged() {
         let currentIndex = this.slider.getActiveIndex();
 
-        this.rubroSel = this.rubros[currentIndex];
+        if (currentIndex < this.rubros.length){
+            this.loadEmpresasBySlug(this.rubros[currentIndex], currentIndex);
+        }
+
     }
 
 
@@ -102,12 +105,7 @@ export class Empresas {
             // duration: 6000
         });
         loader.present();
-        // this.mainService.getEmpresasBySlug(rub.slug).toPromise()
-        //     .then(response => {
-        //         this.empresas = response.json();
-        //         loader.dismissAll();
-        //
-        //     });
+
         this.mainService.getEmpresasBySlug(rub.slug, this.usuarioId).subscribe(
             (data) => {
                 this.empresas = data;

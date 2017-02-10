@@ -38,7 +38,7 @@
 </ion-header>
 
 <ion-content class="principal">
-    <div *ngIf ="tabs == 0">
+    <div *ngIf="tabs == 0">
         <ion-refresher (ionRefresh)="doRefresh($event)">
             <ion-refresher-content
                     pullingIcon="arrow-dropdown"
@@ -50,193 +50,197 @@
 
 
     <div [ngSwitch]="tabBody">
-        <ion-slides pager="progress" #mySlider (ionSlideDidChange)="onSlideChanged()">
+        <!--<divs pager="progress" #mySlider (ionSlideDidChange)="onSlideChanged()">-->
 
-            <ion-slide *ngSwitchCase="tabBody">
+        <div *ngSwitchCase="0">
 
-                <ion-grid no-padding no-padding *ngIf="errorNoConexion">
-                    <ion-row no-padding>
-                        <ion-col text-center width-100 no-padding>
-                            <h1>
-                                No hay conexión a internet.
-                            </h1>
-                            <h4>
-                                Arrastre la parte superior hacia abajo para actualizar
-                            </h4>
-                        </ion-col>
-                    </ion-row>
-                    <ion-row no-padding>
-                        <ion-col text-center width-100 no-padding>
-                            <img style="height: 100px;" src="assets/img/noconexion.png">
-                        </ion-col>
-                    </ion-row>
-                </ion-grid>
-
-                <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
-                    <ion-row no-padding>
-                        <ion-col text-center width-100 no-padding>
-                            <h1 *ngIf="promoCalendario.color" [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
-                                {{promoCalendario.titulo}}
-                            </h1>
-                            <h1 *ngIf="!promoCalendario.color" [ngStyle]="{'background-color': promoCalendario.color, padding:'5px', margin:'0px'}">
-                                {{promoCalendario.titulo}}
-                            </h1>
-
-                        </ion-col>
-                    </ion-row>
-
-                    <ion-row no-padding class="img-publicacion-content">
-                        <ion-col no-padding>
-                            <img [preview]="true" [srcPreview]="promoCalendario.imagen_publicacion" style="width: 100%;" [src]="promoCalendario.imagen_publicacion"/>
-                            <div class="img-promo-subtitle">
-                                {{ promoCalendario.nombre_empresa | uppercase}}
-                            </div>
-
-                        </ion-col>
-                    </ion-row>
-
-
-                </ion-grid>
-
-                <ion-list *ngIf="publicaciones">
-                    <item-list-empresa
-                            *ngFor="let publicacion of (publicaciones | filterPublicaciones:search); let isFirst = first"
-                            [publicacion]="publicacion" [isFirst]="isFirst">
-                    </item-list-empresa>
-                </ion-list>
-
-            </ion-slide>
-
-            <ion-slide *ngSwitchCase="tabBody">
-                <h2>Empresas</h2>
-            </ion-slide>
-            <ion-slide *ngSwitchCase="tabBody" class="notificaciones">
-                <ion-row>
-                    <ion-col text-center>
-                        <h2>Notificaciones</h2>
+            <ion-grid no-padding no-padding *ngIf="errorNoConexion">
+                <ion-row no-padding>
+                    <ion-col text-center width-100 no-padding>
+                        <h1>
+                            No hay conexión a internet.
+                        </h1>
+                        <h4>
+                            Arrastre la parte superior hacia abajo para actualizar
+                        </h4>
                     </ion-col>
                 </ion-row>
-                <ion-row>
-                    <ion-col>
-                        <h3>Configura tus notificaciones por:</h3>
+                <ion-row no-padding>
+                    <ion-col text-center width-100 no-padding>
+                        <img style="height: 100px;" src="assets/img/noconexion.png">
                     </ion-col>
                 </ion-row>
-                <ion-row>
-                    <ion-col width-33>
-                        <ion-label>Localidad</ion-label>
-                        <ion-item>
-                            <ion-label>Toppings</ion-label>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesLocalidad">
-                                <ion-option *ngFor="let localidad of localidades" [value]="localidad.id">
-                                    {{localidad.descripcion}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
+            </ion-grid>
 
+            <ion-grid (click)="toastPromo(promoCalendario)" no-padding no-padding *ngIf="promoCalendario">
+                <ion-row no-padding>
+                    <ion-col text-center width-100 no-padding>
+                        <h1 *ngIf="promoCalendario.color"
+                            [ngStyle]="{'background-color': promoCalendario.color, color: '#FFF', padding:'5px', margin:'0px'}">
+                            {{promoCalendario.titulo}}
+                        </h1>
+                        <h1 *ngIf="!promoCalendario.color"
+                            [ngStyle]="{'background-color': promoCalendario.color, padding:'5px', margin:'0px'}">
+                            {{promoCalendario.titulo}}
+                        </h1>
 
-                    <ion-col width-33>
-                        <ion-label>Descuentos</ion-label>
-                        <ion-item>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesDescuentos">
-                                <ion-option *ngFor="let descuento of descuentos" [value]="descuento.id">
-                                    {{descuento.nombre}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
-
-
-                    <ion-col width-33>
-                        <ion-label>Eventos</ion-label>
-                        <ion-item>
-                            <ion-select [(ngModel)]="notificacionesEventos">
-                                <ion-option value="si">SI</ion-option>
-                                <ion-option value="no">NO</ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
-
-
-                </ion-row>
-
-                <ion-row>
-                    <ion-col width-33>
-                        <ion-label>Empresas</ion-label>
-                        <ion-item>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesEmpresa">
-                                <ion-option *ngFor="let empresa of empresas" [value]="empresa.id">
-                                    {{empresa.nombre}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col width-33>
-                        <ion-label>Gastronomia</ion-label>
-                        <ion-item>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesGastronomia">
-                                <ion-option *ngFor="let gastronomi of gastronomia" [value]="gastronomi.id">
-                                    {{gastronomi.nombre}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col width-33>
-                        <ion-label>Compras</ion-label>
-                        <ion-item>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesCompras">
-                                <ion-option *ngFor="let servicio of servicios" [value]="servicio.id">
-                                    {{servicio.nombre}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
                     </ion-col>
                 </ion-row>
 
-                <ion-row>
-                    <ion-col width-33>
-                        <ion-label>Entretenimiento</ion-label>
-                        <ion-item>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesEntretenimiento">
-                                <ion-option *ngFor="let e of entretenimiento" [value]="e.id">
-                                    {{e.nombre}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
-                    <ion-col width-33>
-                        <ion-label>Rubro</ion-label>
-                        <ion-item>
-                            <ion-label>Toppings</ion-label>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesRubro">
-                                <ion-option *ngFor="let r of rubros" [value]="r.id">
-                                    {{r.nombre}}
-                                </ion-option>
-                            </ion-select>
-                        </ion-item>
-                    </ion-col>
+                <ion-row no-padding class="img-publicacion-content">
+                    <ion-col no-padding>
+                        <img [preview]="true" [srcPreview]="promoCalendario.imagen_publicacion" style="width: 100%;"
+                             [src]="promoCalendario.imagen_publicacion"/>
+                        <div class="img-promo-subtitle">
+                            {{ promoCalendario.nombre_empresa | uppercase}}
+                        </div>
 
-                    <ion-col width-33>
-                        <ion-label>Segun tu onda</ion-label>
-                        <ion-item>
-                            <ion-select multiple="true" [(ngModel)]="notificacionesOnda">
-                                <ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>
-                            </ion-select>
-                        </ion-item>
                     </ion-col>
                 </ion-row>
 
-                <ion-row margin-top>
-                    <ion-col text-center>
-                        <button ion-button large round (click)="guardarPerfil()">Aplicar</button>
-                    </ion-col>
-                </ion-row>
-            </ion-slide>
-        </ion-slides>
+
+            </ion-grid>
+
+            <ion-list *ngIf="publicaciones">
+                <item-list-empresa
+                        *ngFor="let publicacion of (publicaciones | filterPublicaciones:search); let isFirst = first"
+                        [publicacion]="publicacion" [isFirst]="isFirst">
+                </item-list-empresa>
+            </ion-list>
+
+        </div>
+
+        <div *ngSwitchCase="1">
+            <!--<h2>Empresas</h2>-->
+            <page-empresas></page-empresas>
+        </div>
+        <div *ngSwitchCase="2" class="notificaciones">
+            <ion-row>
+                <ion-col text-center>
+                    <h2>Notificaciones</h2>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col>
+                    <h3>Configura tus notificaciones por:</h3>
+                </ion-col>
+            </ion-row>
+            <ion-row>
+                <ion-col width-33>
+                    <ion-label>Localidad</ion-label>
+                    <ion-item>
+                        <ion-label>Toppings</ion-label>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesLocalidad">
+                            <ion-option *ngFor="let localidad of localidades" [value]="localidad.id">
+                                {{localidad.descripcion}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+
+
+                <ion-col width-33>
+                    <ion-label>Descuentos</ion-label>
+                    <ion-item>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesDescuentos">
+                            <ion-option *ngFor="let descuento of descuentos" [value]="descuento.id">
+                                {{descuento.nombre}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+
+
+                <ion-col width-33>
+                    <ion-label>Eventos</ion-label>
+                    <ion-item>
+                        <ion-select [(ngModel)]="notificacionesEventos">
+                            <ion-option value="si">SI</ion-option>
+                            <ion-option value="no">NO</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+
+
+            </ion-row>
+
+            <ion-row>
+                <ion-col width-33>
+                    <ion-label>Empresas</ion-label>
+                    <ion-item>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesEmpresa">
+                            <ion-option *ngFor="let empresa of empresas" [value]="empresa.id">
+                                {{empresa.nombre}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+                <ion-col width-33>
+                    <ion-label>Gastronomia</ion-label>
+                    <ion-item>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesGastronomia">
+                            <ion-option *ngFor="let gastronomi of gastronomia" [value]="gastronomi.id">
+                                {{gastronomi.nombre}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+                <ion-col width-33>
+                    <ion-label>Compras</ion-label>
+                    <ion-item>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesCompras">
+                            <ion-option *ngFor="let servicio of servicios" [value]="servicio.id">
+                                {{servicio.nombre}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+
+            <ion-row>
+                <ion-col width-33>
+                    <ion-label>Entretenimiento</ion-label>
+                    <ion-item>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesEntretenimiento">
+                            <ion-option *ngFor="let e of entretenimiento" [value]="e.id">
+                                {{e.nombre}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+                <ion-col width-33>
+                    <ion-label>Rubro</ion-label>
+                    <ion-item>
+                        <ion-label>Toppings</ion-label>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesRubro">
+                            <ion-option *ngFor="let r of rubros" [value]="r.id">
+                                {{r.nombre}}
+                            </ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+
+                <ion-col width-33>
+                    <ion-label>Segun tu onda</ion-label>
+                    <ion-item>
+                        <ion-select multiple="true" [(ngModel)]="notificacionesOnda">
+                            <ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>
+                        </ion-select>
+                    </ion-item>
+                </ion-col>
+            </ion-row>
+
+            <ion-row margin-top>
+                <ion-col text-center>
+                    <button ion-button large round (click)="guardarPerfil()">Aplicar</button>
+                </ion-col>
+            </ion-row>
+        </div>
+        <!--</ion-slides>-->
     </div>
 
 
-    <ion-fab right bottom *ngIf ="tabs == 0">
+    <ion-fab right bottom *ngIf="tabs == 0">
         <button mini ion-fab color="ep-gris" (click)="modalSearch({charNum: 0})">
             <ion-icon name="funnel"></ion-icon>
         </button>

@@ -121,7 +121,7 @@ export class PrincipalPage {
     }
 
     selectedTab() {
-        this.slider.slideTo(+this.tabs, 500);
+        // this.slider.slideTo(+this.tabs, 500);
         this.tabBody = +this.tabs;
     }
 
@@ -284,7 +284,7 @@ export class PrincipalPage {
     }
 
     pageEmpresas() {
-        this.navController.push(Empresas);
+        // this.navController.push(Empresas);
     }
 
     toastPromo(promo) {

@@ -31,8 +31,6 @@ export class PubliacionesEmpresaActualPage {
 
         this.empresa = this.navParams.get('empresa');
 
-        console.log(this.empresa)
-
         this.cargarPublicaciones();
 
     }

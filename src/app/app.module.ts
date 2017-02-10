@@ -41,6 +41,8 @@ import {Truncate} from "../pipes/truncate";
 import {Config} from "./config";
 import {FirstUpperCase} from "../pipes/firstUpperCase";
 import {PubliacionesEmpresaActualPage} from "../pages/publiaciones-empresa-actual/publiaciones-empresa-actual";
+import {RutaPage} from "../pages/ruta/ruta";
+import {DescuentoMenos} from "../pipes/descuentoMenos";
 
 
 @NgModule({
@@ -78,7 +80,9 @@ import {PubliacionesEmpresaActualPage} from "../pages/publiaciones-empresa-actua
         ModalImageDefault,
         Truncate,
         FirstUpperCase,
-        PubliacionesEmpresaActualPage
+        DescuentoMenos,
+        PubliacionesEmpresaActualPage,
+        RutaPage
     ],
     imports: [
         TranslateModule.forRoot({
@@ -112,7 +116,8 @@ import {PubliacionesEmpresaActualPage} from "../pages/publiaciones-empresa-actua
         CalendarioPage,
         ItemEmpresaComponent,
         ModalImageDefault,
-        PubliacionesEmpresaActualPage
+        PubliacionesEmpresaActualPage,
+        RutaPage
     ],
     providers: [Storage, MainService, GeocodingService, MapService, UserData, Config],
     schemas: [

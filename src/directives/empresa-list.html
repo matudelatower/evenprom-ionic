@@ -36,7 +36,7 @@
             <img class="img-publicacion-img " [src]="publicacion.imagen_publicacion"/>
             <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
                  [ngStyle]="{'background-color':publicacion.color}">
-                <span>{{publicacion.promocion | uppercase}}</span>
+                <span>{{publicacion.promocion | uppercase  | descuentoMenos}}</span>
             </div>
             <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
                  [ngStyle]="{'background-color':publicacion.color}">
@@ -107,7 +107,7 @@
             <h1 class="h1-empresa"
                 [ngStyle]="{'color': '#5c666f', 'font-size': '4em', 'font-weight': '900', 'white-space':'normal'}"
                 *ngIf="publicacion.promocion" class="promo" text-center>
-                {{publicacion.promocion | uppercase}}
+                {{publicacion.promocion | uppercase | descuentoMenos}}
             </h1>
             <h1 class="h1-empresa" [ngStyle]="{'color': '#5c666f', padding:'5px', 'font-weight': '900'}"
                 *ngIf="!publicacion.promocion" class="promo" text-center>

@@ -151,6 +151,14 @@ item-list-empresa {
   color: color($colors, ep-fucsia);
 }
 
+.g-maps {
+  color: color($colors, danger) !important;
+}
+
+.leaflet {
+  color: color($colors, secondary) !important;
+}
+
 .h1-empresa {
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;

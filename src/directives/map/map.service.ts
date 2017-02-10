@@ -8,7 +8,7 @@ import {ReplaySubject} from 'rxjs/ReplaySubject';
 @Injectable()
 export class MapService {
     public map;
-    public baseMaps:any;
+    public baseMaps: any;
 
     //Observable bounds source
     private _geosearchBoundsSource = new ReplaySubject<any>();
@@ -23,7 +23,7 @@ export class MapService {
     }
 
     // load a web map and return response
-    createMap(domId:any) {
+    createMap(domId: any) {
         this.remove()
         this.map = new L.Map(domId, {
             zoomControl: false,
@@ -44,11 +44,11 @@ export class MapService {
     // }
 
     // service command
-    changeBounds(newBounds:any) {
+    changeBounds(newBounds: any) {
         this._geosearchBoundsSource.next(newBounds);
     }
 
-    addMarker(newBounds:any, text) {
+    addMarker(newBounds: any, text) {
 
         let maker = L.marker(newBounds).addTo(this.map);
 
@@ -75,14 +75,57 @@ export class MapService {
 
     }
 
+    createWayPoints(wayPoints) {
+
+        let r: any[] = new Array();
+        for (let p of wayPoints) {
+            r.push(L.latLng(p.lat, p.lng));
+        }
+
+        return r;
+
+    }
+
+    createRoute(waypoints, message) {
+        // L.Routing.control({
+        //     waypoints: [
+        //         L.latLng(-27.360626, -55.888359),
+        //         L.latLng(-27.385646, -55.892561)
+        //     ],
+        // }).addTo(this.map);
+
+        // let message = ["Custom <strong>mesage1</strong>","Custom <strong>message2</strong>","Custom <strong>mesasge3</strong>"];
+
+        // let waypoints = [
+        //     L.latLng(-27.360626, -55.888359),
+        //     L.latLng(-27.385658, -55.892561)
+        // ];
+
+        L.Routing.control({
+            plan: L.Routing.plan(waypoints, {
+                createMarker: function (i, wp) {
+                    if (waypoints[0]) {
+                        return L.marker(wp.latLng, {
+                            draggable: false
+                        }).bindPopup(message[i]).openPopup();
+
+                    }
+
+                },
+                routeWhileDragging: false
+            })
+        }).addTo(this.map);
+
+    }
+
     remove() {
-        if(this.map != undefined || this.map != null) {
+        if (this.map != undefined || this.map != null) {
             this.map.remove();
         }
 
     }
 
-    disableMouseEvent(tag:string) {
+    disableMouseEvent(tag: string) {
         var html = L.DomUtil.get(tag);
 
         L.DomEvent.disableClickPropagation(html);

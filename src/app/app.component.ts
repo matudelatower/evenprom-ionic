@@ -107,16 +107,36 @@ export class MyApp {
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
 
+            NativeStorage.getItem('lenguaje')
+                .then((data) => {
+                    if (data) {
+                        this.lenguaje = data;
+                        this.translate.setDefaultLang(this.lenguaje);
+                        this.translate.use(this.lenguaje);
+                    } else {
+                        if (navigator.language.indexOf('en') > -1) {
+                            this.lenguaje = 'en';
+                        } else if (navigator.language.indexOf('es') > -1) {
+                            this.lenguaje = 'es';
+                        } else if (navigator.language.indexOf('pt') > -1) {
+                            this.lenguaje = 'pt';
+                        }
+                        this.translate.setDefaultLang(this.lenguaje);
+                        this.translate.use(this.lenguaje);
+                    }
+                })
+                .catch((err) => {
+                    if (navigator.language.indexOf('en') > -1) {
+                        this.lenguaje = 'en';
+                    } else if (navigator.language.indexOf('es') > -1) {
+                        this.lenguaje = 'es';
+                    } else if (navigator.language.indexOf('pt') > -1) {
+                        this.lenguaje = 'pt';
+                    }
+                    this.translate.setDefaultLang(this.lenguaje);
+                    this.translate.use(this.lenguaje);
+                });
 
-            if (navigator.language.indexOf('en') > -1) {
-                this.lenguaje = 'en';
-            } else if (navigator.language.indexOf('es') > -1) {
-                this.lenguaje = 'es';
-            }
-            console.log(this.lenguaje, navigator.language.indexOf('es'));
-
-            this.translate.setDefaultLang(this.lenguaje);
-            this.translate.use(this.lenguaje);
 
             this.googleReverseClientId = _config.get('googleReverseClientId');
             this.googleAnalyticsTrackId = _config.get('googleAnalyticsTrackId');
@@ -163,6 +183,8 @@ export class MyApp {
 
                 BackgroundGeolocation.configure((location) => {
                     console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
+
+                    NativeStorage.setItem('location', location);
 
                     this.events.publish(this.mainService.event_location_detected, location);
 
@@ -301,7 +323,8 @@ export class MyApp {
     }
 
     cambiarLenguaje() {
-        console.log(this.lenguaje);
+
+        NativeStorage.setItem('lenguaje', this.lenguaje);
         this.translate.use(this.lenguaje);
 
     }

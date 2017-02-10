@@ -43,15 +43,15 @@
         </ion-grid>
 
 
-        <ion-grid *ngIf="!prod" class="menu-header">
+        <!--<ion-grid *ngIf="!prod" class="menu-header">-->
 
-            <ion-row  no-padding>
-                <ion-col no-padding>
-                  HOLIS
-                </ion-col>
-            </ion-row>
+        <!--<ion-row  no-padding>-->
+        <!--<ion-col no-padding>-->
+        <!--HOLIS-->
+        <!--</ion-col>-->
+        <!--</ion-row>-->
 
-        </ion-grid>
+        <!--</ion-grid>-->
 
         <ion-list class="menu-items">
             <ion-item no-lines>
@@ -60,6 +60,7 @@
                 <ion-select  (ionChange)="cambiarLenguaje()"[(ngModel)]="lenguaje">
                     <ion-option value="es">Español</ion-option>
                     <ion-option value="en">English</ion-option>
+                    <ion-option value="pt">Português</ion-option>
                 </ion-select>
             </ion-item>
 

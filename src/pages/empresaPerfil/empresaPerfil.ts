@@ -1,5 +1,8 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
+import {
+    NavController, NavParams, ViewController, LoadingController, ToastController,
+    ActionSheetController
+} from 'ionic-angular';
 import {DomSanitizer} from '@angular/platform-browser';
 
 /**
@@ -14,11 +17,13 @@ import {
     Transfer,
     Crop,
     Geolocation,
-    Diagnostic
+    Diagnostic,
+    NativeStorage
 } from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {PubliacionesEmpresaActualPage} from "../publiaciones-empresa-actual/publiaciones-empresa-actual";
+import {RutaPage} from "../ruta/ruta";
 
 
 @Component({
@@ -43,6 +48,7 @@ export class EmpresaPerfilPage {
                 public loadingCtrl: LoadingController,
                 public toastCtrl: ToastController,
                 public geocoder: GeocodingService,
+                public actionSheetCtrl: ActionSheetController,
                 public mainService: MainService) {
         console.log("Passed params", navParams.data.empresa);
 
@@ -282,10 +288,67 @@ export class EmpresaPerfilPage {
     }
 
     comoLlegar() {
+        let actionSheet = this.actionSheetCtrl.create({
+            title: 'Abrir mapas con',
+            buttons: [
+                {
+                    color: 'danger',
+                    icon: 'logo-google',
+                    text: 'Google Maps',
+                    role: 'gmaps',
+                    cssClass: 'g-maps',
+                    handler: () => {
+                        this.gMapsBack();
+                    }
+                }, {
+                    cssClass: 'leaflet',
+                    icon: 'map',
+                    text: 'Leaflet',
+                    role: 'leaflet',
+                    handler: () => {
+                        this.leafletBack();
+                    }
+                }
+            ]
+        });
+        actionSheet.present();
+    }
 
-        Diagnostic.isGpsLocationEnabled().then((resp) => {
-            if (resp === true) {
-                if (!this.empresa.direccion) {
+    gMaps() {
+
+        console.log("gmaps");
+
+
+        if (!this.empresa.direccion) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene cargada la dirección",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+
+            return false;
+        }
+
+        let loader = this.loadingCtrl.create({
+            content: "Abriendo mapa",
+            // duration: 6000
+        });
+        loader.present();
+
+        Geolocation.getCurrentPosition({timeout: 8000}).then((resp) => {
+            // resp.coords.latitude
+            // resp.coords.longitude
+
+            let actual = resp.coords.latitude + ", " + resp.coords.longitude;
+
+            let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
+
+            location.subscribe(location => {
+
+                loader.dismissAll();
+                if (!location.valid) {
                     let toast = this.toastCtrl.create({
                         message: "La empresa no tiene cargada la dirección",
                         duration: 1500,
@@ -293,98 +356,363 @@ export class EmpresaPerfilPage {
                     });
 
                     toast.present(toast);
-
-                    return false;
+                    return;
                 }
+                // let address = location.address;
 
-                let loader = this.loadingCtrl.create({
-                    content: "Abriendo mapa",
-                    // duration: 6000
-                });
-                loader.present();
-
-                Geolocation.getCurrentPosition({timeout: 8000}).then((resp) => {
-                    // resp.coords.latitude
-                    // resp.coords.longitude
-
-                    let actual = resp.coords.latitude + ", " + resp.coords.longitude;
-
-                    let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
-
-                    location.subscribe(location => {
-
-                        loader.dismissAll();
-                        if (!location.valid) {
-                            let toast = this.toastCtrl.create({
-                                message: "La empresa no tiene cargada la dirección",
-                                duration: 1500,
-                                position: 'center'
-                            });
-
-                            toast.present(toast);
-                            return;
-                        }
-                        // let address = location.address;
-
-                        var newBounds = location.viewBounds;
-                        //this.mapService.changeBounds(newBounds);
+                var newBounds = location.viewBounds;
+                //this.mapService.changeBounds(newBounds);
 
 
-                        let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
-                        let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
 
-                        let destino = lat + ", " + lng;
+                let destino = lat + ", " + lng;
 
-                        let toast = this.toastCtrl.create({
-                            message: "Ruta encontrada.",
-                            duration: 1500,
-                            position: 'center'
-                        });
-
-                        toast.present(toast);
-
-                        let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
-
-
-                        window.open(url, "_system");
-
-                    }, error => {
-                        loader.dismissAll();
-                        let toast = this.toastCtrl.create({
-                            message: "No se ha podido abrir el mapa.",
-                            duration: 1500,
-                            position: 'center'
-                        });
-
-                        toast.present(toast);
-                    });
-
-                }).catch((error) => {
-                    loader.dismissAll();
-                    let toast = this.toastCtrl.create({
-                        message: "No se ha podido abrir el mapa.",
-                        duration: 1500,
-                        position: 'center'
-                    });
-
-                    toast.present(toast);
-                });
-
-
-            } else {
                 let toast = this.toastCtrl.create({
-                    message: "Necesitás habilitar el GPS para realizar esta función",
+                    message: "Ruta encontrada.",
                     duration: 1500,
                     position: 'center'
                 });
 
                 toast.present(toast);
 
-            }
+                let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
+
+
+                window.open(url, "_system");
+
+            }, error => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido abrir el mapa.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
+
         }).catch((error) => {
-            console.log("isGpsLocationEnabled ERROR:", error);
+            loader.dismissAll();
+            let toast = this.toastCtrl.create({
+                message: "No se ha podido abrir el mapa.",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
         });
 
+
+    }
+
+    gMapsBack() {
+
+        if (!this.empresa.direccion) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene cargada la dirección",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+
+            return false;
+        }
+
+        let loader = this.loadingCtrl.create({
+            content: "Abriendo mapa",
+            // duration: 6000
+        });
+        loader.present();
+
+        NativeStorage.getItem('location').then((resp) => {
+            // resp.coords.latitude
+            // resp.coords.longitude
+
+            if (!resp) {
+                this.gMaps();
+                return;
+            }
+
+            let actual = resp.coords.latitude + ", " + resp.coords.longitude;
+
+            let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
+
+            location.subscribe(location => {
+
+                loader.dismissAll();
+                if (!location.valid) {
+                    let toast = this.toastCtrl.create({
+                        message: "La empresa no tiene cargada la dirección",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                    return;
+                }
+                // let address = location.address;
+
+                var newBounds = location.viewBounds;
+                //this.mapService.changeBounds(newBounds);
+
+
+                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+
+                let destino = lat + ", " + lng;
+
+                let toast = this.toastCtrl.create({
+                    message: "Ruta encontrada.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+
+                let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
+
+
+                window.open(url, "_system");
+
+            }, error => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido abrir el mapa.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
+
+        }).catch((error) => {
+            loader.dismissAll();
+            this.gMaps();
+            let toast = this.toastCtrl.create({
+                message: "No se ha podido abrir el mapa.",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+        });
+
+
+    }
+
+    leafletBack() {
+
+
+        if (!this.empresa.direccion) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene cargada la dirección",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+
+            return false;
+        }
+
+        let loader = this.loadingCtrl.create({
+            content: "Abriendo mapa",
+            // duration: 6000
+        });
+        loader.present();
+
+        NativeStorage.getItem('location').then((resp) => {
+            // resp.coords.latitude
+            // resp.coords.longitude
+
+            if (!resp) {
+                loader.dismissAll();
+                this.leaflet();
+                return;
+            }
+
+            let actual = {
+                lat: resp.coords.latitude,
+                lng: resp.coords.longitude,
+            };
+
+            let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
+
+            location.subscribe(location => {
+
+                loader.dismissAll();
+                if (!location.valid) {
+                    let toast = this.toastCtrl.create({
+                        message: "La empresa no tiene cargada la dirección",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                    return;
+                }
+                // let address = location.address;
+
+                var newBounds = location.viewBounds;
+                //this.mapService.changeBounds(newBounds);
+
+
+                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+
+                let destino = {
+                    lat: lat,
+                    lng: lng
+                };
+
+                let toast = this.toastCtrl.create({
+                    message: "Ruta encontrada.",
+                    duration: 2520,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+
+                this.navController.push(RutaPage,
+                    {
+                        ways: [actual, destino],
+                        msgs: ["Partida: <strong>Tu ubicación</strong>", "Destino: <strong>" + this.empresa.nombre + "</strong>"]
+                    });
+
+
+            }, error => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido abrir el mapa.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
+
+        }).catch((error) => {
+            loader.dismissAll();
+            this.leaflet();
+        });
+
+    }
+
+    leaflet() {
+
+        console.log("leaflet");
+        // Diagnostic.isGpsLocationEnabled().then((resp) => {
+        //     if (resp === true) {
+        if (!this.empresa.direccion) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene cargada la dirección",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+
+            return false;
+        }
+
+        let loader = this.loadingCtrl.create({
+            content: "Abriendo mapa",
+            // duration: 6000
+        });
+        loader.present();
+
+        Geolocation.getCurrentPosition({timeout: 8000}).then((resp) => {
+            // resp.coords.latitude
+            // resp.coords.longitude
+
+            let actual = {
+                lat: resp.coords.latitude,
+                lng: resp.coords.longitude,
+            };
+
+            let location = this.geocoder.geocode(this.empresa.direccion.calle + " " + this.empresa.direccion.altura + ", " + this.empresa.direccion.localidad);
+
+            location.subscribe(location => {
+
+                loader.dismissAll();
+                if (!location.valid) {
+                    let toast = this.toastCtrl.create({
+                        message: "La empresa no tiene cargada la dirección",
+                        duration: 1500,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                    return;
+                }
+                // let address = location.address;
+
+                var newBounds = location.viewBounds;
+                //this.mapService.changeBounds(newBounds);
+
+
+                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+
+                let destino = {
+                    lat: lat,
+                    lng: lng
+                };
+
+                let toast = this.toastCtrl.create({
+                    message: "Ruta encontrada.",
+                    duration: 2520,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+
+                this.navController.push(RutaPage,
+                    {
+                        ways: [actual, destino],
+                        msgs: ["Partida: <strong>Tu ubicación</strong>", "Destino: <strong>" + this.empresa.nombre + "</strong>"]
+                    });
+
+
+            }, error => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido abrir el mapa.",
+                    duration: 1500,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
+
+        }).catch((error) => {
+            loader.dismissAll();
+            let toast = this.toastCtrl.create({
+                message: "No se ha podido abrir el mapa.",
+                duration: 1500,
+                position: 'center'
+            });
+
+            toast.present(toast);
+        });
+
+
+        //     } else {
+        //         let toast = this.toastCtrl.create({
+        //             message: "Necesitás habilitar el GPS para realizar esta función",
+        //             duration: 1500,
+        //             position: 'center'
+        //         });
+        //
+        //         toast.present(toast);
+        //
+        //     }
+        // }).catch((error) => {
+        //     console.log("isGpsLocationEnabled ERROR:", error);
+        // });
 
     }
 

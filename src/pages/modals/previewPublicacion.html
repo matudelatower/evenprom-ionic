@@ -70,7 +70,7 @@
                 <div *ngIf="!publicacion.premium">
                     <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
                          [ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">
-                        <span>{{publicacion.promocion | uppercase}}</span>
+                        <span>{{publicacion.promocion | uppercase | descuentoMenos}}</span>
                     </div>
                     <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
                          [ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">
@@ -81,9 +81,9 @@
             </ion-col>
         </ion-row>
         <ion-row class="publicacion-fecha-border" text-center>
-            <ion-col class="ep-gris no-padding-top-button" text-center>
-                <p>Fecha: {{publicacion.rango_fecha.fecha_desde}} al {{publicacion.rango_fecha.fecha_hasta}} </p>
-                <p>Hora: {{publicacion.rango_fecha.hora_desde}} hasta las {{publicacion.rango_fecha.hora_hasta}}</p>
+            <ion-col class="no-padding-top-button" text-center>
+                <p><span class="ep-gris ">Fecha</span> {{publicacion.rango_fecha.fecha_desde}} al {{publicacion.rango_fecha.fecha_hasta}} </p>
+                <p><span class="ep-gris ">Hora</span> {{publicacion.rango_fecha.hora_desde}} hasta las {{publicacion.rango_fecha.hora_hasta}}</p>
             </ion-col>
 
         </ion-row>
@@ -100,7 +100,7 @@
         <ion-row text-center>
             <ion-col no-padding>
                 <div #contenedorMapa>
-                    <div style="height: 100%;" id="contenedor-mapa-publicacion" *ngIf="publicacion.direccion_empresa">
+                    <div style="height: 100%;" id="contenedor-mapa" *ngIf="publicacion.direccion_empresa">
                     </div>
                 </div>
             </ion-col>
