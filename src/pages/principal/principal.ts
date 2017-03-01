@@ -36,26 +36,6 @@ export class PrincipalPage {
 
     myDate = new Date();
 
-    // notificaciones
-    notificacionesOnda: any;
-    notificacionesLocalidad: any;
-    notificacionesDescuentos: any;
-    notificacionesRubro: any;
-    notificacionesCompras: any;
-    notificacionesEntretenimiento: any;
-    notificacionesGastronomia: any;
-    notificacionesEmpresa: any;
-    notificacionesEventos: any;
-
-    rubros = [];
-    ondas = [];
-    localidades = [];
-    descuentos = [];
-    empresas = [];
-    servicios = [];
-    entretenimiento = [];
-    gastronomia = [];
-
     showSearch: Boolean = false;
 
     search = "";
@@ -115,7 +95,7 @@ export class PrincipalPage {
             this.pageEmpresas();
         }
         else if (this.tabs == "2") {
-            this.cargarNotificaciones();
+            this.pageNotificaciones();
         }
         this.content.scrollToTop();
     }
@@ -286,6 +266,9 @@ export class PrincipalPage {
     pageEmpresas() {
         // this.navController.push(Empresas);
     }
+    pageNotificaciones() {
+        // this.navController.push(Empresas);
+    }
 
     toastPromo(promo) {
 
@@ -328,108 +311,6 @@ export class PrincipalPage {
                 toast.present(toast);
             });
 
-    }
-
-    getOndas() {
-
-        let loader = this.loadingCtrl.create({
-            content: "Cargando...",
-            // duration: 6000
-        });
-        loader.present();
-
-        this.mainservice.getOndas()
-            .subscribe(
-                (response) => {
-                    this.ondas = response;
-                    loader.dismissAll();
-
-                },
-                (err) => {
-                    console.log('error timeout');
-                    loader.dismissAll();
-                }
-            );
-    }
-
-
-    // notificaciones
-    cargarNotificaciones() {
-
-        this.mainservice.getLocalidades().subscribe(
-            (response) => {
-                this.localidades = response;
-            }
-        );
-
-        this.mainservice.getRubros().subscribe(
-            (response) => {
-                this.rubros = response;
-            }
-        );
-
-
-        this.mainservice.getOndas().subscribe(
-            (response) => {
-                this.ondas = response;
-            }
-        );
-
-        this.mainservice.getDescuentos().subscribe(
-            (response) => {
-                this.descuentos = response;
-            }
-        );
-
-        this.mainservice.getAllEmpresas().subscribe(
-            (response) => {
-                this.empresas = response;
-            }
-        );
-
-        this.mainservice.getSubRubros('gastronomia').subscribe(
-            (response) => {
-                this.gastronomia = response;
-            }
-        );
-
-        this.mainservice.getSubRubros('recreacion-diversion').subscribe(
-            (response) => {
-                this.entretenimiento = response;
-            }
-        );
-
-        this.mainservice.getSubRubros('servicios').subscribe(
-            (response) => {
-                this.servicios = response;
-            }
-        );
-
-    }
-
-    guardarPerfil() {
-
-        let notificaciones = {
-            onda: this.notificacionesOnda,
-            rubro: this.notificacionesRubro,
-            entretenimiento: this.notificacionesEntretenimiento,
-            compras: this.notificacionesCompras,
-            gastronomia: this.notificacionesGastronomia,
-            empresa: this.notificacionesEmpresa,
-            eventos: this.notificacionesEventos,
-            descuentos: this.notificacionesDescuentos,
-            localidad: this.notificacionesLocalidad,
-        };
-
-        console.log('notificaciones', JSON.stringify(notificaciones));
-
-        let toast = this.toastCtrl.create({
-            message: 'Perfil Guardado',
-            duration: 2000,
-            position: 'center'
-        });
-
-        toast.present(toast);
     }
 
 }

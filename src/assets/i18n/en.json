@@ -13,7 +13,16 @@
   "recomiendanos": "Recommend us",
   "buscarAmigos": "Search Friends",
   "calendario": "Calendar",
-  "calificacionGP": "QUALIFY IN GOOGLE PLAY",
+  "calificacionGP": "Qualify in GooglePlay",
   "registraEmpresa": "Register your company",
-  "contactanos": "Contact Us"
+  "contactanos": "Contact Us",
+  "proximamente": "Coming soon",
+  "tu-empresa-aqui": "Your business here",
+  "registrar": "Register",
+  "guardar": "Save",
+  "nombre": "First Name",
+  "apellido": "Last Name",
+  "fecha-nacimiento": "Birthday",
+  "tipo-documento": "Tipo Documento",
+  "dni": "DNI"
 }

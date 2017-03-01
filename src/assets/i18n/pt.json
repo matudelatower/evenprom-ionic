@@ -13,7 +13,16 @@
   "recomiendanos": "Recomendar",
   "buscarAmigos": "procurar amigos",
   "calendario": "calendário",
-  "calificacionGP": "Rever-nos Google Play",
+  "calificacionGP": "Rever-nos GooglePlay",
   "registraEmpresa": "Cadastre a sua empresa",
-  "contactanos": "contato"
+  "contactanos": "contato",
+  "contactanos": "Vinda",
+  "tu-empresa-aqui": "Seu negócio aqui",
+  "registrar": "Registrar",
+  "guardar": "Salvar",
+  "nombre": "Nome",
+  "apellido": "Sobrenome",
+  "fecha-nacimiento": "Fecha Nacimiento",
+  "tipo-documento": "Tipo Documento",
+  "dni": "DNI"
 }

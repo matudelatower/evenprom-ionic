@@ -11,7 +11,7 @@
             <img src="assets/img/logos/favicon.png" class="logo-menu">
             <ion-icon name="menu" color="ep-gris-claro"></ion-icon>
         </button>
-        <ion-title>Tu Empresa Aquí</ion-title>
+        <ion-title>{{ 'tu-empresa-aqui' | translate }}</ion-title>
     </ion-navbar>
 
 </ion-header>
@@ -21,7 +21,7 @@
     <ion-row>
         <ion-col text-center>
             <button ion-button color="secondary" round (click)="openUrl()">
-                Registrar
+                {{ 'registrar' | translate }}
             </button>
         </ion-col>
     </ion-row>

@@ -108,18 +108,18 @@
         <ion-row text-center class="margen-tarjeta">
             <ion-col class="no-padding-top-button">
 
-                <button color="ep-celeste" large round ion-button icon-only
+                <button class="btn-redondo" color="ep-celeste" large round ion-button icon-only
                         (click)="call(publicacion.id, publicacion.contacto_empresa.telefono)">
                     <ion-icon name="call"></ion-icon>
                 </button>
 
 
-                <button  color="danger" large round ion-button icon-only (click)="comoLlegar()">
+                <button class="btn-redondo"  color="danger" large round ion-button icon-only (click)="comoLlegar()">
                     <ion-icon name="pin"></ion-icon>
                 </button>
 
 
-                <button (click)="openUrl(publicacion.contacto_empresa.web)" color="ep-violeta" large round ion-button
+                <button class="btn-redondo" (click)="openUrl(publicacion.contacto_empresa.web)" color="ep-violeta" large round ion-button
                         icon-only>
                     <ion-icon name="globe"></ion-icon>
                 </button>
@@ -127,18 +127,19 @@
             </ion-col>
         </ion-row>
 
-        <ion-row text-center>
-            <ion-col no-padding-top-button class="tarjetas-content">
+<!--TODO crear form de alta de medios de pagos que acepta la empresa-->
+        <!--<ion-row text-center>-->
+            <!--<ion-col no-padding-top-button class="tarjetas-content">-->
 
-                <img src="assets/img/tarjetas/mestro.png" alt="Maestro">
-                <img src="assets/img/tarjetas/paypal2.png" alt="Paypal">
-                <img src="assets/img/tarjetas/mastercard.png" alt="Mastercard">
-                <img src="assets/img/tarjetas/visa.png" alt="Visa">
-                <img src="assets/img/tarjetas/mercadopago.png" width="51" height="32" alt="mercado pago">
-                <img src="assets/img/tarjetas/american-express.png" alt="American Express">
+                <!--<img src="assets/img/tarjetas/mestro.png" alt="Maestro">-->
+                <!--<img src="assets/img/tarjetas/paypal2.png" alt="Paypal">-->
+                <!--<img src="assets/img/tarjetas/mastercard.png" alt="Mastercard">-->
+                <!--<img src="assets/img/tarjetas/visa.png" alt="Visa">-->
+                <!--<img src="assets/img/tarjetas/mercadopago.png" width="51" height="32" alt="mercado pago">-->
+                <!--<img src="assets/img/tarjetas/american-express.png" alt="American Express">-->
 
-            </ion-col>
-        </ion-row>
+            <!--</ion-col>-->
+        <!--</ion-row>-->
 
 
     </ion-grid>

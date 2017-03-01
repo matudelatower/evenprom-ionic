@@ -43,6 +43,8 @@ import {FirstUpperCase} from "../pipes/firstUpperCase";
 import {PubliacionesEmpresaActualPage} from "../pages/publiaciones-empresa-actual/publiaciones-empresa-actual";
 import {RutaPage} from "../pages/ruta/ruta";
 import {DescuentoMenos} from "../pipes/descuentoMenos";
+import {EditarPerfilPage} from "../pages/editar-perfil/editar-perfil";
+import {NotificacionesPage} from "../pages/notificaciones/notificaciones";
 
 
 @NgModule({
@@ -82,7 +84,9 @@ import {DescuentoMenos} from "../pipes/descuentoMenos";
         FirstUpperCase,
         DescuentoMenos,
         PubliacionesEmpresaActualPage,
-        RutaPage
+        RutaPage,
+        EditarPerfilPage,
+        NotificacionesPage
     ],
     imports: [
         TranslateModule.forRoot({
@@ -117,7 +121,9 @@ import {DescuentoMenos} from "../pipes/descuentoMenos";
         ItemEmpresaComponent,
         ModalImageDefault,
         PubliacionesEmpresaActualPage,
-        RutaPage
+        RutaPage,
+        EditarPerfilPage,
+        NotificacionesPage
     ],
     providers: [Storage, MainService, GeocodingService, MapService, UserData, Config],
     schemas: [

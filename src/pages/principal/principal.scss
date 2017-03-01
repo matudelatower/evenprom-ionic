@@ -10,89 +10,16 @@ page-principal {
 
   }
 
-  /* ----------- Galaxy S5 ----------- */
 
-  /* Portrait */
-  @media only screen and (min-device-width: 412px) and (orientation: portrait) {
-    .notificaciones .item {
-      width: 45%;
-      margin-left: 25%;
-      border-radius: 90px;
-      background-color: color($colors, ep-celeste);
-      height: 60px;
-    }
-  }
 
-  /* Portrait */
-  @media only screen and (min-device-width: 320px) and (max-device-width: 411px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait) {
-    .notificaciones .item {
-      width: 45%;
-      margin-left: 25%;
-      border-radius: 90px;
-      background-color: color($colors, ep-celeste);
-      height: 40px;
-    }
-  }
+}
 
-  /* ----------- HTC one ----------- */
-
-  /* Portrait */
-  @media screen and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait) {
-    .notificaciones .item {
-      width: 40%;
-      margin-left: 25%;
-      border-radius: 90px;
-      background-color: color($colors, ep-celeste);
-      height: 45px;
-    }
-  }
-
-  /* ----------- Galaxy Tab 10.1 ----------- */
-
-  /* Portrait and Landscape */
-  @media(min-device-width: 800px) and (max-device-width: 1280px) {
-
-  }
-
-  /* Portrait */
-  @media(min-device-width: 601px) and(max-device-width: 800px) and (orientation: portrait) {
-    .notificaciones .item {
-      width: 40%;
-      margin-left: 25%;
-      border-radius: 90px;
-      background-color: color($colors, ep-celeste);
-      height: 100px;
-    }
-  }
-
-  /* Landscape */
-  @media(max-device-width: 1280px) and (orientation: landscape) {
-
-  }
-
-  /* ----------- Asus Nexus 7 ----------- */
-
-  /* Portrait and Landscape */
-  @media screen and (device-width: 601px) and (device-height: 906px) and (-webkit-min-device-pixel-ratio: 1.331) and (-webkit-max-device-pixel-ratio: 1.332) {
-
-  }
-
-  /* Portrait */
-  @media screen and (device-width: 600px) and (orientation: portrait) {
-    .notificaciones .item {
-      width: 40%;
-      margin-left: 25%;
-      border-radius: 90px;
-      background-color: color($colors, ep-celeste);
-      height: 75px;
-    }
-  }
-
-  /* Landscape */
-  @media screen and (device-width: 601px) and (device-height: 906px) and (-webkit-min-device-pixel-ratio: 1.331) and (-webkit-max-device-pixel-ratio: 1.332) and (orientation: landscape) {
-
-  }
-
+.desactivar .item {
+  width: 50% !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+  background-color: transparent !important;
+  //height: 75px;
 }
 
 item-list-empresa {
@@ -172,7 +99,7 @@ item-list-empresa {
   position: absolute;
 }
 
-btn-flotantes-publicacion >  button{
+btn-flotantes-publicacion > button {
   margin: 0px !important;
 }
 
@@ -198,9 +125,9 @@ btn-flotantes-publicacion >  button{
   width: 100%;
 }
 
-.margen-tarjeta{
-  border-bottom: 1px solid color($colors,ep-gris-claro);
-  border-top: 1px solid color($colors,ep-gris-claro);
+.margen-tarjeta {
+  border-bottom: 1px solid color($colors, ep-gris-claro);
+  border-top: 1px solid color($colors, ep-gris-claro);
 }
 
 .img-publicacion-subtitle {
@@ -258,10 +185,6 @@ btn-flotantes-publicacion >  button{
   .toolbar-title {
     color: inherit !important;
   }
-}
-
-.item {
-  border: 1px color($colors, ep-gris-claro) solid !important;
 }
 
 .fab {
@@ -417,7 +340,7 @@ btn-flotantes-publicacion >  button{
     color: #fff;
   }
 
-  .img-publicacion-img{
+  .img-publicacion-img {
     height: 180px;
   }
 
@@ -428,12 +351,10 @@ btn-flotantes-publicacion >  button{
 
   /* Portrait */
   @media(min-device-width: 601px) and(max-device-width: 800px) and (orientation: portrait) {
-    .img-publicacion-img{
+    .img-publicacion-img {
       height: 300px;
     }
   }
-
-
 
 }
 
@@ -494,14 +415,3 @@ btn-flotantes-publicacion >  button{
 .no-padding-top {
   padding-top: 0px !important;
 }
-
-//notificaciones
-.notificaciones .item {
-  width: 40%;
-  margin-left: 25%;
-  border-radius: 90px;
-  background-color: color($colors, ep-celeste);
-}
-
-
-

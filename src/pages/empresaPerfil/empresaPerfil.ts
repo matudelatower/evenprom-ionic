@@ -86,21 +86,42 @@ export class EmpresaPerfilPage {
     }
 
     openUrl(url) {
+        console.log('url', url);
+        if (url == null) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene sitio web cargado",
+                duration: 3000,
+                position: 'center'
+            });
+
+            toast.present(toast);
+            return false;
+        }
         window.open(url, "_system");
     }
 
     shareWhastApp(message: string, image?: string, url?: string) {
 
-        SocialSharing.shareViaWhatsApp(message, image, url).then(() => {
+        let imageEncode = null;
+        if (image) {
+            imageEncode = encodeURI(image);
+        }
 
-        }).catch(() => {
-            // Error!
-        });
+        SocialSharing.shareViaWhatsApp(message, imageEncode, url)
+            .then((data) => {
+                console.log("Success");
+            }, (err) => {
+                console.error(err);
+            });
     }
 
     shareFacebook(message: string, image?: string, url?: string) {
 
-        console.log(message, image, url);
+
+        let imageEncode = null;
+        if (image) {
+            imageEncode = encodeURI(image);
+        }
 
         let app;
 
@@ -115,7 +136,7 @@ export class EmpresaPerfilPage {
                 () => {
                     console.log(app + ' is available')
 
-                    SocialSharing.shareViaFacebook(message, image, url).then(() => {
+                    SocialSharing.shareViaFacebook(message, imageEncode, url).then(() => {
 
                     }).catch(() => {
                         // Error!

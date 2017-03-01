@@ -5,16 +5,18 @@
         <ion-grid *ngIf="prod && user" class="menu-header">
             <ion-row>
                 <ion-col text-center width-50>
-                    <ion-avatar  class="menu-avatar">
+                    <ion-avatar class="menu-avatar">
                         <img [src]="user.avatar" [default]="'assets/img/avatar.png'">
                     </ion-avatar>
                 </ion-col>
                 <ion-col text-left width-50>
                     <h1>{{user.nombre}} {{user.apellido}}</h1>
-                    <b style="color:white;">{{ "editarPerfil" |translate }}</b>
+                    <b class="a-editar-perfil" menuClose (click)="editarPerfil()">
+                        {{ "editarPerfil" |translate }}
+                    </b>
                 </ion-col>
             </ion-row>
-            <ion-row  no-padding>
+            <ion-row no-padding>
                 <ion-col no-padding>
                     <ion-searchbar placeholder="Buscar"></ion-searchbar>
                 </ion-col>
@@ -25,16 +27,18 @@
         <ion-grid *ngIf="!prod" class="menu-header">
             <ion-row>
                 <ion-col text-center width-50>
-                    <ion-avatar  class="menu-avatar">
+                    <ion-avatar class="menu-avatar">
                         <img [src]="" [default]="'assets/img/avatar.png'">
                     </ion-avatar>
                 </ion-col>
                 <ion-col text-left width-50>
                     <h1>Joe Bloggs</h1>
-                    <b style="color:white;">Editar perfil</b>
+                    <b class="a-editar-perfil" menuClose (click)="editarPerfil()">
+                        {{ "editarPerfil" |translate }}
+                    </b>
                 </ion-col>
             </ion-row>
-            <ion-row  no-padding>
+            <ion-row no-padding>
                 <ion-col no-padding>
                     <ion-searchbar placeholder="Buscar"></ion-searchbar>
                 </ion-col>
@@ -42,45 +46,35 @@
 
         </ion-grid>
 
-
-        <!--<ion-grid *ngIf="!prod" class="menu-header">-->
-
-        <!--<ion-row  no-padding>-->
-        <!--<ion-col no-padding>-->
-        <!--HOLIS-->
-        <!--</ion-col>-->
-        <!--</ion-row>-->
-
-        <!--</ion-grid>-->
-
         <ion-list class="menu-items">
             <ion-item no-lines>
                 <ion-icon name="globe" item-left></ion-icon>
-                <ion-label >{{"elegirLenguaje" | translate}}</ion-label>
-                <ion-select  (ionChange)="cambiarLenguaje()"[(ngModel)]="lenguaje">
+                <ion-label>{{"elegirLenguaje" | translate}}</ion-label>
+                <ion-select (ionChange)="cambiarLenguaje()" [(ngModel)]="lenguaje">
                     <ion-option value="es">Español</ion-option>
                     <ion-option value="en">English</ion-option>
                     <ion-option value="pt">Português</ion-option>
                 </ion-select>
             </ion-item>
 
+            <ion-item *ngIf="prod" no-lines class="ondas-usuario">
+                <ion-row>
+                    <ion-col *ngFor="let onda of personaOndas" width-20>
+                        <img [src]="onda.onda.icono">
+                    </ion-col>
+                </ion-row>
+            </ion-item>
 
-            <!--<button menuClose ion-item *ngFor="let p of pages" menuIcon="home" (click)="openPage(p)">-->
-                <!--<ion-icon name="ionic" item-left></ion-icon>-->
-                <!--{{p.title}}-->
-                <!--<ion-icon name="ionic" item-right></ion-icon>-->
-            <!--</button>-->
-
-            <button style="border: none !important;" menuClose ion-item *ngFor="let menu of menues" (click)="menu.function()">
-                <ion-icon  color="danger" [name]="menu.icono" item-left></ion-icon>
-                {{ menu.nombre |translate | fuppercase }}
-            </button>
+            <ion-item menuClose no-lines *ngFor="let menu of menues" (click)="menu.function()">
+                <ion-icon color="danger" [name]="menu.icono" item-left></ion-icon>
+                {{ menu.nombre | translate }}
+                <i class="fa fa-thumbs-o-up"></i>
+            </ion-item>
 
 
             <button menuClose ion-item menuIcon="logout" (click)="logout()">
                 <ion-icon name="log-out" item-left></ion-icon>
                 {{ 'salir' |translate }}
-                <!--<ion-icon name="ionic" item-right></ion-icon>-->
             </button>
 
         </ion-list>

@@ -11,7 +11,7 @@
             <img src="assets/img/logos/favicon.png" class="logo-menu">
             <ion-icon name="menu" color="ep-gris-claro"></ion-icon>
         </button>
-        <ion-title>Buscar Amigos</ion-title>
+        <ion-title>{{ "buscarAmigos"| translate }}</ion-title>
     </ion-navbar>
 
 </ion-header>
@@ -20,7 +20,11 @@
 <ion-content padding>
     <ion-row>
         <ion-col text-center>
-            <h1><b class="ep-celeste">Próxima</b><b class="ep-fucsia">mente</b></h1>
+            <h1>
+                <b class="ep-celeste">
+                    {{'proximamente' | translate}}
+                </b>
+            </h1>
         </ion-col>
     </ion-row>
 </ion-content>

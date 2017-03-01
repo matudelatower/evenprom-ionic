@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
 import {Platform, Events, LoadingController} from 'ionic-angular';
 import {
-    StatusBar, BackgroundGeolocation, Device, Push, Facebook, NativeStorage, AppRate,
-    GooglePlus, Market, GoogleAnalytics
+    StatusBar, BackgroundGeolocation, Facebook, NativeStorage, AppRate,
+    GooglePlus, Market, GoogleAnalytics, Splashscreen, OneSignal
 } from 'ionic-native';
 import {PrincipalPage} from "../pages/principal/principal";
 import {LoginPage} from "../pages/login/login";
@@ -15,6 +15,7 @@ import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
 import {Config} from "./config";
 import {TranslateService} from "ng2-translate";
+import {EditarPerfilPage} from "../pages/editar-perfil/editar-perfil";
 
 
 @Component({
@@ -25,6 +26,7 @@ export class MyApp {
     //rootPage = LoginPage;
     rootPage: any;
     user: any;
+    personaOndas: any;
     pages = [];
 
     prod = true;
@@ -51,6 +53,7 @@ export class MyApp {
         {
             function: this.recomiendanos,
             icono: 'notifications',
+            // icono: 'icono manito',
             nombre: 'recomiendanos',
         },
 
@@ -101,11 +104,12 @@ export class MyApp {
                 public loadingCtrl: LoadingController,
                 public mainService: MainService,
                 public translate: TranslateService,
-                _config: Config) {
+                public _config: Config) {
         platform.ready().then(() => {
             // Okay, so the platform is ready and our plugins are available.
             // Here you can do any higher level native things you might need.
             StatusBar.styleDefault();
+            Splashscreen.hide();
 
             NativeStorage.getItem('lenguaje')
                 .then((data) => {
@@ -139,71 +143,19 @@ export class MyApp {
 
 
             this.googleReverseClientId = _config.get('googleReverseClientId');
-            this.googleAnalyticsTrackId = _config.get('googleAnalyticsTrackId');
+
             this.pushSenderID = _config.get('pushSenderID');
 
             if (this.prod) {
 
-                GoogleAnalytics.startTrackerWithId(this.googleAnalyticsTrackId)
-                    .then(() => {
-                        console.log('Google analytics is ready now');
-                        // Tracker is ready
-                        // You can now track pages or set additional information such as AppVersion or UserId
-                    })
-                    .catch(e => console.log('Error starting GoogleAnalytics', e));
+                this.initAnalytics();
 
-                console.log('Device UUID is: ' + Device.uuid);
+                this.initOneSignal();
 
-                var push = Push.init({
-                    android: {
-                        senderID: this.pushSenderID
-                    },
-                    ios: {
-                        alert: 'true',
-                        badge: true,
-                        sound: 'false'
-                    }
-                });
-
-                push.on('registration', function (data) {
-                    console.log('registrationId', data.registrationId);
-                });
-
-                // BackgroundGeolocation is highly configurable. See platform specific configuration options
-                let config = {
-                    url: 'http://192.168.0.113:3000/locations',
-                    startOnBoot: true,
-                    desiredAccuracy: 10,
-                    stationaryRadius: 20,
-                    distanceFilter: 30,
-                    startForeground: false,
-                    debug: false, //  enable this hear sounds for background-geolocation life-cycle.
-                    stopOnTerminate: false, // enable this to clear background location settings when the app terminates
-                };
-
-                BackgroundGeolocation.configure((location) => {
-                    console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
-
-                    NativeStorage.setItem('location', location);
-
-                    this.events.publish(this.mainService.event_location_detected, location);
-
-                    if (platform.is('ios')) {
-                        // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
-                        // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
-                        // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
-                        BackgroundGeolocation.finish(); // FOR IOS ONLY
-                    }
-
-                }, (error) => {
-                    console.log('BackgroundGeolocation error');
-                }, config);
-
-                // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
-                BackgroundGeolocation.start();
+                this.initGeolocation(platform);
 
                 let loader = this.loadingCtrl.create({
-                    content: "Ingresando a EvenProm",
+                    content: "Ingresando a EvenProm " + new Date(),
                     // duration: 6000
                 });
                 loader.present();
@@ -213,13 +165,27 @@ export class MyApp {
                     data => {
                         this.user = data;
                         this.mainService.setUser(data);
+
+                        this.mainService.getSubResource('personas', data.userID, 'ondas')
+                            .subscribe(
+                                (personaOnda) => {
+                                    this.personaOndas = personaOnda;
+
+                                },
+                                (err) => {
+                                    console.error(err);
+
+                                }
+                            );
                     }
-                );
+                ).catch(error => {
+                    console.error('prueba')
+                    console.error(error);
+                });
 
                 // Facebook login
                 Facebook.getLoginStatus()
                     .then(rtaLoginStatus => {
-                        console.log("rtaLoginStatus", JSON.stringify(rtaLoginStatus));
                         if (rtaLoginStatus.status == 'connected') {
                             this.rootPage = PrincipalPage;
 
@@ -230,7 +196,6 @@ export class MyApp {
                     })
                     .catch(error => {
                         console.error(error);
-                        console.error('login', JSON.stringify(error));
                         loader.dismissAll();
                     });
 
@@ -242,14 +207,12 @@ export class MyApp {
                 })
                     .then(
                         rta => {
-                            console.log("rta", JSON.stringify(rta));
                             this.rootPage = PrincipalPage;
                             loader.dismissAll();
                         }
                     )
                     .catch(error => {
                         console.error(error);
-                        console.error('login google', JSON.stringify(error));
                     })
                 ;
 
@@ -327,6 +290,73 @@ export class MyApp {
         NativeStorage.setItem('lenguaje', this.lenguaje);
         this.translate.use(this.lenguaje);
 
+    }
+
+    initGeolocation(platform) {
+        // BackgroundGeolocation is highly configurable. See platform specific configuration options
+        let config = {
+            url: 'http://192.168.0.7:3000/locations',
+            startOnBoot: true,
+            desiredAccuracy: 10,
+            stationaryRadius: 20,
+            distanceFilter: 30,
+            startForeground: false,
+            debug: false, //  enable this hear sounds for background-geolocation life-cycle.
+            stopOnTerminate: false, // enable this to clear background location settings when the app terminates
+        };
+
+        BackgroundGeolocation.configure((location) => {
+            console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
+
+            NativeStorage.setItem('location', location);
+
+            this.events.publish(this.mainService.event_location_detected, location);
+
+            if (platform.is('ios')) {
+                // IMPORTANT:  You must execute the finish method here to inform the native plugin that you're finished,
+                // and the background-task may be completed.  You must do this regardless if your HTTP request is successful or not.
+                // IF YOU DON'T, ios will CRASH YOUR APP for spending too much time in the background.
+                BackgroundGeolocation.finish(); // FOR IOS ONLY
+            }
+
+        }, (error) => {
+            console.log('BackgroundGeolocation error');
+        }, config);
+
+        // Turn ON the background-geolocation system.  The user will be tracked whenever they suspend the app.
+        BackgroundGeolocation.start();
+    }
+
+    initAnalytics() {
+        this.googleAnalyticsTrackId = this._config.get('googleAnalyticsTrackId');
+        GoogleAnalytics.startTrackerWithId(this.googleAnalyticsTrackId)
+            .then(() => {
+                console.log('Google analytics is ready now');
+                // Tracker is ready
+                // You can now track pages or set additional information such as AppVersion or UserId
+            })
+            .catch(e => console.log('Error starting GoogleAnalytics', e));
+    }
+
+    initOneSignal() {
+
+        OneSignal.startInit(this._config.get('oneSignalAppId'), this._config.get('googleProjectId'));
+
+        OneSignal.inFocusDisplaying(OneSignal.OSInFocusDisplayOption.InAppAlert);
+
+        OneSignal.handleNotificationReceived().subscribe(() => {
+            // do something when notification is received
+        });
+
+        OneSignal.handleNotificationOpened().subscribe(() => {
+            // do something when a notification is opened
+        });
+
+        OneSignal.endInit();
+    }
+
+    editarPerfil() {
+        this.openPage(EditarPerfilPage);
     }
 
 }

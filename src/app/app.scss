@@ -19,7 +19,7 @@
 }
 
 .menu-header {
-  height: 35%;
+  //height: 35%;
   max-height: 250px;
   background-color: #f53d3d;
 
@@ -32,6 +32,10 @@
   }
 }
 
+.ondas-usuario {
+  height: 6rem;
+}
+
 .no-padding-top-button {
   padding-bottom: 0px !important;
   padding-top: 0px !important;
@@ -42,6 +46,7 @@
   margin-top: 0px !important;
 }
 
+//custom font
 @font-face {
   font-family: 'Poppins';
   src: url('../assets/fonts/Poppins/Poppins-Regular.ttf');
@@ -53,4 +58,12 @@ body, span, button, h1, h2, h3, h4, h5, h6, ion-note {
 
 .segment-md .segment-button.activated, .segment-md .segment-button.segment-activated {
   border-color: color($colors, ep-celeste);
+}
+
+.a-editar-perfil {
+  color: #fff;
+}
+
+.btn-redondo {
+  height: 6rem;
 }

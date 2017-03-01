@@ -43,7 +43,6 @@ export class ModalPreviewPublicacion {
     ngOnInit() {
 
 
-
         let loader = this.loadingCtrl.create({
             content: "Cargando comentarios",
             // duration: 6000
@@ -89,6 +88,16 @@ export class ModalPreviewPublicacion {
     }
 
     openUrl(url) {
+        if (!url) {
+            let toast = this.toastCtrl.create({
+                message: "La empresa no tiene sitio web cargado",
+                duration: 3000,
+                position: 'center'
+            });
+
+            toast.present();
+            return false;
+        }
         window.open(url, "_system");
     }
 

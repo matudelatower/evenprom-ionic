@@ -57,7 +57,7 @@ export class DefaultImageDirective {
     }
 
     loadImg() {
-        console.log('cargado en directive');
+        // console.log('cargado en directive');
         this.backgroundImage = 'none';
         this.size = '';
         this.display = '';
