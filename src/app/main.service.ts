@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {Http, Response, URLSearchParams, RequestOptions} from '@angular/http';
-import {ModalController} from 'ionic-angular';
+import {Http, Response, URLSearchParams, RequestOptions, Headers} from '@angular/http';
+import {ModalController, Events} from 'ionic-angular';
 import {Observable} from 'rxjs/Rx';
 import {NativeStorage} from "ionic-native";
 import {Config} from "./config";
@@ -27,10 +27,12 @@ export class MainService {
     public currentLocalidad: any = false;
 
     user: any;
+    dataToken: any;
 
-
-    constructor(http: Http, modalCont: ModalController,
-                _config: Config) {
+    constructor(http: Http,
+                modalCont: ModalController,
+                public _config: Config,
+                public events: Events) {
 
         this.ip = _config.get('apiUrl');
 
@@ -49,7 +51,7 @@ export class MainService {
     //post(resource: string, params?: any): Observable<any> {
     //    return this.http.post(this.serverUri + resource, params)
     //        .map(this.extractData)
-    //        .catch(this.handleError);
+    //        .catch(error => {this.handleError(error)});
     //}
 
 
@@ -68,15 +70,56 @@ export class MainService {
 
     }
 
-    getAvatar(fId, gId) {
-        if (fId) {
-            return "http://graph.facebook.com/" + fId + "/picture?type=large"
-        } else if (gId) {
+    getUserDemo() {
 
-        }
+        return NativeStorage.getItem('userDemo');
+
     }
 
-    getPublicaciones(userId, fields?: any) {
+    getAvatar(fbId, gId): Observable <any> {
+
+
+        let params;
+
+        // let options = new RequestOptions({
+        //     // withCredentials: false,
+        //     search: search
+        // });
+        let url = '/null';
+
+
+        if (gId) {
+            url = 'https://www.googleapis.com/plus/v1/people/' + gId;
+            params = {
+                fields: 'image',
+                key: this._config.get('googleApiKey')
+            };
+        } else if (fbId) {
+            // url = "https://graph.facebook.com/" + fbId + "/picture";
+            url = "https://graph.facebook.com/v2.8/" + fbId + "/picture";
+            params = {
+                // type: 'large',
+                width: 720,
+                redirect: false
+            };
+        }
+
+        let search = new URLSearchParams();
+
+        for (let k in params) {
+            search.set(k, params[k]);
+        }
+
+        return this.http.get(url, {search: search})
+            .map(this.extractData)
+            .catch(error => {
+                this.handleError(error)
+            })
+            .delay(500)
+            .timeout(7500);
+    }
+
+    getPublicaciones(userId, fields?: any): Promise <any> {
 
         if ((typeof fields === "undefined")) {
             fields = "";
@@ -84,12 +127,29 @@ export class MainService {
             fields = "?" + fields;
         }
 
-        return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona' + fields)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500)
-            ;
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
+                            let headers = new Headers({'Accept': 'application/json'});
+                            headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            let options = new RequestOptions({headers: headers});
+
+                            return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona' + fields, options)
+                            // ...and calling .json() on the response to return data
+                                .map((res: Response) => res.json())
+                                .delay(500)
+                                .timeout(7500)
+                                ;
+                        }
+                    );
+
+            }
+        );
+
+
     }
 
     getPublicacionesByEmpresa(empresaId) {
@@ -102,11 +162,27 @@ export class MainService {
 
     }
 
-    getPromoCalendario() {
+    getPromoCalendario(): Promise <any> {
 
-        return this.http.get(this.routeServices.promoCalendario)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json());
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
+                            let headers = new Headers({'Accept': 'application/json'});
+                            headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            let options = new RequestOptions({headers: headers});
+
+                            return this.http.get(this.routeServices.promoCalendario, options)
+                            // ...and calling .json() on the response to return data
+                                .map((res: Response) => res.json());
+                        }
+                    );
+
+            }
+        );
+
 
     }
 
@@ -154,15 +230,6 @@ export class MainService {
     getEmpresas(userId) {
         return this.http.get(this.routeServices.empresas + '/' + userId + '/persona')
         // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500)
-            ;
-    }
-
-    postPerfil(user) {
-
-        return this.http.post(this.routeServices.registrars, user)
             .map((res: Response) => res.json())
             .delay(500)
             .timeout(7500)
@@ -318,7 +385,6 @@ export class MainService {
         this.routeServices.empresasporslugs = this.service + '/empresasporslugs/';
         this.routeServices.empresas = this.service + '/empresas';
         this.routeServices.promoCalendario = this.service + '/promo/calendario';
-        this.routeServices.registrars = this.service + '/registrars';
         this.routeServices.rubros = this.service + '/rubros';
         this.routeServices.uploadImage = this.service + '/fotos/';
         this.routeServices.localidades = this.service + '/localidades/publicaciones';
@@ -350,7 +416,9 @@ export class MainService {
 
         return this.http.get(this.service + "/" + resource, options)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(error => {
+                this.handleError(error)
+            })
             .delay(500)
             .timeout(7500)
             ;
@@ -360,7 +428,9 @@ export class MainService {
 
         return this.http.get(this.service + "/" + resource + "/" + id, params)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(error => {
+                this.handleError(error)
+            })
             .delay(500)
             .timeout(7500)
             ;
@@ -368,6 +438,7 @@ export class MainService {
 
     getSubResource(resource: string, id: number, subResource?: string, subResourceId?: number, params?: any): Observable<any> {
         let url = this.service + "/" + resource + "/" + id;
+        console.log('getSubResource event', this.events);
         if (subResource) {
             if (subResourceId) {
                 url = this.service + "/" + resource + "/" + id + "/" + subResource + "/" + subResourceId;
@@ -377,7 +448,9 @@ export class MainService {
         }
         return this.http.get(url, params)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(error => {
+                this.handleError(error)
+            })
             .delay(500)
             .timeout(7500)
             ;
@@ -386,7 +459,9 @@ export class MainService {
     post(resource: string, params?: any): Observable<any> {
         return this.http.post(this.service + "/" + resource, params)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(error => {
+                this.handleError(error)
+            })
             .delay(500)
             .timeout(7500);
     }
@@ -394,7 +469,9 @@ export class MainService {
     patch(resource: any, id: number, params): Observable<any> {
         return this.http.patch(this.service + "/" + resource + "/" + id, params)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(error => {
+                this.handleError(error)
+            })
             .delay(500)
             .timeout(7500);
     }
@@ -402,7 +479,9 @@ export class MainService {
     put(resource: any, id: number, params): Observable<any> {
         return this.http.put(this.service + "/" + resource + "/" + id, params)
             .map(this.extractData)
-            .catch(this.handleError)
+            .catch(error => {
+                this.handleError(error)
+            })
             .delay(500)
             .timeout(7500);
     }
@@ -420,6 +499,121 @@ export class MainService {
         let errMsg = (error.message) ? error.message :
             error.status ? `${error.status} - ${error.statusText}` : 'Server error';
         console.error(errMsg); // log to console instead
+
+        if (error.status == 401) {
+            this.events.publish('user:logout');
+        }
+
         return Observable.throw(errMsg);
     }
+
+    setSecureData(data) {
+
+        let user_pass = {
+            'username': data.username,
+            'plain_password': data.plain_password,
+        }
+
+        return NativeStorage.setItem('user_pass', user_pass)
+            .then(
+                data => {
+                    console.log(data);
+                    return data;
+                },
+                error => console.error(error)
+            );
+    }
+
+    getUserNamePassword() {
+        return NativeStorage.getItem('user_pass')
+    }
+
+    requestToken(username, password) {
+        // let params = {
+        //     'client_id': this._config.get('epClientId'),
+        //     'client_secret': this._config.get('epClientSecret'),
+        //     'grant_type': 'password',
+        //     'username': username,
+        //     'password': password
+        // };
+        let body = new URLSearchParams();
+
+        body.set('client_id', this._config.get('epClientId'));
+        body.set('client_secret', this._config.get('epClientSecret'));
+        body.set('grant_type', 'password');
+        body.set('username', username);
+        body.set('password', password);
+
+        // let body = JSON.stringify(params);
+        let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+        let options = new RequestOptions({headers: headers});
+
+        return this.http.post(this.ip + "/oauth/v2/token", body, options)
+            .map(this.extractData)
+            .catch(error => {
+                this.handleError(error)
+            })
+            .delay(500)
+            .timeout(7500);
+    }
+
+    getToken(): Promise<any> {
+
+        return this.getUserNamePassword().then(
+            (userNameDemo) => {
+
+                return this.requestToken(userNameDemo.username, userNameDemo.plain_password).subscribe(
+                    (dataToken) => {
+                        NativeStorage.setItem('token', dataToken)
+                            .then(
+                                data => {
+                                    console.log('NativeStorage.setItem', data);
+                                },
+                                error => console.error(error)
+                            );
+                    }
+                )
+            }
+        );
+
+    }
+
+    refreshToken() {
+
+        NativeStorage.getItem('token')
+            .then(
+                data => {
+                    console.log(data);
+                    let userPass = JSON.parse(data);
+                    let params = {
+                        'client_id': this._config.get('epClientId'),
+                        'client_secret': this._config.get('epClientSecret'),
+                        'grant_type': 'refresh_token',
+                        'refresh_token': userPass.refresh_token,
+
+                    }
+                    let response = this.http.post(this.ip + "/oauth/v2/token", params)
+                        .map(this.extractData)
+                        .catch(error => {
+                            this.handleError(error)
+                        })
+                        .delay(500)
+                        .timeout(7500);
+
+                    response.subscribe(
+                        data => {
+                            NativeStorage.setItem('token', data)
+                                .then(
+                                    data => {
+                                        console.log(data);
+                                        return data;
+                                    },
+                                    error => console.error(error)
+                                );
+                        });
+                },
+                error => console.log(error)
+            );
+    }
 }
+

@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {NavController, Nav, LoadingController} from 'ionic-angular';
-// import {TranslateService} from 'ng2-translate';
 import {Facebook, NativeStorage, BackgroundGeolocation, GooglePlus} from 'ionic-native';
 import {MainService} from "../../app/main.service";
 import {PrincipalPage} from "../principal/principal";
@@ -37,8 +36,6 @@ export class LoginPage {
     }
 
 
-
-
     loginFacebook() {
         Facebook.login(['public_profile', 'email'])
             .then(rta => {
@@ -46,11 +43,8 @@ export class LoginPage {
                 if (rta.status == 'connected') {
                     Facebook.api('/me?fields=id,name,email,first_name,last_name,gender', [])
                         .then(rta => {
-                            console.log("rta", JSON.stringify(rta));
-                            console.log("userid", rta.id);
                             Facebook.api('/me/picture?type=large&redirect=false', [])
                                 .then(pictureData => {
-                                    console.log("pictureData", JSON.stringify(pictureData));
                                     let user = {
                                         avatar: pictureData.data.url,
                                         sexo: rta.gender,
@@ -58,7 +52,6 @@ export class LoginPage {
                                         apellido: rta.last_name,
                                         email: rta.email,
                                         fbId: rta.id
-
                                     };
 
                                     this.crearPerfil(user);
@@ -67,18 +60,16 @@ export class LoginPage {
                                 })
                                 .catch(error => {
                                     console.error("fbpicture", error);
-                                    console.error("fbpicture", JSON.stringify(error));
                                 });
                         })
                         .catch(error => {
-                            console.error('api', JSON.stringify(error));
+                            console.error('api', error);
                         });
                 }
                 ;
             })
             .catch(error => {
                 console.error(error);
-                console.error('login', JSON.stringify(error));
             });
     }
 
@@ -90,41 +81,45 @@ export class LoginPage {
         });
         loader.present();
 
-        this.mainService.postPerfil(user).subscribe(
+        this.mainService.post('registrars', user).subscribe(
             data => {
-                console.log("Register Data", JSON.stringify(data));
+                console.log("Register Data", data);
 
-                user = {
-                    avatar: user.avatar,
-                    nombre: user.nombre,
-                    apellido: user.apellido,
-                    email: user.email,
-                    fbId: user.fbId,
-                    userID: data.id,
-                    sexo: data.sexo
+                this.mainService.setSecureData(data).then(
+                    (dataSecureData) => {
 
-                };
+                        user = {
+                            avatar: user.avatar,
+                            nombre: user.nombre,
+                            apellido: user.apellido,
+                            email: user.email,
+                            fbId: user.fbId,
+                            gId: user.gId,
+                            userID: data.id,
+                            sexo: data.sexo
 
-                NativeStorage.setItem('userData', user)
-                    .then(
-                        () => {
-                            //envia a la pantalla principal
-                            // this.redirectPrincipal(setDataValues.isNew);
+                        };
+
+                        NativeStorage.setItem('userData', user)
+                            .then(
+                                () => {
+                                    //envia a la pantalla principal
+                                    // this.redirectPrincipal(setDataValues.isNew);
 
 
-                            loader.dismissAll();
-                            this.userData.signup(user);
-                            this.nav.setRoot(PrincipalPage);
+                                    loader.dismissAll();
+                                    this.userData.signup(user);
+                                    this.nav.setRoot(PrincipalPage);
 
 
-                        },
-                        error => alert(JSON.stringify(error))
-                    );
-
+                                },
+                                error => alert(JSON.stringify(error))
+                            );
+                    }
+                )
 
             },
             error => {
-                console.log(JSON.stringify(error));
                 Facebook.logout();
                 GooglePlus.logout();
                 NativeStorage.remove('userData');
@@ -145,7 +140,6 @@ export class LoginPage {
         })
             .then(
                 rta => {
-                    console.log("rta", JSON.stringify(rta));
                     let user = {
                         avatar: rta.imageUrl,
                         sexo: rta.gender,
@@ -161,12 +155,51 @@ export class LoginPage {
             )
             .catch(error => {
                 console.error(error);
-                console.error('login google', JSON.stringify(error));
             })
         ;
     }
 
     omitir() {
-        this.nav.setRoot(PrincipalPage);
+
+        let userDemo = {
+            "sexo": "M",
+            "nombre": "demo",
+            "apellido": "demo",
+            "email": "demo@evenprom.com"
+        }
+
+        this.mainService.post('registrars', userDemo).subscribe(
+            data => {
+                console.log("Register Data", data);
+
+                this.mainService.setSecureData(data).then(
+                    (demoSecureData) => {
+
+                        let user = {
+                            // avatar: user.avatar,
+                            nombre: data.nombre,
+                            apellido: data.apellido,
+                            email: data.email,
+                            userID: data.id,
+                            sexo: data.sexo
+
+                        }
+
+                        NativeStorage.setItem('userDemo', user)
+                            .then(
+                                () => {
+                                    //envia a la pantalla principal
+                                    this.userData.signup(user);
+                                    this.nav.setRoot(PrincipalPage);
+                                },
+                                error => console.error(error)
+                            );
+                    }
+                );
+
+            }
+        );
+
+
     }
 }

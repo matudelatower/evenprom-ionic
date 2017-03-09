@@ -14,7 +14,7 @@ import {CheckInPage} from "../pages/check-in/check-in";
 import {BuscarAmigosPage} from "../pages/buscar-amigos/buscar-amigos";
 import {CalendarioPage} from "../pages/calendario/calendario";
 import {Config} from "./config";
-import {TranslateService} from "ng2-translate";
+import {TranslateService} from "@ngx-translate/core";
 import {EditarPerfilPage} from "../pages/editar-perfil/editar-perfil";
 
 
@@ -154,8 +154,10 @@ export class MyApp {
 
                 this.initGeolocation(platform);
 
+                this.listenToLoginEvents();
+
                 let loader = this.loadingCtrl.create({
-                    content: "Ingresando a EvenProm " + new Date(),
+                    content: "Ingresando a EvenProm " + new Date().toISOString(),
                     // duration: 6000
                 });
                 loader.present();
@@ -170,51 +172,61 @@ export class MyApp {
                             .subscribe(
                                 (personaOnda) => {
                                     this.personaOndas = personaOnda;
-
                                 },
                                 (err) => {
                                     console.error(err);
-
                                 }
                             );
-                    }
-                ).catch(error => {
-                    console.error('prueba')
-                    console.error(error);
-                });
 
-                // Facebook login
-                Facebook.getLoginStatus()
-                    .then(rtaLoginStatus => {
-                        if (rtaLoginStatus.status == 'connected') {
-                            this.rootPage = PrincipalPage;
+                        if (data.fbId) {
+                            // Facebook login
+                            Facebook.getLoginStatus()
+                                .then(
+                                    rtaLoginStatus => {
+                                        if (rtaLoginStatus.status == 'connected') {
+                                            this.rootPage = PrincipalPage;
 
+                                        } else {
+                                            this.rootPage = LoginPage;
+                                        }
+                                        loader.dismissAll();
+                                    })
+                                .catch(error => {
+                                    console.error(error);
+                                    loader.dismissAll();
+                                });
+                        } else if (data.gId) {
+                            // Google login
+                            GooglePlus.trySilentLogin({
+                                'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
+                                'webClientId': this.googleReverseClientId,
+                                'offline': true
+                            })
+                                .then(
+                                    rta => {
+                                        this.rootPage = PrincipalPage;
+                                        loader.dismissAll();
+                                    }
+                                )
+                                .catch(error => {
+                                    console.error(error);
+                                    loader.dismissAll();
+                                    this.rootPage = LoginPage;
+                                })
+                            ;
                         } else {
+                            loader.dismissAll();
                             this.rootPage = LoginPage;
                         }
-                        loader.dismissAll();
-                    })
-                    .catch(error => {
-                        console.error(error);
-                        loader.dismissAll();
-                    });
 
-                // Google login
-                GooglePlus.trySilentLogin({
-                    'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
-                    'webClientId': this.googleReverseClientId,
-                    'offline': true
-                })
-                    .then(
-                        rta => {
-                            this.rootPage = PrincipalPage;
-                            loader.dismissAll();
-                        }
-                    )
-                    .catch(error => {
-                        console.error(error);
-                    })
-                ;
+
+                    }
+                ).catch(error => {
+                    console.error(error);
+                    loader.dismissAll();
+                    this.rootPage = LoginPage;
+                });
+
 
             } else {
                 this.rootPage = PrincipalPage;
@@ -222,9 +234,7 @@ export class MyApp {
 
         });
 
-        this.listenToLoginEvents();
     }
-
 
     listenToLoginEvents() {
         this.events.subscribe('user:login', (user) => {
@@ -233,13 +243,13 @@ export class MyApp {
         });
 
         this.events.subscribe('user:signup', (user) => {
-            console.log('login');
-            console.log('userdata', user);
+            console.log('signup');
             this.user = user;
         });
 
         this.events.subscribe('user:logout', () => {
             console.log('logout');
+            this.logout();
         });
     }
 
@@ -254,7 +264,7 @@ export class MyApp {
             android: 'market://details?id=com.evenprom.evenpromapp',
         };
 
-        AppRate.promptForRating(false);
+        AppRate.promptForRating(true);
     }
 
     recomiendanos() {
@@ -263,17 +273,23 @@ export class MyApp {
 
     logout() {
 
-        Facebook.logout().then(function (response) {
-            NativeStorage.clear();
-        }, function (error) {
-            console.log(error);
-        });
-
-        GooglePlus.logout()
-            .then(function (response) {
-                NativeStorage.clear();
-            }, function (error) {
-                console.log(error);
+        this.mainService.getUser().then(
+            data => {
+                if (data.fbId) {
+                    Facebook.logout().then(function (response) {
+                        NativeStorage.clear();
+                    }, function (error) {
+                        console.log(error);
+                    });
+                }
+                else if (data.gId) {
+                    GooglePlus.logout()
+                        .then(function (response) {
+                            NativeStorage.clear();
+                        }, function (error) {
+                            console.log(error);
+                        });
+                }
             });
 
         BackgroundGeolocation.stop();
@@ -295,7 +311,7 @@ export class MyApp {
     initGeolocation(platform) {
         // BackgroundGeolocation is highly configurable. See platform specific configuration options
         let config = {
-            url: 'http://192.168.0.7:3000/locations',
+            url: 'http://192.168.0.117:3000/locations',
             startOnBoot: true,
             desiredAccuracy: 10,
             stationaryRadius: 20,

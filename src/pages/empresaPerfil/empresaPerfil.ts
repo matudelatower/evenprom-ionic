@@ -112,6 +112,13 @@ export class EmpresaPerfilPage {
                 console.log("Success");
             }, (err) => {
                 console.error(err);
+                let toast = this.toastCtrl.create({
+                    message: "No se pudo compartir en WhatsApp",
+                    duration: 3000,
+                    position: 'center'
+                });
+
+                toast.present(toast);
             });
     }
 

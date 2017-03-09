@@ -62,12 +62,12 @@ export class PrincipalPage {
     }
 
     ngOnInit() {
-        if (!this.mainservice.currentLocalidad){
+        if (!this.mainservice.currentLocalidad) {
             Geolocation.getCurrentPosition().then((location) => {
                 this.setCurrentLocalidad(location.coords.latitude, location.coords.longitude);
                 //this.setCurrentLocalidad(-27.4338563, -55.8643096);
             }, error => console.log("error al consultar ciudad actual"));
-        }else{
+        } else {
             this.search = this.mainservice.currentLocalidad;
         }
 
@@ -121,6 +121,44 @@ export class PrincipalPage {
 
     }
 
+    getPublicaciones(userID, fields, loader, refresher) {
+        this.mainservice.getPublicaciones(userID, fields).then(
+            (observable) => {
+                observable.subscribe(
+                    (data) => {
+                        this.publicaciones = data;
+                        this.errorNoConexion = false;
+
+                    },
+                    (err) => {
+                        console.log('error timeout');
+
+                        this.errorNoConexion = true;
+                        //this.publicaciones = [];
+                        loader.dismissAll();
+                        if (refresher) {
+                            refresher.complete();
+                        }
+
+                        let toast = this.toastCtrl.create({
+                            message: "Error en la conexión a internet",
+                            duration: 2000,
+                            position: 'center'
+                        });
+
+                        toast.present(toast);
+                    },
+                    () => {
+                        loader.dismissAll();
+                        this.errorNoConexion = false;
+                        if (refresher) {
+                            refresher.complete();
+                        }
+                    })
+            }
+        );
+    }
+
 
     doRefresh(refresher, fields?) {
 
@@ -130,88 +168,35 @@ export class PrincipalPage {
         });
         loader.present();
 
-        this.mainservice.getUser().then((user) => {
-            this.mainservice.getPublicaciones(user.userID, fields).subscribe((data) => {
-                    this.publicaciones = data;
-                    this.errorNoConexion = false;
-
-                }, (err) => {
-                    console.log('error timeout');
-
-                    this.errorNoConexion = true;
-                    //this.publicaciones = [];
-                    loader.dismissAll();
-                    if (refresher) {
-                        refresher.complete();
+        this.mainservice.getUser().then(
+            (user) => {
+                this.getPublicaciones(user.userID, fields, loader, refresher);
+            },
+            () => {
+                this.mainservice.getUserDemo().then(
+                    (user) => {
+                        this.getPublicaciones(user.userID, fields, loader, refresher);
+                    },
+                    () => {
+                        this.getPublicaciones(null, fields, loader, refresher);
                     }
-
-                    let toast = this.toastCtrl.create({
-                        message: "Error en la conexión a internet",
-                        duration: 2000,
-                        position: 'center'
-                    });
-
-                    toast.present(toast);
-                },
-                () => {
-                    loader.dismissAll();
-                    this.errorNoConexion = false;
-                    if (refresher) {
-                        refresher.complete();
-                    }
-
-                }
-            );
-        }, () => {
-
-            this.mainservice.getPublicaciones(null, fields).subscribe((data) => {
-                    this.publicaciones = data;
-                    this.errorNoConexion = false;
-
-                }, (err) => {
-                    console.log('error timeout');
-
-                    this.errorNoConexion = true;
-                    //this.publicaciones = [];
-                    loader.dismissAll();
-                    if (refresher) {
-                        refresher.complete();
-                    }
-
-                    let toast = this.toastCtrl.create({
-                        message: "Error en la conexión a internet",
-                        duration: 2000,
-                        position: 'center'
-                    });
-
-                    toast.present(toast);
-                },
-                () => {
-                    loader.dismissAll();
-                    this.errorNoConexion = false;
-                    if (refresher) {
-                        refresher.complete();
-                    }
-
-                }
-            );
-
-        });
-
-
-        this.mainservice.getPromoCalendario().subscribe((data) => {
-            if (data) {
-                this.promoCalendario = data[0];
-            } else {
-                this.promoCalendario = false;
+                );
             }
+        );
 
-
-        }, (err) => {
-            console.log('error timeout');
-
-        });
-
+        this.mainservice.getPromoCalendario().then(
+            (observable) => {
+                observable.subscribe(
+                    (data) => {
+                        if (data) {
+                            this.promoCalendario = data[0];
+                        } else {
+                            this.promoCalendario = false;
+                        }
+                    }
+                )
+            }
+        );
 
     }
 
@@ -266,6 +251,7 @@ export class PrincipalPage {
     pageEmpresas() {
         // this.navController.push(Empresas);
     }
+
     pageNotificaciones() {
         // this.navController.push(Empresas);
     }

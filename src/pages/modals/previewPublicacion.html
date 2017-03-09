@@ -147,7 +147,8 @@
     <ion-list no-lines>
         <ion-item *ngFor="let c of comentarios" no-lines>
             <ion-avatar item-left>
-                <img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">
+                <!--<img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">-->
+                <m-avatar [fbId]="c.fbId" [gId]="c.gId"></m-avatar>
             </ion-avatar>
             <h2>{{c.persona.nombre}} {{c.persona.apellido}}</h2>
             <p>{{c.texto}}</p>

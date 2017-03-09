@@ -7,5 +7,7 @@ export const parameters: Object =
     googleAnalyticsTrackId : "UA-123123",
     pushSenderID: '123123123',
     googleProjectId: '101010101010101',
-    oneSignalAppId: 'eeeeeee-aaaa-1111-1234-123456789012'
+    oneSignalAppId: 'eeeeeee-aaaa-1111-1234-123456789012',
+    epClientId: '',
+    epClientSecret: ''
 }

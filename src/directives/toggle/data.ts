@@ -1,8 +1,3 @@
-import { Component } from '@angular/core';
-
-@Component({
-    selector: 'data'
-})
 export class Data {
 
     //constructor(

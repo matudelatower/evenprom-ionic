@@ -89,7 +89,8 @@
 
                     <ion-item style="border: none !important;">
                         <ion-avatar item-left>
-                            <img [src]="mainService.getAvatar(img.fbId, img.gId)" [default]="'assets/img/avatar.png'">
+                            <!--<img [src]="mainService.getAvatar(img.fbId, img.gId)" [default]="'assets/img/avatar.png'">-->
+                            <m-avatar [fbId]="img.fbId" [gId]="img.gId"></m-avatar>
                         </ion-avatar>
                         <p>{{ img.persona.nombre}} </p>
                         <p>{{ img.persona.apellido}} </p>

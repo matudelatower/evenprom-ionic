@@ -7,7 +7,6 @@ import {EmpresaPerfilPage} from "../pages/empresaPerfil/empresaPerfil";
 import {LoginPage} from "../pages/login/login";
 import {PrincipalPage} from "../pages/principal/principal";
 import {RankingPage} from "../pages/ranking/ranking";
-import {TranslateModule, TranslateLoader} from "ng2-translate";
 import {ItemListEmpresa} from "../directives/empresa-list.directive";
 import {Progressbar} from "../directives/progress-bar/progressbar.component";
 import {Bar} from "../directives/progress-bar/bar.component";
@@ -26,7 +25,6 @@ import {GeosearchComponent} from '../directives/map/geosearch.component';
 import {ModalMapa} from '../pages/principal/modalMapa.component';
 import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
 import {DefaultImageDirective} from "../directives/img/image-default.directive";
-import {TranslateStaticLoader} from "ng2-translate/index";
 import {UserData} from "../pages/login/user-data";
 import {ModalComentario} from "../pages/principal/modal.comentario.component";
 import {FavoritosPage} from "../pages/favoritos/favoritos";
@@ -45,7 +43,13 @@ import {RutaPage} from "../pages/ruta/ruta";
 import {DescuentoMenos} from "../pipes/descuentoMenos";
 import {EditarPerfilPage} from "../pages/editar-perfil/editar-perfil";
 import {NotificacionesPage} from "../pages/notificaciones/notificaciones";
+import {TranslateModule, TranslateLoader} from '@ngx-translate/core';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {MAvatarComponent} from "../components/m-avatar/m-avatar";
 
+export function createTranslateLoader(http: Http) {
+    return new TranslateHttpLoader(http, './assets/i18n/', '.json');
+}
 
 @NgModule({
     declarations: [
@@ -86,13 +90,16 @@ import {NotificacionesPage} from "../pages/notificaciones/notificaciones";
         PubliacionesEmpresaActualPage,
         RutaPage,
         EditarPerfilPage,
-        NotificacionesPage
+        NotificacionesPage,
+        MAvatarComponent
     ],
     imports: [
         TranslateModule.forRoot({
-            provide: TranslateLoader,
-            useFactory: (http: Http) => new TranslateStaticLoader(http, 'assets/i18n', '.json'),
-            deps: [Http]
+            loader: {
+                provide: TranslateLoader,
+                useFactory: (createTranslateLoader),
+                deps: [Http]
+            }
         }),
         IonicModule.forRoot(MyApp)
     ],
@@ -123,7 +130,8 @@ import {NotificacionesPage} from "../pages/notificaciones/notificaciones";
         PubliacionesEmpresaActualPage,
         RutaPage,
         EditarPerfilPage,
-        NotificacionesPage
+        NotificacionesPage,
+        MAvatarComponent
     ],
     providers: [Storage, MainService, GeocodingService, MapService, UserData, Config],
     schemas: [

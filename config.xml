@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<widget id="com.evenprom.evenpromapp" version="0.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.evenprom.evenpromapp" version="0.0.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
   <name>EvenProm</name>
   <description>Aplicacion de ofertas y descuentos</description>
   <author email="sergioj.sanabria@gmail.com" href="http://ionicframework.com/">Sergio Sanabria</author>
@@ -46,6 +46,8 @@
   <preference name="SplashShowOnlyFirstTime" value="false"/>
   <preference name="SplashScreen" value="screen"/>
   <preference name="ShowSplashScreenSpinner" value="false"/>
+  <preference name="loadUrlTimeoutValue" value="700000"/>
+  <preference name="AutoHideSplashScreen" value="false"/>
   <feature name="StatusBar">
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
@@ -79,5 +81,12 @@
   <plugin name="cordova.plugins.diagnostic.api-22" spec="~2.3.10-api-22"/>
   <plugin name="mx.ferreyra.callnumber" spec="~0.0.2"/>
   <plugin name="onesignal-cordova-plugin" spec="~2.0.11"/>
+  <plugin name="cordova-plugin-crosswalk-webview" spec="~2.1.0">
+    <variable name="XWALK_VERSION" value="21+"/>
+    <variable name="XWALK_LITEVERSION" value="xwalk_core_library_canary:17+"/>
+    <variable name="XWALK_COMMANDLINE" value="--disable-pull-to-refresh-effect"/>
+    <variable name="XWALK_MODE" value="embedded"/>
+    <variable name="XWALK_MULTIPLEAPK" value="true"/>
+  </plugin>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
 </widget>

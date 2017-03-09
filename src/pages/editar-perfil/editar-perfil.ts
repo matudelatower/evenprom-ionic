@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, ToastController, AlertController} from 'ionic-angular';
+import {NavController, NavParams, ToastController, AlertController, LoadingController} from 'ionic-angular';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {MainService} from "../../app/main.service";
 import {LoginPage} from "../login/login";
@@ -26,8 +26,14 @@ export class EditarPerfilPage {
                 public toastCtrl: ToastController,
                 public mainService: MainService,
                 private formBuilder: FormBuilder,
-                public alertCtrl: AlertController) {
+                public alertCtrl: AlertController,
+                public loadingCtrl: LoadingController) {
 
+        let loader = this.loadingCtrl.create({
+            content: "Cargando...",
+            // duration: 6000
+        });
+        loader.present();
 
         this.mainService.getAll('ondas')
             .subscribe(
@@ -65,10 +71,10 @@ export class EditarPerfilPage {
         mainService.getUser().then(
             data => {
                 this.persona = data;
+                console.log('data', data)
                 this.mainService.get('personas', data.userID)
                     .subscribe(
                         (persona) => {
-                            this.persona = persona;
                             this.perfil.get('nombre').setValue(persona.nombre);
                             this.perfil.get('apellido').setValue(persona.apellido);
                             this.perfil.get('dni').setValue(persona.dni);
@@ -89,6 +95,8 @@ export class EditarPerfilPage {
                                 this.perfil.get('ondas').setValue(ondas);
                             }
 
+                            loader.dismissAll();
+
                         },
                         (err) => {
                             console.error(err);
@@ -101,6 +109,9 @@ export class EditarPerfilPage {
                     subTitle: 'Primero tenes que iniciar sesión!',
                     buttons: ['OK']
                 });
+
+                loader.dismissAll();
+
                 alert.present();
                 navCtrl.setRoot(LoginPage);
             }
@@ -113,7 +124,12 @@ export class EditarPerfilPage {
     }
 
     logForm() {
-        console.log(this.perfil.value)
+
+        let loader = this.loadingCtrl.create({
+            content: "Guardando...",
+            // duration: 6000
+        });
+        loader.present();
 
         this.mainService.put('personas', this.persona.userID, this.perfil.value)
             .subscribe(
@@ -126,11 +142,12 @@ export class EditarPerfilPage {
                     });
 
                     toast.present(toast);
+                    loader.dismissAll();
 
                 },
                 (err) => {
                     console.error(err);
-
+                    loader.dismissAll();
                 }
             );
 

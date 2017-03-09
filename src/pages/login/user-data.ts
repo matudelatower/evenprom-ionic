@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Events } from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 
