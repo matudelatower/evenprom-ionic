@@ -129,6 +129,9 @@ export class PrincipalPage {
                     this.publicaciones = data;
                     this.errorNoConexion = false;
                     loader.dismissAll();
+                    if (refresher) {
+                        refresher.complete();
+                    }
                 })
             .catch(
                 (ex) => {
@@ -154,7 +157,7 @@ export class PrincipalPage {
 
 
     doRefresh(refresher, fields?) {
-
+        
         let loader = this.loadingCtrl.create({
             content: "Cargando evenproms",
             // duration: 6000
