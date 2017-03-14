@@ -27,7 +27,7 @@ import {RutaPage} from "../ruta/ruta";
 
 
 @Component({
-    selector: 'page-empresaPerfil',
+    selector: 'page-empresa-perfil',
     templateUrl: 'empresaPerfil.html'
 })
 export class EmpresaPerfilPage {
@@ -40,6 +40,8 @@ export class EmpresaPerfilPage {
     comentarios: any[];
     imagenes: any[];
     noticias: any[];
+
+    usuario: any;
 
     constructor(navParams: NavParams,
                 public navController: NavController,
@@ -68,10 +70,15 @@ export class EmpresaPerfilPage {
             this.link_youtube = sanitizer.bypassSecurityTrustResourceUrl(navParams.data.empresa.link_youtube);
             this.icono = navParams.data.icono;
 
-            this.mainService.getNoticiasEmpresa(this.empresa.id).toPromise()
+            this.mainService.getAll('noticias/' + this.empresa.id + '/empresa')
                 .then(response => {
-                    this.noticias = response.json();
-
+                    this.noticias = response;
+                    this.mainService.getUser()
+                        .then(
+                            (usuario) => {
+                                this.usuario = usuario;
+                            }
+                        );
                 });
         }
 
@@ -184,11 +191,13 @@ export class EmpresaPerfilPage {
             CallNumber.callNumber(tel, true)
                 .then(() => {
                         console.log('Launched dialer!');
-                        let personaId = this.mainService.user.id;
+                        let personaId = this.usuario.userID;
 
-                        this.mainService.postRegistrarLlamada(empresaId, personaId).subscribe((data) => {
-                            console.log('Llamada registrada');
-                        });
+                        // this.mainService.postRegistrarLlamada(empresaId, personaId)
+                        this.mainService.post('registros/' + empresaId + '/llamadas/' + personaId + '/empresas')
+                            .then((data) => {
+                                console.log('Llamada registrada');
+                            });
                         ;
 
                     }
@@ -233,20 +242,7 @@ export class EmpresaPerfilPage {
             });
             loader.present();
 
-            this.mainService.getUser().then((user) => {
-                this.comentarEmpresa(user, loader);
-            }, (error) => {
-                console.log(error);
-                loader.dismissAll();
-                let toast = this.toastCtrl.create({
-                    message: this.mainService.mensajeUserAnonimo,
-                    duration: 3250,
-                    position: 'center'
-                });
-
-                toast.present();
-
-            });
+            this.comentarEmpresa(this.usuario, loader);
         }
 
     }
@@ -254,43 +250,51 @@ export class EmpresaPerfilPage {
     comentarEmpresa(user, loader) {
 
 
-        this.mainService.postComentarEmpresa(this.empresa.id, user.userID, this.comentario).subscribe((data) => {
-            this.comentario = '';
-            loader.dismissAll();
-            console.log('comente', this.comentario);
-            loader = this.loadingCtrl.create({
-                content: "Cargando comentarios",
-                // duration: 6000
-            });
-            loader.present();
-            this.getComentarios(loader);
-        }, (error) => {
-            let toast = this.toastCtrl.create({
-                message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
-                duration: 3250,
-                position: 'center'
-            });
+        let param = {
+            'texto': this.comentario
+        };
+        this.mainService.post('comentars/' + this.empresa.id + '/empresas/' + user.userID, param)
+            .then(
+                (data) => {
+                    // postComentarEmpresa(this.empresa.id, user.userID, this.comentario).subscribe((data) => {
+                    this.comentario = '';
+                    loader.dismissAll();
+                    console.log('comente', this.comentario);
+                    loader = this.loadingCtrl.create({
+                        content: "Cargando comentarios",
+                        // duration: 6000
+                    });
+                    loader.present();
+                    this.getComentarios(loader);
+                }, (error) => {
+                    let toast = this.toastCtrl.create({
+                        message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                        duration: 3250,
+                        position: 'center'
+                    });
 
-            toast.present(toast);
-            loader.dismissAll();
-        });
+                    toast.present(toast);
+                    loader.dismissAll();
+                });
     }
 
 
     getComentarios(loader) {
-        this.mainService.getComentariosEmpresa(this.empresa.id).subscribe((data) => {
-            this.comentarios = data;
-            loader.dismissAll();
-        }, (error) => {
-            loader.dismissAll();
-            let toast = this.toastCtrl.create({
-                message: "No se han podido cargar los comentarios.",
-                duration: 3250,
-                position: 'center'
-            });
 
-            toast.present(toast);
-        });
+        this.mainService.getAll('comentarios/' + this.empresa.id + '/empresa')
+            .then((data) => {
+                this.comentarios = data;
+                loader.dismissAll();
+            }, (error) => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se han podido cargar los comentarios.",
+                    duration: 3250,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+            });
     }
 
     getImagenes() {
@@ -300,19 +304,20 @@ export class EmpresaPerfilPage {
         });
         loader.present();
 
-        this.mainService.getImagenesEmpresa(this.empresa.id).subscribe((data) => {
-            this.imagenes = data;
-            loader.dismissAll();
-        }, (error) => {
-            loader.dismissAll();
-            let toast = this.toastCtrl.create({
-                message: "No se han podido cargar las imagenes.",
-                duration: 3250,
-                position: 'center'
-            });
+        this.mainService.getAll('fotos/' + this.empresa.id + '/empresa')
+            .then((data) => {
+                this.imagenes = data;
+                loader.dismissAll();
+            }, (error) => {
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se han podido cargar las imagenes.",
+                    duration: 3250,
+                    position: 'center'
+                });
 
-            toast.present(toast);
-        });
+                toast.present(toast);
+            });
     }
 
     comoLlegar() {
@@ -786,28 +791,30 @@ export class EmpresaPerfilPage {
                             //let url = newImage.substring(0, newImage.indexOf('?'));
                             //let url = newImage.substring(0, newImage.indexOf('?'));
                             loader.present();
-                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas").then((data) => {
-                                let toast = this.toastCtrl.create({
-                                    message: "Imagen subida",
-                                    duration: 1500,
-                                    position: 'center'
-                                });
+                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas")
+                                .then(
+                                    (data) => {
+                                        let toast = this.toastCtrl.create({
+                                            message: "Imagen subida",
+                                            duration: 1500,
+                                            position: 'center'
+                                        });
 
-                                toast.present(toast);
-                                loader.dismissAll();
+                                        toast.present(toast);
+                                        loader.dismissAll();
 
-                                this.getImagenes();
+                                        this.getImagenes();
 
-                            }, (error) => {
-                                let toast = this.toastCtrl.create({
-                                    message: "No se ha podido subir la imagen ",
-                                    duration: 1500,
-                                    position: 'center'
-                                });
+                                    }, (error) => {
+                                        let toast = this.toastCtrl.create({
+                                            message: "No se ha podido subir la imagen ",
+                                            duration: 1500,
+                                            position: 'center'
+                                        });
 
-                                toast.present();
-                                loader.dismissAll();
-                            });
+                                        toast.present();
+                                        loader.dismissAll();
+                                    });
                         },
                         error => this.uploadImg(userID, empresaId)
                     );

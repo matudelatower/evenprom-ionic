@@ -44,28 +44,27 @@ export class PubliacionesEmpresaActualPage {
         loader.present();
 
 
-        this.mainservice.getPublicacionesByEmpresa(this.empresa.id).subscribe((data) => {
-                this.publicaciones = data;
+        this.mainservice.getAll('publicacionesporempresas/' + this.empresa.id)
+            .then(
+                (data) => {
+                    this.publicaciones = data;
+                    loader.dismissAll();
 
-            }, (err) => {
-                console.log('error timeout');
+                },
+                (err) => {
+                    console.log('error timeout');
 
-                loader.dismissAll();
+                    loader.dismissAll();
 
-                let toast = this.toastCtrl.create({
-                    message: "Error en la conexión a internet",
-                    duration: 2000,
-                    position: 'center'
-                });
+                    let toast = this.toastCtrl.create({
+                        message: "Error en la conexión a internet",
+                        duration: 2000,
+                        position: 'center'
+                    });
 
-                toast.present(toast);
-            },
-            () => {
-                loader.dismissAll();
-
-
-            }
-        );
+                    toast.present(toast);
+                }
+            );
 
 
     };

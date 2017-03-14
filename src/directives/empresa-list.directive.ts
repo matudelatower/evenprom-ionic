@@ -17,7 +17,7 @@ export class ItemListEmpresa {
     @Input() isFirst;
     @Input() fecha;
 
-    grupoFecha:any;
+    grupoFecha: any;
 
 
     constructor(public toastCtrl: ToastController,
@@ -31,11 +31,13 @@ export class ItemListEmpresa {
 
         let fechaHumana = fecha.split("-");
 
-        var hoy = new Date();
-        var fechaPubli = new Date(fechaHumana[2], fechaHumana[1] - 1, fechaHumana[1]);
+        let hoy = new Date();
+        let fechaPubli = new Date(fechaHumana[2], fechaHumana[1] - 1, fechaHumana[0]);
 
         if (hoy.getTime() >= fechaPubli.getTime()) {
-            fecha = hoy.getDate() + '-' + hoy.getMonth() + 1 + '-' + hoy.getFullYear();
+            fecha = hoy.getDate() + '-' + (hoy.getMonth() + 1) + '-' + hoy.getFullYear();
+        } else {
+            fecha = fechaPubli.getDate() + '-' + (fechaPubli.getMonth() + 1) + '-' + fechaPubli.getFullYear();
         }
 
         let meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
@@ -43,6 +45,7 @@ export class ItemListEmpresa {
         let arrayFecha = fecha.split("-");
 
         let mes = meses[parseInt(arrayFecha[1]) - 1];
+
 
         return arrayFecha[0] + " " + mes.substring(0, 3);
 
@@ -87,28 +90,31 @@ export class ItemListEmpresa {
 
     addPublicacionFav(id) {
 
-        this.mainservice.getUser().then((user) => {
+        this.mainservice.getUser()
+            .then((user) => {
+                let url = 'favears/' + id + '/publicacions/' + user.userID;
+                this.mainservice.post(url)
+                    .then(
+                        (data) => {
+                            let mensaje = 'Agregado a favoritos';
 
-            this.mainservice.postFavPublicacion(id, user.userID).subscribe((data) => {
-                let mensaje = 'Agregado a favoritos';
+                            if (data.publicacion.like_persona == true) {
+                                this.publicacion.likes += 1;
+                            } else {
+                                this.publicacion.likes -= 1;
+                                mensaje = 'Quitado de favoritos';
+                            }
+                            this.publicacion.like_persona = data.publicacion.like_persona;
+                            let toast = this.toastCtrl.create({
+                                message: mensaje,
+                                duration: 2000,
+                                position: 'bottom'
+                            });
 
-                if (data.publicacion.like_persona == true) {
-                    this.publicacion.likes += 1;
-                } else {
-                    this.publicacion.likes -= 1;
-                    mensaje = 'Quitado de favoritos';
-                }
-                this.publicacion.like_persona = data.publicacion.like_persona;
-                let toast = this.toastCtrl.create({
-                    message: mensaje,
-                    duration: 2000,
-                    position: 'bottom'
-                });
+                            toast.present(toast);
 
-                toast.present(toast);
-
+                        });
             });
-        });
 
 
     }

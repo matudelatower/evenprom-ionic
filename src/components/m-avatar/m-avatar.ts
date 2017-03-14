@@ -32,7 +32,7 @@ export class MAvatarComponent {
         this.mainService.getAvatar(this.fbId, this.gId)
             .subscribe(
                 dataAvatar => {
-                    console.log('dataAvatar', dataAvatar)
+
                     if (dataAvatar.image) {
                         this.avatar = dataAvatar.image.url + '0';
                     } else if (dataAvatar.data) {

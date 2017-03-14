@@ -154,8 +154,9 @@
             <p>{{c.texto}}</p>
         </ion-item>
         <ion-item>
-            <ion-avatar item-left>
-                <img *ngIf="mainService.user" [src]="mainService.user.avatar" [default]="'assets/img/avatar.png'">
+            <ion-avatar item-left *ngIf="usuario">
+                <!--<img *ngIf="mainService.user" [src]="mainService.user.avatar" [default]="'assets/img/avatar.png'">-->
+                <m-avatar [fbId]="usuario.fbId" [gId]="usuario.gId"></m-avatar>
             </ion-avatar>
             <h2>Yo</h2>
             <ion-textarea placeholder="Escribí un comentario" [(ngModel)]="comentario"></ion-textarea>

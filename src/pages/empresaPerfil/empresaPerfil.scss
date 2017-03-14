@@ -1,75 +1,77 @@
-page-empresaPerfil{
-	.btn-mail, .btn-call{
-		color: #fff;
-	}
-	.row-novedades{
-		margin-bottom: 5%;
-		background-color: #F6F7F8;
-	}
+page-empresa-perfil {
+  .btn-mail, .btn-call {
+    color: #fff;
+  }
+  .row-novedades {
+    margin-bottom: 5%;
+    background-color: #F6F7F8;
+  }
 
-	.icon-rubro{
-		font-size: 1.75em;
-	}
+  .icon-rubro {
+    font-size: 2rem;
+  }
 
-	.novedades-card{
-		background-color: #F6F7F8;
-		width: 100%;
-		margin: 0px;
-	}
+  .icono-onda {
+    width: 2rem;
+    height: auto;
+    position: absolute;
+  }
 
-	.novedades-card {
-		img {
-			max-height: 180px;
-			width: 100%;
-		}
+  .novedades-card {
+    background-color: #F6F7F8;
+    width: 100%;
+    margin: 0px;
+  }
 
-		ion-card-content{
-			padding: 0px 5px 0px 5px;
-		}
-	}
+  .novedades-card {
+    img {
+      max-height: 180px;
+      width: 100%;
+    }
 
+    ion-card-content {
+      padding: 0px 5px 0px 5px;
+    }
+  }
 
-	/* ----------- Galaxy Tab 10.1 ----------- */
+  /* ----------- Galaxy Tab 10.1 ----------- */
 
-	/* Portrait and Landscape */
-	@media(min-device-width: 800px) and (max-device-width: 1280px) {
+  /* Portrait and Landscape */
+  @media(min-device-width: 800px) and (max-device-width: 1280px) {
 
-	}
+  }
 
-	/* Portrait */
-	@media(min-device-width: 601px) and(max-device-width: 800px) and (orientation: portrait) {
-		.icon-rubro{
-			font-size: 3.1em;
-		}
+  /* Portrait */
+  @media(min-device-width: 601px) and(max-device-width: 800px) and (orientation: portrait) {
 
-		.novedades-card {
-			img {
-				max-height: 300px;
-			}
-		}
-	}
-
+    .novedades-card {
+      img {
+        max-height: 300px;
+      }
+    }
+  }
 
 }
 
-.video{
-    width: 100%; height: 100%;
+.video {
+  width: 100%;
+  height: 100%;
 }
 
 .video-container {
-	position:relative;
-	padding-bottom:56.25%;
-	padding-top:30px;
-	height:0;
-	overflow:hidden;
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
 }
 
 .video-container iframe, .video-container object, .video-container embed {
-	position:absolute;
-	top:0;
-	left:0;
-	width:100%;
-	height:100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 

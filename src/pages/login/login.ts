@@ -37,6 +37,13 @@ export class LoginPage {
 
 
     loginFacebook() {
+
+        let loader = this.loadingCtrl.create({
+            content: "Cargando...",
+            // duration: 6000
+        });
+        loader.present();
+
         Facebook.login(['public_profile', 'email'])
             .then(rta => {
                 console.log(rta.status)
@@ -53,22 +60,25 @@ export class LoginPage {
                                         email: rta.email,
                                         fbId: rta.id
                                     };
-
+                                    loader.dismissAll();
                                     this.crearPerfil(user);
 
 
                                 })
                                 .catch(error => {
+                                    loader.dismissAll();
                                     console.error("fbpicture", error);
                                 });
                         })
                         .catch(error => {
+                            loader.dismissAll();
                             console.error('api', error);
                         });
                 }
                 ;
             })
             .catch(error => {
+                loader.dismissAll();
                 console.error(error);
             });
     }
@@ -81,58 +91,73 @@ export class LoginPage {
         });
         loader.present();
 
-        this.mainService.post('registrars', user).subscribe(
-            data => {
-                console.log("Register Data", data);
+        this.mainService.registrar('registrars', user)
+            .then(
+                data => {
+                    console.log("Register Data", data);
 
-                this.mainService.setSecureData(data).then(
-                    (dataSecureData) => {
+                    this.mainService.setSecureData(data).then(
+                        (dataSecureData) => {
 
-                        user = {
-                            avatar: user.avatar,
-                            nombre: user.nombre,
-                            apellido: user.apellido,
-                            email: user.email,
-                            fbId: user.fbId,
-                            gId: user.gId,
-                            userID: data.id,
-                            sexo: data.sexo
+                            user = {
+                                avatar: user.avatar,
+                                nombre: user.nombre,
+                                apellido: user.apellido,
+                                email: user.email,
+                                fbId: user.fbId,
+                                gId: user.gId,
+                                userID: data.id,
+                                sexo: data.sexo
 
-                        };
+                            };
 
-                        NativeStorage.setItem('userData', user)
-                            .then(
-                                () => {
-                                    //envia a la pantalla principal
-                                    // this.redirectPrincipal(setDataValues.isNew);
-
-
-                                    loader.dismissAll();
-                                    this.userData.signup(user);
-                                    this.nav.setRoot(PrincipalPage);
+                            NativeStorage.setItem('userData', user)
+                                .then(
+                                    () => {
+                                        //envia a la pantalla principal
+                                        // this.redirectPrincipal(setDataValues.isNew);
 
 
-                                },
-                                error => alert(JSON.stringify(error))
-                            );
+                                        loader.dismissAll();
+                                        this.userData.signup(user);
+                                        this.nav.setRoot(PrincipalPage);
+
+
+                                    },
+                                    error => {
+                                        console.error('error crearPerfil', error)
+                                    }
+                                );
+                        }
+                    )
+
+                },
+                error => {
+                    console.error('error login', error);
+                    if (user.fbId) {
+                        Facebook.logout();
                     }
-                )
-
-            },
-            error => {
-                Facebook.logout();
-                GooglePlus.logout();
-                NativeStorage.remove('userData');
-                BackgroundGeolocation.stop();
-                loader.dismissAll();
-                this.rootPage = LoginPage;
-            }
-        );
+                    if (user.gId) {
+                        GooglePlus.logout();
+                    }
+                    NativeStorage.remove('userData');
+                    BackgroundGeolocation.stop();
+                    loader.dismissAll();
+                    this.rootPage = LoginPage;
+                }
+            );
 
     }
 
     loginGoogle() {
         // GooglePlus.trySilentLogin();
+
+        let loader = this.loadingCtrl.create({
+            content: "Cargando...",
+            // duration: 6000
+        });
+        loader.present();
+
         GooglePlus.login({
             'scopes': '', // optional, space-separated list of scopes, If not included or empty, defaults to `profile` and `email`.
             'webClientId': this.googleReverseClientId,
@@ -149,17 +174,26 @@ export class LoginPage {
                         gId: rta.userId
 
                     };
+                    loader.dismissAll();
 
                     this.crearPerfil(user);
+
                 }
             )
             .catch(error => {
+                loader.dismissAll();
                 console.error(error);
             })
         ;
     }
 
     omitir() {
+
+        let loader = this.loadingCtrl.create({
+            content: "Cargando...",
+            // duration: 6000
+        });
+        loader.present();
 
         let userDemo = {
             "sexo": "M",
@@ -168,37 +202,39 @@ export class LoginPage {
             "email": "demo@evenprom.com"
         }
 
-        this.mainService.post('registrars', userDemo).subscribe(
-            data => {
-                console.log("Register Data", data);
+        this.mainService.registrar('registrars', userDemo)
+            .then(
+                data => {
+                    console.log("Register Data", data);
 
-                this.mainService.setSecureData(data).then(
-                    (demoSecureData) => {
+                    this.mainService.setSecureData(data).then(
+                        (demoSecureData) => {
 
-                        let user = {
-                            // avatar: user.avatar,
-                            nombre: data.nombre,
-                            apellido: data.apellido,
-                            email: data.email,
-                            userID: data.id,
-                            sexo: data.sexo
+                            let user = {
+                                // avatar: user.avatar,
+                                nombre: data.nombre,
+                                apellido: data.apellido,
+                                email: data.email,
+                                userID: data.id,
+                                sexo: data.sexo
 
+                            }
+
+                            NativeStorage.setItem('userDemo', user)
+                                .then(
+                                    () => {
+                                        //envia a la pantalla principal
+                                        this.userData.signup(user);
+                                        loader.dismissAll();
+                                        this.nav.setRoot(PrincipalPage);
+                                    },
+                                    error => console.error(error)
+                                );
                         }
+                    );
 
-                        NativeStorage.setItem('userDemo', user)
-                            .then(
-                                () => {
-                                    //envia a la pantalla principal
-                                    this.userData.signup(user);
-                                    this.nav.setRoot(PrincipalPage);
-                                },
-                                error => console.error(error)
-                            );
-                    }
-                );
-
-            }
-        );
+                }
+            );
 
 
     }

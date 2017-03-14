@@ -36,7 +36,7 @@ export class EditarPerfilPage {
         loader.present();
 
         this.mainService.getAll('ondas')
-            .subscribe(
+            .then(
                 (ondas) => {
                     this.ondas = ondas;
 
@@ -47,7 +47,7 @@ export class EditarPerfilPage {
                 }
             );
         this.mainService.getAll('tipodocumentos')
-            .subscribe(
+            .then(
                 (tipoDoc) => {
                     this.tiposDocumento = tipoDoc;
 
@@ -71,9 +71,8 @@ export class EditarPerfilPage {
         mainService.getUser().then(
             data => {
                 this.persona = data;
-                console.log('data', data)
                 this.mainService.get('personas', data.userID)
-                    .subscribe(
+                    .then(
                         (persona) => {
                             this.perfil.get('nombre').setValue(persona.nombre);
                             this.perfil.get('apellido').setValue(persona.apellido);
@@ -132,7 +131,7 @@ export class EditarPerfilPage {
         loader.present();
 
         this.mainService.put('personas', this.persona.userID, this.perfil.value)
-            .subscribe(
+            .then(
                 (ondas) => {
                     // this.ondas = ondas;
                     let toast = this.toastCtrl.create({

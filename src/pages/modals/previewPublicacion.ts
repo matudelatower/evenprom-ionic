@@ -25,6 +25,7 @@ export class ModalPreviewPublicacion {
     lng: any;
 
     faveada: any;
+    usuario: any;
 
     constructor(public platform: Platform,
                 public params: NavParams,
@@ -37,6 +38,13 @@ export class ModalPreviewPublicacion {
 
         this.publicacion = this.params.get('publicacion');
 
+        this.mainService.getUser().then(
+            (user) => {
+                this.usuario = user;
+            }, (error) => {
+                console.error(error);
+
+            });
 
     }
 
@@ -109,19 +117,20 @@ export class ModalPreviewPublicacion {
             });
             loader.present();
 
-            this.mainService.getUser().then((user) => {
-                this.comentarPublicacion(user, loader);
-            }, (error) => {
-                console.log(error);
-                loader.dismissAll();
-                let toast = this.toastCtrl.create({
-                    message: this.mainService.mensajeUserAnonimo,
-                    duration: 3250,
-                    position: 'center'
-                });
+            this.mainService.getUser().then(
+                (user) => {
+                    this.comentarPublicacion(user, loader);
+                }, (error) => {
+                    console.log(error);
+                    loader.dismissAll();
+                    let toast = this.toastCtrl.create({
+                        message: this.mainService.mensajeUserAnonimo,
+                        duration: 3250,
+                        position: 'center'
+                    });
 
-                toast.present();
-            });
+                    toast.present();
+                });
 
         }
 
@@ -130,42 +139,52 @@ export class ModalPreviewPublicacion {
     comentarPublicacion(user, loader) {
 
 
-        this.mainService.postComentarPublicacion(this.publicacion.id, user.userID, this.comentario).subscribe((data) => {
-            this.comentario = '';
-            loader.dismissAll();
-            console.log('comente', this.comentario);
-            loader = this.loadingCtrl.create({
-                content: "Cargando comentarios",
-                // duration: 6000
-            });
-            loader.present();
-            this.getComentarios(this.publicacion.id, loader);
-        }, (error) => {
-            let toast = this.toastCtrl.create({
-                message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
-                duration: 3250,
-                position: 'center'
-            });
+        let param = {
+            'texto': this.comentario
+        };
 
-            toast.present(toast);
-            loader.dismissAll();
-        });
+        // this.mainService.postComentarPublicacion(this.publicacion.id, user.userID, this.comentario).subscribe((data) => {
+        this.mainService.post('comentars/' + this.publicacion.id + '/publicacions/' + user.userID, param).then(
+            (data) => {
+                this.comentario = '';
+                loader.dismissAll();
+                console.log('comente', this.comentario);
+                loader = this.loadingCtrl.create({
+                    content: "Cargando comentarios",
+                    // duration: 6000
+                });
+                loader.present();
+                this.getComentarios(this.publicacion.id, loader);
+            }, (error) => {
+                let toast = this.toastCtrl.create({
+                    message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                    duration: 3250,
+                    position: 'center'
+                });
+
+                toast.present(toast);
+                loader.dismissAll();
+            });
     }
 
     getComentarios(publicacionId, loader) {
-        this.mainService.getComentariosPublicacion(publicacionId).subscribe((data) => {
-            this.comentarios = data;
-            loader.dismissAll();
-        }, (error) => {
-            loader.dismissAll();
-            let toast = this.toastCtrl.create({
-                message: "No se han podido cargar los comentarios.",
-                duration: 3250,
-                position: 'center'
-            });
+        let resource = 'comentarios/' + publicacionId + '/publicacion';
+        this.mainService.getAll(resource)
+            .then((data) => {
+                this.comentarios = data;
+                loader.dismissAll();
+            })
+            .catch((ex) => {
+                console.error('comentarios', ex);
+                loader.dismissAll();
+                let toast = this.toastCtrl.create({
+                    message: "No se han podido cargar los comentarios.",
+                    duration: 3250,
+                    position: 'center'
+                });
 
-            toast.present(toast);
-        });
+                toast.present(toast);
+            });
     }
 
     call(publicacionId, tel) {
@@ -176,10 +195,12 @@ export class ModalPreviewPublicacion {
                         console.log('Launched dialer!');
                         let personaId = this.mainService.user.id;
 
-                        this.mainService.postRegistrarLlamadaPublicacion(publicacionId, personaId).subscribe((data) => {
-                            console.log('Llamada registrada');
-                        });
-                        ;
+                        let resource = 'registros/' + publicacionId + '/llamadas/' + personaId + '/publicacions';
+                        this.mainService.post(resource)
+                            .then((data) => {
+                                console.log('Llamada registrada');
+                            });
+
 
                     }
                 )
@@ -196,30 +217,31 @@ export class ModalPreviewPublicacion {
     addPublicacionFav(id) {
 
 
-        this.mainService.getUser().then((user) => {
+        this.mainService.getUser()
+            .then((user) => {
+                let resource = 'favears/' + id + '/publicacions/' + user.userID;
+                this.mainService.post(resource)
+                    .then(
+                        (data) => {
 
-            this.mainService.postFavPublicacion(id, user.userID).subscribe(
-                (data) => {
+                            let mensaje = 'Agregado a favoritos';
+                            if (data.publicacion.like_persona == true) {
+                                this.publicacion.likes += 1;
+                            } else {
+                                this.publicacion.likes -= 1;
+                                mensaje = 'Quitado de favoritos';
+                            }
+                            this.publicacion.like_persona = data.publicacion.like_persona;
+                            let toast = this.toastCtrl.create({
+                                message: mensaje,
+                                duration: 2000,
+                                position: 'bottom'
+                            });
 
-                    let mensaje = 'Agregado a favoritos';
-                    if (data.publicacion.like_persona == true) {
-                        this.publicacion.likes += 1;
-                    } else {
-                        this.publicacion.likes -= 1;
-                        mensaje = 'Quitado de favoritos';
-                    }
-                    this.publicacion.like_persona = data.publicacion.like_persona;
-                    let toast = this.toastCtrl.create({
-                        message: mensaje,
-                        duration: 2000,
-                        position: 'bottom'
-                    });
+                            toast.present(toast);
 
-                    toast.present(toast);
-
-
-                });
-        });
+                        });
+            });
 
 
     }
@@ -227,30 +249,33 @@ export class ModalPreviewPublicacion {
     checkInPublicacion(id) {
 
 
-        this.mainService.getUser().then((user) => {
+        this.mainService.getUser()
+            .then((user) => {
+                let resource = 'checkins/' + id + '/publicacions/' + user.userID;
 
-            this.mainService.postCheckInPublicacion(id, user.userID).subscribe(
-                (data) => {
+                this.mainService.post(resource)
+                    .then(
+                        (data) => {
 
-                    let mensaje = 'Hiciste CheckIn';
-                    if (data.publicacion.checkin_persona == true) {
-                        this.publicacion.checkins += 1;
-                    } else {
-                        this.publicacion.checkins -= 1;
-                        mensaje = 'Eliminaste el CheckIn';
-                    }
-                    this.publicacion.checkin_persona = data.publicacion.checkin_persona;
-                    let toast = this.toastCtrl.create({
-                        message: mensaje,
-                        duration: 2000,
-                        position: 'bottom'
-                    });
+                            let mensaje = 'Hiciste CheckIn';
+                            if (data.publicacion.checkin_persona == true) {
+                                this.publicacion.checkins += 1;
+                            } else {
+                                this.publicacion.checkins -= 1;
+                                mensaje = 'Eliminaste el CheckIn';
+                            }
+                            this.publicacion.checkin_persona = data.publicacion.checkin_persona;
+                            let toast = this.toastCtrl.create({
+                                message: mensaje,
+                                duration: 2000,
+                                position: 'bottom'
+                            });
 
-                    toast.present(toast);
+                            toast.present(toast);
 
 
-                });
-        });
+                        });
+            });
 
 
     }
@@ -274,63 +299,64 @@ export class ModalPreviewPublicacion {
         });
         loader.present();
 
-        Geolocation.getCurrentPosition().then((resp) => {
-            // resp.coords.latitude
-            // resp.coords.longitude
+        Geolocation.getCurrentPosition()
+            .then((resp) => {
+                // resp.coords.latitude
+                // resp.coords.longitude
 
-            let actual = resp.coords.latitude + ", " + resp.coords.longitude;
+                let actual = resp.coords.latitude + ", " + resp.coords.longitude;
 
-            let location = this.geocoder.geocode(this.publicacion.direccion_empresa.calle + " " + this.publicacion.direccion_empresa.altura + ", " + this.publicacion.direccion_empresa.localidad);
+                let location = this.geocoder.geocode(this.publicacion.direccion_empresa.calle + " " + this.publicacion.direccion_empresa.altura + ", " + this.publicacion.direccion_empresa.localidad);
 
-            location.subscribe(location => {
+                location.subscribe(location => {
 
-                loader.dismissAll();
-                if (!location.valid) {
+                    loader.dismissAll();
+                    if (!location.valid) {
+                        let toast = this.toastCtrl.create({
+                            message: "La empresa no tiene cargada la dirección",
+                            duration: 1500,
+                            position: 'center'
+                        });
+
+                        toast.present(toast);
+                        return;
+                    }
+                    // let address = location.address;
+
+                    var newBounds = location.viewBounds;
+                    //this.mapService.changeBounds(newBounds);
+
+
+                    let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
+                    let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+
+                    let destino = lat + ", " + lng;
+
                     let toast = this.toastCtrl.create({
-                        message: "La empresa no tiene cargada la dirección",
+                        message: "Ruta encontrada.",
                         duration: 1500,
                         position: 'center'
                     });
 
                     toast.present(toast);
-                    return;
-                }
-                // let address = location.address;
 
-                var newBounds = location.viewBounds;
-                //this.mapService.changeBounds(newBounds);
+                    let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
 
 
-                let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
-                let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
+                    window.open(url, "_system");
 
-                let destino = lat + ", " + lng;
+                }, error => {
+                    loader.dismissAll();
+                    let toast = this.toastCtrl.create({
+                        message: "No se ha podido abrir el mapa.",
+                        duration: 1500,
+                        position: 'center'
+                    });
 
-                let toast = this.toastCtrl.create({
-                    message: "Ruta encontrada.",
-                    duration: 1500,
-                    position: 'center'
+                    toast.present(toast);
                 });
 
-                toast.present(toast);
-
-                let url = "https://www.google.com/maps/dir/" + actual + "/" + destino;
-
-
-                window.open(url, "_system");
-
-            }, error => {
-                loader.dismissAll();
-                let toast = this.toastCtrl.create({
-                    message: "No se ha podido abrir el mapa.",
-                    duration: 1500,
-                    position: 'center'
-                });
-
-                toast.present(toast);
-            });
-
-        }).catch((error) => {
+            }).catch((error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
                 message: "No se ha podido abrir el mapa.",

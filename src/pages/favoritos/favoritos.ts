@@ -32,10 +32,8 @@ export class FavoritosPage {
         mainService.getUser().then(
             (userData) => {
 
-                console.log(JSON.stringify(userData));
-
-                this.mainService.getFavoritos(userData.userID)
-                    .subscribe(
+                this.mainService.getAll('favoritos/' + userData.userID + '/personas')
+                    .then(
                         (response) => {
                             this.favoritos = response;
                             loader.dismissAll();
@@ -48,7 +46,7 @@ export class FavoritosPage {
                     );
             },
             error => {
-                console.log(JSON.stringify('favoritos.error', error));
+                console.error('favoritos.error', error);
                 loader.dismissAll();
                 let alert = this.alertCtrl.create({
                     title: 'Aviso!',
@@ -56,7 +54,6 @@ export class FavoritosPage {
                     buttons: ['OK']
                 });
                 alert.present();
-                navCtrl.setRoot(LoginPage);
             }
         )
 

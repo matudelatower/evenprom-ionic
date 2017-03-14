@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
-import { Platform, NavParams, ViewController} from 'ionic-angular';
+import {Platform, NavParams, ViewController} from 'ionic-angular';
 import {NativeStorage} from 'ionic-native';
-import { Data } from '../../directives/toggle/data';
+import {Data} from '../../directives/toggle/data';
 import {MainService} from "../../app/main.service";
 
 @Component({
@@ -10,13 +10,13 @@ import {MainService} from "../../app/main.service";
 })
 export class ModalSearch {
     character;
-    public dataList:Data[];
-    public demoData:Array<{id:string, title: string,icon: string, isActive: boolean}>;
+    public dataList: Data[];
+    public demoData: Array<{id: string, title: string, icon: string, isActive: boolean}>;
 
-    constructor(public platform:Platform,
-                public params:NavParams,
-                public mainService:MainService,
-                public viewCtrl:ViewController) {
+    constructor(public platform: Platform,
+                public params: NavParams,
+                public mainService: MainService,
+                public viewCtrl: ViewController) {
         var characters = [
             {
                 name: 'Gollum',
@@ -61,7 +61,7 @@ export class ModalSearch {
                 console.log(listas);
                 this.cargarParametros(listas, rubros, ondas, localidades);
             },
-            (error)=> {
+            (error) => {
 
                 this.cargarParametros(false, rubros, ondas, localidades);
 
@@ -79,8 +79,8 @@ export class ModalSearch {
     }
 
     cleanAll() {
-        this.dataList.forEach((v)=> {
-            v.items.forEach((v)=> {
+        this.dataList.forEach((v) => {
+            v.items.forEach((v) => {
                 v.active = false;
             });
         });
@@ -102,35 +102,37 @@ export class ModalSearch {
 
 
     cargarParametros(listas, rubros, ondas, localidades) {
-        this.mainService.getRubros().subscribe(
-            (response) => {
-                for (let r of response) {
-                    rubros.push({
-                        id: r.id,
-                        text: r.nombre,
-                        icon: r.icon,
-                        active: listas ? this.buscarItemBusqueda(r.id, listas, 'rubro') : false
-                    });
+        this.mainService.getAll('rubros')
+            .then(
+                (response) => {
+                    for (let r of response) {
+                        rubros.push({
+                            id: r.id,
+                            text: r.nombre,
+                            icon: r.icon,
+                            active: listas ? this.buscarItemBusqueda(r.id, listas, 'rubro') : false
+                        });
+                    }
                 }
-            }
-        );
+            );
 
 
-        this.mainService.getOndas().subscribe(
-            (response) => {
-                for (let r of response) {
-                    ondas.push({
-                        id: r.id,
-                        text: r.nombre,
-                        icon: r.icon,
-                        active: listas ? this.buscarItemBusqueda(r.id, listas, 'onda') : false
-                    });
+        this.mainService.getAll('ondas')
+            .then(
+                (response) => {
+                    for (let r of response) {
+                        ondas.push({
+                            id: r.id,
+                            text: r.nombre,
+                            icon: r.icon,
+                            active: listas ? this.buscarItemBusqueda(r.id, listas, 'onda') : false
+                        });
+                    }
                 }
-            }
-        );
+            );
 
 
-        this.mainService.getLocalidades().subscribe(
+        this.mainService.getAll('localidades/publicaciones').then(
             (response) => {
                 for (let r of response) {
                     localidades.push({
@@ -151,7 +153,7 @@ export class ModalSearch {
 
         if (buscar) {
 
-            this.dataList.forEach((v, k)=> {
+            this.dataList.forEach((v, k) => {
                 let filtros = v.items.filter(c => c.active).map(c => c.id);
 
                 params.push({

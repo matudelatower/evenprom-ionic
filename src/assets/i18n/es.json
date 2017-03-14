@@ -24,5 +24,8 @@
   "apellido": "Apellido",
   "fecha-nacimiento": "Fecha Nacimiento",
   "tipo-documento": "Tipo Documento",
-  "dni": "DNI"
+  "dni": "DNI",
+  "escribi-comentario": "Escribí un comentario",
+  "pull-to-refresh": "Tire para actualizar",
+  "actualizando": "Actualizando"
 }

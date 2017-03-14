@@ -50,24 +50,24 @@ export class NotificacionesPage {
             data => {
                 this.persona = data;
                 this.mainService.get('notificaciones', this.persona.userID)
-                    .subscribe(
+                    .then(
                         (notificaciones) => {
                             this.notificacionesOnda = notificaciones.onda;
                             this.notificacionesLocalidad = notificaciones.localidad;
                             this.notificacionesDescuentos = notificaciones.descuento;
                             this.notificacionesRubro = notificaciones.rubro;
                             this.notificacionesCompras = notificaciones.compra;
-                            this.notificacionesEntretenimiento =  notificaciones.entretenimiento;
+                            this.notificacionesEntretenimiento = notificaciones.entretenimiento;
                             this.notificacionesGastronomia = notificaciones.gastronomico;
                             this.notificacionesEmpresa = notificaciones.empresa;
                             this.notificacionesEventos = notificaciones.evento;
 
-                        },
-                        (err) => {
-                            console.error(err);
-
                         }
-                    );
+                    ).catch(
+                    (err) => {
+                        console.error(err);
+
+                    });
             },
             error => {
                 let alert = alertCtrl.create({
@@ -89,49 +89,49 @@ export class NotificacionesPage {
     // notificaciones
     cargarNotificaciones() {
 
-        this.mainService.getLocalidades().subscribe(
+        this.mainService.getAll('localidades/publicaciones').then(
             (response) => {
                 this.localidades = response;
             }
         );
 
-        this.mainService.getRubros().subscribe(
+        this.mainService.getAll('rubros').then(
             (response) => {
                 this.rubros = response;
             }
         );
 
-        this.mainService.getOndas().subscribe(
+        this.mainService.getAll('ondas').then(
             (response) => {
                 this.ondas = response;
             }
         );
 
-        this.mainService.getDescuentos().subscribe(
+        this.mainService.getAll('descuentos').then(
             (response) => {
                 this.descuentos = response;
             }
         );
 
-        this.mainService.getAllEmpresas().subscribe(
+        this.mainService.getAll('empresas').then(
             (response) => {
                 this.empresas = response;
             }
         );
 
-        this.mainService.getSubRubros('gastronomia').subscribe(
+        this.mainService.getAll('subrubros/gastronomia/slugrubro').then(
             (response) => {
                 this.gastronomia = response;
             }
         );
 
-        this.mainService.getSubRubros('recreacion-diversion').subscribe(
+        this.mainService.getAll('subrubros/recreacion-diversion/slugrubro').then(
             (response) => {
                 this.entretenimiento = response;
             }
         );
 
-        this.mainService.getSubRubros('servicios').subscribe(
+        this.mainService.getAll('subrubros/servicios/slugrubro').then(
             (response) => {
                 this.servicios = response;
             }
@@ -156,7 +156,7 @@ export class NotificacionesPage {
         console.log('notificaciones', params);
 
         this.mainService.put('notificaciones', 3, params)
-            .subscribe(
+            .then(
                 (ondas) => {
                     // this.ondas = ondas;
                     let toast = this.toastCtrl.create({
@@ -183,18 +183,19 @@ export class NotificacionesPage {
         });
         loader.present();
 
-        this.mainService.getOndas()
-            .subscribe(
+        this.mainService.getAll('ondas')
+            .then(
                 (response) => {
                     this.ondas = response;
                     loader.dismissAll();
 
-                },
-                (err) => {
-                    console.log('error timeout');
-                    loader.dismissAll();
                 }
-            );
+            ).catch(
+            (err) => {
+                console.error('error ondas', err);
+                console.log('error timeout');
+                loader.dismissAll();
+            });
     }
 
 }

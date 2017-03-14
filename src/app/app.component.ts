@@ -168,22 +168,13 @@ export class MyApp {
                         this.user = data;
                         this.mainService.setUser(data);
 
-                        this.mainService.getSubResource('personas', data.userID, 'ondas')
-                            .subscribe(
-                                (personaOnda) => {
-                                    this.personaOndas = personaOnda;
-                                },
-                                (err) => {
-                                    console.error(err);
-                                }
-                            );
-
                         if (data.fbId) {
                             // Facebook login
                             Facebook.getLoginStatus()
                                 .then(
                                     rtaLoginStatus => {
                                         if (rtaLoginStatus.status == 'connected') {
+                                            this.loadOndas();
                                             this.rootPage = PrincipalPage;
 
                                         } else {
@@ -204,6 +195,7 @@ export class MyApp {
                             })
                                 .then(
                                     rta => {
+                                        this.loadOndas();
                                         this.rootPage = PrincipalPage;
                                         loader.dismissAll();
                                     }
@@ -251,6 +243,18 @@ export class MyApp {
             console.log('logout');
             this.logout();
         });
+    }
+
+    loadOndas() {
+        this.mainService.getSubResource('personas', this.user.userID, 'ondas')
+            .then(
+                (personaOnda) => {
+                    this.personaOndas = personaOnda;
+                },
+                (err) => {
+                    console.error(err);
+                }
+            );
     }
 
 

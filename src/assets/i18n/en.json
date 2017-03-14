@@ -24,5 +24,8 @@
   "apellido": "Last Name",
   "fecha-nacimiento": "Birthday",
   "tipo-documento": "Tipo Documento",
-  "dni": "DNI"
+  "dni": "DNI",
+  "escribi-comentario": "Write a comment",
+  "pull-to-refresh": "Pull to refresh",
+  "actualizando": "Refreshing"
 }

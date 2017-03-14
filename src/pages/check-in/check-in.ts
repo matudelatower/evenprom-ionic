@@ -32,10 +32,8 @@ export class CheckInPage {
         mainService.getUser().then(
             (userData) => {
 
-                console.log(JSON.stringify(userData));
-
-                this.mainService.getCheckIns(userData.userID)
-                    .subscribe(
+                this.mainService.getAll('checkins/' + userData.userID + '/personas')
+                    .then(
                         (response) => {
                             this.checkIns = response;
                             loader.dismissAll();
@@ -48,7 +46,7 @@ export class CheckInPage {
                     );
             },
             error => {
-                console.log(JSON.stringify('checkIns.error', error));
+                console.error('checkIns.error', error);
                 loader.dismissAll();
                 let alert = this.alertCtrl.create({
                     title: 'Aviso!',

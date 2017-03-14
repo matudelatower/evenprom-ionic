@@ -122,41 +122,34 @@ export class PrincipalPage {
     }
 
     getPublicaciones(userID, fields, loader, refresher) {
-        this.mainservice.getPublicaciones(userID, fields).then(
-            (observable) => {
-                observable.subscribe(
-                    (data) => {
-                        this.publicaciones = data;
-                        this.errorNoConexion = false;
+        let resource = 'publicaciones/' + userID + '/persona'
+        this.mainservice.getAll(resource, fields)
+            .then(
+                (data) => {
+                    this.publicaciones = data;
+                    this.errorNoConexion = false;
+                    loader.dismissAll();
+                })
+            .catch(
+                (ex) => {
+                    console.error('error publicaciones', ex);
 
-                    },
-                    (err) => {
-                        console.log('error timeout');
+                    this.errorNoConexion = true;
+                    //this.publicaciones = [];
+                    loader.dismissAll();
+                    if (refresher) {
+                        refresher.complete();
+                    }
 
-                        this.errorNoConexion = true;
-                        //this.publicaciones = [];
-                        loader.dismissAll();
-                        if (refresher) {
-                            refresher.complete();
-                        }
+                    let toast = this.toastCtrl.create({
+                        message: "Error en la conexión a internet",
+                        duration: 2000,
+                        position: 'center'
+                    });
 
-                        let toast = this.toastCtrl.create({
-                            message: "Error en la conexión a internet",
-                            duration: 2000,
-                            position: 'center'
-                        });
-
-                        toast.present(toast);
-                    },
-                    () => {
-                        loader.dismissAll();
-                        this.errorNoConexion = false;
-                        if (refresher) {
-                            refresher.complete();
-                        }
-                    })
-            }
-        );
+                    toast.present(toast);
+                }
+            )
     }
 
 
@@ -184,19 +177,17 @@ export class PrincipalPage {
             }
         );
 
-        this.mainservice.getPromoCalendario().then(
-            (observable) => {
-                observable.subscribe(
-                    (data) => {
-                        if (data) {
-                            this.promoCalendario = data[0];
-                        } else {
-                            this.promoCalendario = false;
-                        }
+        this.mainservice.getAll('promo/calendario')
+            .then(
+                (data) => {
+                    if (data) {
+                        this.promoCalendario = data[0];
+                    } else {
+                        this.promoCalendario = false;
                     }
-                )
-            }
-        );
+                }
+            );
+        this.tabs = '0';
 
     }
 
@@ -277,8 +268,10 @@ export class PrincipalPage {
         });
         loader.present();
 
-        this.mainservice.getAllEmpresas()
-            .subscribe(response => {
+        let resource = 'empresas'
+
+        this.mainservice.getAll(resource)
+            .then(response => {
                 let param = {
                     empresas: response
                 };
@@ -287,14 +280,18 @@ export class PrincipalPage {
 
                 this.navController.push(ModalMapa, param);
 
-            }, error => {
+            })
+            .catch((ex) => {
+
+                console.error('error ubicaciones', ex)
+
                 let toast = this.toastCtrl.create({
                     message: "Error en la conexión a internet",
                     duration: 2000,
                     position: 'center'
                 });
 
-                toast.present(toast);
+                toast.present(toast)
             });
 
     }

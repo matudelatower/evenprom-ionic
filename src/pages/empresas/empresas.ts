@@ -37,7 +37,7 @@ export class Empresas {
             // duration: 6000
         });
         loader.present();
-        mainService.getRubros().subscribe(
+        mainService.getAll('rubros').then(
             response => this.rubros = response,
             (err) => {
                 console.log('error timeout');
@@ -48,35 +48,40 @@ export class Empresas {
 
         this.mainService.getUser().then((user) => {
             this.usuarioId = user.userID;
-            this.mainService.getEmpresas(user.userID).subscribe(
-                (data) => {
-                    this.empresas = data;
-                    this.errorNoConexion = false;
-                    loader.dismissAll();
+            let resource = 'empresas/' + user.userID + '/persona';
+            this.mainService.getAll(resource)
+                .then(
+                    (data) => {
+                        this.empresas = data;
+                        this.errorNoConexion = false;
+                        loader.dismissAll();
 
-                },
-                (err) => {
-                    console.log('error timeout');
+                    }
+                )
+                .catch((err) => {
+                    console.error('error timeout', err);
 
                     this.errorNoConexion = true;
                     loader.dismissAll();
-                }
-            );
+                });
         }, () => {
             this.usuarioId = null;
-            this.mainService.getEmpresas(null).subscribe(
-                (data) => {
-                    this.empresas = data;
-                    loader.dismissAll();
+            let resource = 'empresas/' + null + '/persona'
+            this.mainService.getAll(resource)
+                .then(
+                    (data) => {
+                        this.empresas = data;
+                        loader.dismissAll();
 
-                },
+                    }
+                ).catch(
                 (err) => {
+                    console.error('get empresas', err);
                     console.log('error timeout');
 
                     loader.dismissAll();
 
-                },
-            );
+                });
 
         });
 
@@ -89,7 +94,7 @@ export class Empresas {
     slideChanged() {
         let currentIndex = this.slider.getActiveIndex();
 
-        if (currentIndex < this.rubros.length){
+        if (currentIndex < this.rubros.length) {
             this.loadEmpresasBySlug(this.rubros[currentIndex], currentIndex);
         }
 
@@ -106,22 +111,27 @@ export class Empresas {
         });
         loader.present();
 
-        this.mainService.getEmpresasBySlug(rub.slug, this.usuarioId).subscribe(
-            (data) => {
-                this.empresas = data;
-                this.errorNoConexion = false;
-                loader.dismissAll();
+        let resource = 'empresasporslugs/' + rub.slug + '/personas/' + this.usuarioId;
 
-            },
-            (err) => {
-                console.log('error timeout');
+        this.mainService.getAll(resource)
+            .then(
+                (data) => {
+                    this.empresas = data;
+                    this.errorNoConexion = false;
+                    loader.dismissAll();
 
-                this.errorNoConexion = true;
-                //this.publicaciones = [];
-                loader.dismissAll();
+                }
+            )
+            .catch(
+                (err) => {
+                    console.error('error empresas por slug', err);
+                    console.log('error timeout');
 
-            },
-        );
+                    this.errorNoConexion = true;
+                    //this.publicaciones = [];
+                    loader.dismissAll();
+
+                });
     }
 
     ionViewDidLoad() {

@@ -24,7 +24,7 @@
 
                         </ion-col>
                         <ion-col>
-                            <img *ngIf="empresa.ondas.length >0 " [src]="empresa.ondas[0].icono">
+                            <img *ngIf="empresa.ondas.length >0 " [src]="empresa.ondas[0].icono" class="icono-onda">
                         </ion-col>
                     </ion-row>
 
@@ -40,9 +40,6 @@
     </ion-row>
     <ion-card>
         <ion-card-content>
-            <!--<video controls="controls" preload="metadata" autoplay="autoplay" webkit-playsinline="webkit-playsinline" class="videoPlayer">
-        <source src="http://player.vimeo.com/external/85569724.sd.mp4?s=43df5df0d733011263687d20a47557e4" type="video/mp4" />
-      </video>-->
             <div *ngIf="empresa.link_youtube!=null" class="video-container" text-center>
                 <iframe class="video" [src]="link_youtube" frameborder="0" allowfullscreen></iframe>
 
@@ -89,7 +86,6 @@
 
                     <ion-item style="border: none !important;">
                         <ion-avatar item-left>
-                            <!--<img [src]="mainService.getAvatar(img.fbId, img.gId)" [default]="'assets/img/avatar.png'">-->
                             <m-avatar [fbId]="img.fbId" [gId]="img.gId"></m-avatar>
                         </ion-avatar>
                         <p>{{ img.persona.nombre}} </p>
@@ -184,17 +180,18 @@
     <ion-list no-lines>
         <ion-item *ngFor="let c of comentarios" no-lines>
             <ion-avatar item-left>
-                <img [src]="mainService.getAvatar(c.fbId, c.gId)" [default]="'assets/img/avatar.png'">
+                <m-avatar [fbId]="c.fbId" [gId]="c.gId"></m-avatar>
             </ion-avatar>
             <h2>{{c.persona.nombre}} {{c.persona.apellido}}</h2>
             <p>{{c.texto}}</p>
         </ion-item>
         <ion-item>
-            <ion-avatar item-left>
-                <img *ngIf="mainService.user" [src]="mainService.user.avatar" [default]="'assets/img/avatar.png'">
+            <ion-avatar item-left *ngIf="usuario">
+                <m-avatar [fbId]="usuario.fbId" [gId]="usuario.gId"></m-avatar>
+
             </ion-avatar>
             <h2>Yo</h2>
-            <ion-textarea placeholder="Escribí un comentario" [(ngModel)]="comentario"></ion-textarea>
+            <ion-textarea placeholder="{{'escribi-comentario' | translate}}" [(ngModel)]="comentario"></ion-textarea>
 
             <button (click)="comentar()" ion-button clear icon-only item-right>
                 <ion-icon name="send" is-active="false"></ion-icon>

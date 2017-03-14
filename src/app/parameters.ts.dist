@@ -9,5 +9,6 @@ export const parameters: Object =
     googleProjectId: '101010101010101',
     oneSignalAppId: 'eeeeeee-aaaa-1111-1234-123456789012',
     epClientId: '',
-    epClientSecret: ''
+    epClientSecret: '',
+    googleApiKey:''
 }

@@ -24,29 +24,29 @@ export class ItemEmpresaComponent {
 
     }
 
-
     addEmpresaFav(empresaId) {
         this.mainService.getUser().then((user) => {
 
-            this.mainService.postFavEmpresa(empresaId, user.userID).subscribe((data) => {
-                let mensaje = 'Agregado a favoritos';
+            this.mainService.post('favears/' + empresaId + '/empresas/' + user.userID)
+                .then((data) => {
+                    let mensaje = 'Agregado a favoritos';
 
-                if (data.empresa.like_persona == true) {
-                    this.empresa.likes += 1;
-                } else {
-                    this.empresa.likes -= 1;
-                    mensaje = 'Quitado de favoritos';
-                }
-                this.empresa.like_persona = data.empresa.like_persona;
-                let toast = this.toastCtrl.create({
-                    message: mensaje,
-                    duration: 2000,
-                    position: 'bottom'
+                    if (data.empresa.like_persona == true) {
+                        this.empresa.likes += 1;
+                    } else {
+                        this.empresa.likes -= 1;
+                        mensaje = 'Quitado de favoritos';
+                    }
+                    this.empresa.like_persona = data.empresa.like_persona;
+                    let toast = this.toastCtrl.create({
+                        message: mensaje,
+                        duration: 2000,
+                        position: 'bottom'
+                    });
+
+                    toast.present(toast);
+
                 });
-
-                toast.present(toast);
-
-            });
         });
     }
 

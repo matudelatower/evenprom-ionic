@@ -1,5 +1,5 @@
-import {Component } from '@angular/core';
-import {NavParams, ViewController,LoadingController, ToastController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 
 @Component({
@@ -8,13 +8,13 @@ import {MainService} from "../../app/main.service";
 })
 export class ModalComentario {
 
-    publicacion:any;
-    comentario:any;
+    publicacion: any;
+    comentario: any;
 
-    constructor(public params:NavParams,
-                public viewCtrl:ViewController,
-                public toastCtrl:ToastController,
-                public mainService:MainService, public loadingCtrl:LoadingController) {
+    constructor(public params: NavParams,
+                public viewCtrl: ViewController,
+                public toastCtrl: ToastController,
+                public mainService: MainService, public loadingCtrl: LoadingController) {
         this.publicacion = this.params.get('publicacion');
 
         console.log(this.publicacion);
@@ -36,19 +36,19 @@ export class ModalComentario {
 
             });
             loader.present();
-            this.mainService.getUser().then((user)=> {
-                this.comentarPublicacion(user, loader);
-            }, (error)=> {
-                console.log(error);
-                loader.dismissAll();
-                let toast = this.toastCtrl.create({
-                    message: this.mainService.mensajeUserAnonimo,
-                    duration: 3250,
-                    position: 'center'
+            this.mainService.getUser()
+                .then((user) => {
+                    this.comentarPublicacion(user, loader);
+                }, (error) => {
+                    console.log(error);
+                    loader.dismissAll();
+                    let toast = this.toastCtrl.create({
+                        message: this.mainService.mensajeUserAnonimo,
+                        duration: 3250,
+                        position: 'center'
+                    });
+                    toast.present();
                 });
-                toast.present();
-            });
-
 
 
         }
@@ -58,21 +58,32 @@ export class ModalComentario {
 
     comentarPublicacion(user, loader) {
 
-        this.mainService.postComentarPublicacion(this.publicacion.id, user.userID, this.comentario).subscribe((data)=> {
-            this.comentario = '';
-            loader.dismissAll();
-            this.viewCtrl.dismiss(false);
+        let resource = 'comentars/' + this.publicacion.id + '/publicacions/' + user.userID;
 
-        }, (error)=> {
-            loader.dismissAll();
-            let toast = this.toastCtrl.create({
-                message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
-                duration: 3250,
-                position: 'center'
-            });
+        let params = {
+            'texto': this.comentario
+        }
 
-            toast.present(toast);
-        });
+        this.mainService.post(resource, params)
+            .then(
+                (data) => {
+                    this.comentario = '';
+                    loader.dismissAll();
+                    this.viewCtrl.dismiss(false);
+
+                })
+            .catch(
+                (ex) => {
+                    console.error('error comentando', ex)
+                    loader.dismissAll();
+                    let toast = this.toastCtrl.create({
+                        message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                        duration: 3250,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+                });
     }
 
 

@@ -2,7 +2,6 @@ import {NgModule} from '@angular/core';
 import {Http} from '@angular/http';
 import {IonicApp, IonicModule} from 'ionic-angular';
 import {MyApp} from './app.component';
-import {HomePage} from '../pages/home/home';
 import {EmpresaPerfilPage} from "../pages/empresaPerfil/empresaPerfil";
 import {LoginPage} from "../pages/login/login";
 import {PrincipalPage} from "../pages/principal/principal";
@@ -54,7 +53,6 @@ export function createTranslateLoader(http: Http) {
 @NgModule({
     declarations: [
         MyApp,
-        HomePage,
         EmpresaPerfilPage,
         LoginPage,
         PrincipalPage,
@@ -106,7 +104,6 @@ export function createTranslateLoader(http: Http) {
     bootstrap: [IonicApp],
     entryComponents: [
         MyApp,
-        HomePage,
         EmpresaPerfilPage,
         LoginPage,
         PrincipalPage,

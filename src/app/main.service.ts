@@ -26,8 +26,10 @@ export class MainService {
 
     public currentLocalidad: any = false;
 
+    headers: Headers;
+    options: RequestOptions;
+
     user: any;
-    dataToken: any;
 
     constructor(http: Http,
                 modalCont: ModalController,
@@ -44,15 +46,12 @@ export class MainService {
 
         this.modalCont = modalCont;
 
-        this.initRouteServices();
+        this.headers = new Headers({'Content-Type': 'application/json'});
+        this.options = new RequestOptions({headers: this.headers});
+
+        // this.initRouteServices();
 
     }
-
-    //post(resource: string, params?: any): Observable<any> {
-    //    return this.http.post(this.serverUri + resource, params)
-    //        .map(this.extractData)
-    //        .catch(error => {this.handleError(error)});
-    //}
 
 
     getUrlEmpresa(id) {
@@ -119,259 +118,6 @@ export class MainService {
             .timeout(7500);
     }
 
-    getPublicaciones(userId, fields?: any): Promise <any> {
-
-        if ((typeof fields === "undefined")) {
-            fields = "";
-        } else {
-            fields = "?" + fields;
-        }
-
-        return this.getToken().then(
-            (token) => {
-                return NativeStorage.getItem('token')
-                    .then(
-                        data => {
-                            let headers = new Headers({'Accept': 'application/json'});
-                            headers.set('Authorization', 'Bearer ' + data.access_token);
-
-                            let options = new RequestOptions({headers: headers});
-
-                            return this.http.get(this.routeServices.publicaciones + '/' + userId + '/persona' + fields, options)
-                            // ...and calling .json() on the response to return data
-                                .map((res: Response) => res.json())
-                                .delay(500)
-                                .timeout(7500)
-                                ;
-                        }
-                    );
-
-            }
-        );
-
-
-    }
-
-    getPublicacionesByEmpresa(empresaId) {
-
-        return this.http.get(this.routeServices.publicacionesporempresas + empresaId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500);
-
-    }
-
-    getPromoCalendario(): Promise <any> {
-
-        return this.getToken().then(
-            (token) => {
-                return NativeStorage.getItem('token')
-                    .then(
-                        data => {
-                            let headers = new Headers({'Accept': 'application/json'});
-                            headers.set('Authorization', 'Bearer ' + data.access_token);
-
-                            let options = new RequestOptions({headers: headers});
-
-                            return this.http.get(this.routeServices.promoCalendario, options)
-                            // ...and calling .json() on the response to return data
-                                .map((res: Response) => res.json());
-                        }
-                    );
-
-            }
-        );
-
-
-    }
-
-
-    getCategorias() {
-
-        return this.http.get(this.routeServices.categorias);
-    }
-
-    getRubros() {
-
-        return this.http.get(this.routeServices.rubros)
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500);
-    }
-
-    getSubRubros(slug?) {
-
-        return this.http.get(this.service + '/subrubros/' + slug + '/slugrubro')
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500);
-    }
-
-    getLocalidades() {
-
-        return this.http.get(this.routeServices.localidades)
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500);
-    }
-
-    getEmpresasBySlug(slug, userId) {
-
-        // return this.http.get(this.routeServices.empresasporslugs + slug);
-        return this.http.get(this.routeServices.empresasporslugs + slug + '/personas/' + userId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500)
-            ;
-    }
-
-    getEmpresas(userId) {
-        return this.http.get(this.routeServices.empresas + '/' + userId + '/persona')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(7500)
-            ;
-    }
-
-    postFavEmpresa(empresaId, personaId) {
-
-        return this.http.post(this.service + '/favears/' + empresaId + '/empresas/' + personaId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-    postFavPublicacion(pubId, personaId) {
-
-        return this.http.post(this.service + '/favears/' + pubId + '/publicacions/' + personaId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-    postRegistrarLlamada(empresaId, personaId) {
-        return this.http.post(this.service + '/registros/' + empresaId + '/llamadas/' + personaId + '/empresas')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-    postRegistrarLlamadaPublicacion(publicacionId, personaId) {
-        return this.http.post(this.service + '/registros/' + publicacionId + '/llamadas/' + personaId + '/publicacions')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-
-    postComentarPublicacion(publicacionId, personaId, texto) {
-        return this.http.post(this.service + '/comentars/' + publicacionId + '/publicacions/' + personaId, {
-            texto: texto
-        })
-            .delay(500)
-            .timeout(5000);
-        ;
-    }
-
-    getComentariosPublicacion(publicacionId) {
-
-        return this.http.get(this.service + '/comentarios/' + publicacionId + '/publicacion')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-
-    }
-
-
-    postComentarEmpresa(empresaId, personaId, texto) {
-        return this.http.post(this.service + '/comentars/' + empresaId + '/empresas/' + personaId, {
-            texto: texto
-        })
-            .delay(500)
-            .timeout(6000);
-    }
-
-    getComentariosEmpresa(publicacionId) {
-
-        return this.http.get(this.service + '/comentarios/' + publicacionId + '/empresa')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-
-    }
-
-    getImagenesEmpresa(empresa) {
-
-        return this.http.get(this.service + '/fotos/' + empresa + '/empresa')
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-
-    }
-
-
-    getAllEmpresas() {
-
-        return this.http.get(this.routeServices.empresas)
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-    }
-
-    getNoticiasEmpresa(empresaId) {
-
-        return this.http.get(this.service + '/noticias/' + empresaId + '/empresa')
-
-    }
-
-    getFavoritos(personaId) {
-        return this.http.get(this.service + '/favoritos/' + personaId + '/personas')
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-    }
-
-    getCheckIns(personaId) {
-        return this.http.get(this.service + '/checkins/' + personaId + '/personas')
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-    }
-
-    postCheckInPublicacion(pubId, personaId) {
-
-        return this.http.post(this.service + '/checkins/' + pubId + '/publicacions/' + personaId)
-        // ...and calling .json() on the response to return data
-            .map((res: Response) => res.json())
-            //...errors if any
-            .catch((error: any) => Observable.throw(error.json().error || 'Server error'));
-    }
-
-    getOndas() {
-        return this.http.get(this.service + '/ondas')
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-    }
-
-    getDescuentos() {
-        return this.http.get(this.service + '/descuentos')
-            .map((res: Response) => res.json())
-            .delay(500)
-            .timeout(6000);
-    }
-
-
     modalCreate(modalClass, parameters = {}) {
         let modal = this.modalCont.create(modalClass, parameters);
 
@@ -392,12 +138,26 @@ export class MainService {
 
     }
 
-    // public handleError(error: any) {
-    //     console.error('An error occurred', error);
-    //     return false;
-    // }
+    registrar(resource: string, params?: any): Promise<any> {
 
-    getAll(resource: string, params?: any): Observable<any> {
+        let body = JSON.stringify(params);
+
+        return this.http.post(this.service + "/" + resource, body, this.options)
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
+        // ...and calling .json() on the response to return data
+        //     .map(this.extractData)
+        //     .catch(error => {
+        //         this.handleError(error)
+        //     })
+        //     .delay(500)
+        //     .timeout(7500)
+        // ;
+    }
+
+
+    getAll(resource: string, params?: any): Promise<any> {
 
         let search = new URLSearchParams();
 
@@ -409,36 +169,53 @@ export class MainService {
             }
         }
 
-        let options = new RequestOptions({
-            withCredentials: false,
-            search: search
-        });
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
 
-        return this.http.get(this.service + "/" + resource, options)
-            .map(this.extractData)
-            .catch(error => {
-                this.handleError(error)
-            })
-            .delay(500)
-            .timeout(7500)
-            ;
+                            this.headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            this.options.merge({headers: this.headers});
+
+                            return this.http.get(this.service + "/" + resource, this.options)
+                                .toPromise()
+                                .then(this.extractData)
+                                .catch(this.handleError);
+                        }
+                    );
+
+            }
+        );
     }
 
-    get(resource: string, id: number, params?: any): Observable<any> {
+    get(resource: string, id: number, params?: any): Promise<any> {
 
-        return this.http.get(this.service + "/" + resource + "/" + id, params)
-            .map(this.extractData)
-            .catch(error => {
-                this.handleError(error)
-            })
-            .delay(500)
-            .timeout(7500)
-            ;
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
+
+                            this.headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            this.options.merge({headers: this.headers});
+
+                            return this.http.get(this.service + "/" + resource + "/" + id, this.options)
+                                .toPromise()
+                                .then(this.extractData)
+                                .catch(this.handleError);
+                        }
+                    );
+
+            }
+        );
     }
 
-    getSubResource(resource: string, id: number, subResource?: string, subResourceId?: number, params?: any): Observable<any> {
+    getSubResource(resource: string, id: number, subResource?: string, subResourceId?: number, params?: any): Promise<any> {
         let url = this.service + "/" + resource + "/" + id;
-        console.log('getSubResource event', this.events);
+
         if (subResource) {
             if (subResourceId) {
                 url = this.service + "/" + resource + "/" + id + "/" + subResource + "/" + subResourceId;
@@ -446,44 +223,79 @@ export class MainService {
                 url = this.service + "/" + resource + "/" + id + "/" + subResource;
             }
         }
-        return this.http.get(url, params)
-            .map(this.extractData)
-            .catch(error => {
-                this.handleError(error)
-            })
-            .delay(500)
-            .timeout(7500)
-            ;
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
+                            this.headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            this.options.merge({headers: this.headers});
+
+                            return this.http.get(url, this.options)
+                                .toPromise()
+                                .then(this.extractData)
+                                .catch(this.handleError);
+                        }
+                    );
+
+            }
+        );
     }
 
-    post(resource: string, params?: any): Observable<any> {
-        return this.http.post(this.service + "/" + resource, params)
-            .map(this.extractData)
-            .catch(error => {
-                this.handleError(error)
-            })
-            .delay(500)
-            .timeout(7500);
+    post(resource: string, params?: any): Promise<any> {
+
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
+                            this.headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            this.options.merge({headers: this.headers});
+
+                            return this.http.post(this.service + "/" + resource, params, this.options)
+                            // ...and calling .json() on the response to return data
+                                .toPromise()
+                                .then(this.extractData)
+                                .catch(this.handleError);
+
+                        }
+                    );
+
+            }
+        );
     }
 
-    patch(resource: any, id: number, params): Observable<any> {
+    patch(resource: any, id: number, params): Promise<any> {
         return this.http.patch(this.service + "/" + resource + "/" + id, params)
-            .map(this.extractData)
-            .catch(error => {
-                this.handleError(error)
-            })
-            .delay(500)
-            .timeout(7500);
+            .toPromise()
+            .then(this.extractData)
+            .catch(this.handleError);
     }
 
-    put(resource: any, id: number, params): Observable<any> {
-        return this.http.put(this.service + "/" + resource + "/" + id, params)
-            .map(this.extractData)
-            .catch(error => {
-                this.handleError(error)
-            })
-            .delay(500)
-            .timeout(7500);
+    put(resource: any, id: number, params): Promise<any> {
+
+
+        return this.getToken().then(
+            (token) => {
+                return NativeStorage.getItem('token')
+                    .then(
+                        data => {
+                            this.headers.set('Authorization', 'Bearer ' + data.access_token);
+
+                            this.options.merge({headers: this.headers});
+
+                            return this.http.put(this.service + "/" + resource + "/" + id, params, this.options)
+                            // ...and calling .json() on the response to return data
+                                .toPromise()
+                                .then(this.extractData)
+                                .catch(this.handleError);
+                        }
+                    );
+
+            }
+        );
     }
 
     private extractData(res: Response) {
@@ -584,15 +396,19 @@ export class MainService {
             .then(
                 data => {
                     console.log(data);
-                    let userPass = JSON.parse(data);
+
                     let params = {
                         'client_id': this._config.get('epClientId'),
                         'client_secret': this._config.get('epClientSecret'),
                         'grant_type': 'refresh_token',
-                        'refresh_token': userPass.refresh_token,
+                        'refresh_token': data.refresh_token,
 
-                    }
-                    let response = this.http.post(this.ip + "/oauth/v2/token", params)
+                    };
+
+                    let headers = new Headers({'Content-Type': 'application/x-www-form-urlencoded'});
+                    let options = new RequestOptions({headers: headers});
+
+                    let response = this.http.post(this.ip + "/oauth/v2/token", JSON.stringify(params), options)
                         .map(this.extractData)
                         .catch(error => {
                             this.handleError(error)
