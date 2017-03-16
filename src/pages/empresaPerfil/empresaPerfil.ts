@@ -833,6 +833,33 @@ export class EmpresaPerfilPage {
         });
     }
 
+    agregarANotificacion(empresaId) {
+        let params = {
+            empresa: [empresaId],
+        };
+
+        console.log('notificaciones', params);
+
+        this.mainService.put('notificaciones', this.usuario.userID, params)
+            .then(
+                (ondas) => {
+                    let toast = this.toastCtrl.create({
+                        message: 'Se agrego a notificaciones',
+                        duration: 2000,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
+
+                },
+                (err) => {
+                    console.error(err);
+
+                }
+            );
+
+    }
+
     /*** Metodo para subir fotos desde la camara
 
      camera() {

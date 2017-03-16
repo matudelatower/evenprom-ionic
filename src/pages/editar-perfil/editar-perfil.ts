@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, ToastController, AlertController, LoadingController} from 'ionic-angular';
+import {NavController, NavParams, ToastController, AlertController, LoadingController, Events} from 'ionic-angular';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {MainService} from "../../app/main.service";
 import {LoginPage} from "../login/login";
@@ -27,7 +27,8 @@ export class EditarPerfilPage {
                 public mainService: MainService,
                 private formBuilder: FormBuilder,
                 public alertCtrl: AlertController,
-                public loadingCtrl: LoadingController) {
+                public loadingCtrl: LoadingController,
+                public events: Events) {
 
         let loader = this.loadingCtrl.create({
             content: "Cargando...",
@@ -139,6 +140,8 @@ export class EditarPerfilPage {
                         duration: 2000,
                         position: 'center'
                     });
+
+                    this.events.publish('user:updateOndas');
 
                     toast.present(toast);
                     loader.dismissAll();

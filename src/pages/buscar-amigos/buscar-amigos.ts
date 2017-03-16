@@ -19,17 +19,35 @@ export class BuscarAmigosPage {
                 public navParams: NavParams,
                 public mainService: MainService) {
 
-        this.mainService.getUser().then((user) => {
-            Facebook.api('/' + user.fbId + '?fields=context.fields%28mutual_friends%29', [])
-                .then(rta => {
-                    console.log("friends", JSON.stringify(rta));
-                })
-                .catch(error => {
-                    console.error("friends.error", error);
-                    console.error("friends.error", JSON.stringify(error));
-                });
-            ;
-        });
+        this.mainService.getUser().then(
+            (user) => {
+                console.log('user', user);
+                if (user.fbId) {
+                    // Facebook.api('/' + user.fbId + '/friends?fields=installed', [])
+                    // Facebook.api('/' + user.fbId + '?fields=context.field', [])
+                    Facebook.api('/1608149619490148?fields=context', [])
+                    // Facebook.api('/' + user.fbId + '?fields=friends{installed}', [])
+                    // Facebook.api('/' + user.fbId + '?fields=context', [])
+                    // Facebook.api('/1608149619490148?fields=context.fields%28friends_using_app%29', [])
+                        .then(rta => {
+                            console.log('rta', rta)
+                            // console.log("friends", rta);
+                            //
+                            // console.log('context.id', rta.context.id);
+                            //
+                            Facebook.api('/' + rta.context.id + '/friends_using_app', [])
+                                .then(rtaFriends => {
+                                    console.log("rtaFriends", rtaFriends);
+                                })
+                                .catch(error => {
+                                    console.error("context", error);
+                                });
+                        })
+                        .catch(error => {
+                            console.error("friends.error", error);
+                        });
+                }
+            });
 
 
     }

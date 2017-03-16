@@ -42,9 +42,9 @@
         <ion-refresher (ionRefresh)="doRefresh($event)">
             <ion-refresher-content
                     pullingIcon="arrow-dropdown"
-                    pullingText="pull-to-refresh | translate"
+                    [pullingText]="'pull-to-refresh' | translate"
                     refreshingSpinner="circles"
-                        refreshingText="actualizando | translate">
+                    [refreshingText]="actualizando | translate">
             </ion-refresher-content>
         </ion-refresher>
     </div>

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams, LoadingController, ToastController, AlertController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 import {LoginPage} from "../login/login";
+import {OneSignal, NativeStorage} from "ionic-native";
 
 /*
  Generated class for the Notificaciones page.
@@ -27,6 +28,7 @@ export class NotificacionesPage {
     notificacionesGastronomia: any;
     notificacionesEmpresa: any;
     notificacionesEventos: any;
+    desactivarNotificaciones = true;
 
     rubros = [];
     ondas = [];
@@ -62,12 +64,22 @@ export class NotificacionesPage {
                             this.notificacionesEmpresa = notificaciones.empresa;
                             this.notificacionesEventos = notificaciones.evento;
 
-                        }
-                    ).catch(
-                    (err) => {
-                        console.error(err);
+                            NativeStorage.getItem('notificaciones')
+                                .then(
+                                    (data) => {
+                                        this.notificacionesCompras = data;
+                                    })
+                                .catch((err) => {
+                                    console.log('error al obtener notificaciones', err)
+                                });
 
-                    });
+                        }
+                    )
+                    .catch(
+                        (err) => {
+                            console.error(err);
+
+                        });
             },
             error => {
                 let alert = alertCtrl.create({
@@ -83,6 +95,21 @@ export class NotificacionesPage {
 
     ionViewDidLoad() {
         console.log('ionViewDidLoad NotificacionesPage');
+    }
+
+    changeNotificaciones(item) {
+
+        NativeStorage.setItem('notificaciones', item)
+            .then(
+                (data) => {
+                    this.notificacionesCompras = data;
+                    OneSignal.setSubscription(data);
+                })
+            .catch((err) => {
+                console.log('error al guardar notificaciones', err)
+            });
+
+
     }
 
 

@@ -150,8 +150,6 @@ export class MyApp {
 
                 this.initAnalytics();
 
-                this.initOneSignal();
-
                 this.initGeolocation(platform);
 
                 this.listenToLoginEvents();
@@ -167,6 +165,8 @@ export class MyApp {
                     data => {
                         this.user = data;
                         this.mainService.setUser(data);
+
+                        this.initOneSignal();
 
                         if (data.fbId) {
                             // Facebook login
@@ -242,6 +242,11 @@ export class MyApp {
         this.events.subscribe('user:logout', () => {
             console.log('logout');
             this.logout();
+        });
+
+        this.events.subscribe('user:updateOndas', () => {
+            console.log('updateOndas');
+            this.loadOndas();
         });
     }
 
@@ -373,6 +378,37 @@ export class MyApp {
         });
 
         OneSignal.endInit();
+
+        OneSignal.getIds().then(
+            data => {
+                console.log("os data", data);
+                let params = {
+                    "player_id": data.userId
+                }
+
+                this.mainService.post("dispositivos/" + this.user.userID, params)
+                    .then(
+                        data => {
+                            console.log('dispositivos', data);
+                            NativeStorage.setItem('notificaciones', true)
+                                .then(
+                                    () => {
+                                        console.log('ok')
+                                    })
+                                .catch((err) => {
+                                    console.log('error al guardar notificaciones', err)
+                                });
+                        },
+                        error => {
+                            console.error('dispositivos', error);
+                        }
+                    )
+
+            },
+            error => {
+                console.error('oneSignal', error);
+            }
+        );
     }
 
     editarPerfil() {

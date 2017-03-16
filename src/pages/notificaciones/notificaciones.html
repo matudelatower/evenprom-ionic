@@ -23,7 +23,7 @@
   <ion-row class="desactivar">
     <ion-item>
       <ion-label> Desactivar</ion-label>
-      <ion-toggle checked="false"></ion-toggle>
+      <ion-toggle checked="false" [(ngModel)]="desactivarNotificaciones" (ionChange)="changeNotificaciones(desactivarNotificaciones)" ></ion-toggle>
     </ion-item>
   </ion-row>
   <ion-row>

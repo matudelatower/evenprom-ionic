@@ -170,7 +170,8 @@
                     (click)="share(empresa.nombre ,empresa.image_name, empresa.contacto.web)">
                 <ion-icon name="share"></ion-icon>
             </button>
-            <button class="btn-redondo" color="ep-rojo" large round ion-button icon-only>
+            <button class="btn-redondo" color="ep-rojo" large round ion-button icon-only
+                    (click)="agregarANotificacion(empresa.id)">
                 <ion-icon name="notifications-outline"></ion-icon>
             </button>
 
