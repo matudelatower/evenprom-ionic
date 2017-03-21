@@ -36,21 +36,53 @@ export class ModalPreviewPublicacion {
                 public toastCtrl: ToastController,
                 public mainService: MainService) {
 
-        this.publicacion = this.params.get('publicacion');
 
         this.mainService.getUser().then(
             (user) => {
                 this.usuario = user;
+
+                let objectConstructor = {}.constructor;
+                let ob = this.params.get('publicacion');
+
+                if (ob.constructor === objectConstructor) {
+
+                    let resource = 'publicacions/' + this.usuario.userID + '/personas/' + this.params.get('publicacion').id;
+                    this.mainService.getAll(resource)
+                        .then(
+                            (data) => {
+                                this.publicacion = data;
+                                this.triggerPublicacion();
+                            })
+                        .catch((ex) => {
+
+                            let toast = this.toastCtrl.create({
+                                message: "Error al obtener publicacion.",
+                                duration: 3250,
+                                position: 'center'
+                            });
+
+                            toast.present(toast);
+                        });
+                } else {
+                    this.publicacion = this.params.get('publicacion');
+                    this.triggerPublicacion();
+                }
+
             }, (error) => {
                 console.error(error);
 
             });
+
 
     }
 
     ngOnInit() {
 
 
+
+    }
+
+    triggerPublicacion(){
         let loader = this.loadingCtrl.create({
             content: "Cargando comentarios",
             // duration: 6000

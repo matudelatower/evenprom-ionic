@@ -1,4 +1,4 @@
-<ion-header class="header-preview-publicacion">
+<ion-header class="header-preview-publicacion" *ngIf="publicacion">
     <ion-navbar *ngIf="publicacion.premium" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
 
         <ion-title text-right>evenprom</ion-title>
@@ -9,7 +9,7 @@
     </ion-navbar>
 </ion-header>
 
-<ion-content class="modal-preview-publicacion">
+<ion-content class="modal-preview-publicacion" *ngIf="publicacion">
 
     <ion-grid>
         <ion-row class="no-padding-top-button">

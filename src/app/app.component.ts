@@ -1,8 +1,8 @@
-import {Component} from '@angular/core';
-import {Platform, Events, LoadingController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {Platform, Events, LoadingController, Nav} from 'ionic-angular';
 import {
     StatusBar, BackgroundGeolocation, Facebook, NativeStorage, AppRate,
-    GooglePlus, Market, GoogleAnalytics, Splashscreen, OneSignal
+    GooglePlus, Market, GoogleAnalytics, Splashscreen, OneSignal, Deeplinks
 } from 'ionic-native';
 import {PrincipalPage} from "../pages/principal/principal";
 import {LoginPage} from "../pages/login/login";
@@ -16,12 +16,16 @@ import {CalendarioPage} from "../pages/calendario/calendario";
 import {Config} from "./config";
 import {TranslateService} from "@ngx-translate/core";
 import {EditarPerfilPage} from "../pages/editar-perfil/editar-perfil";
+import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 
 
 @Component({
     templateUrl: 'app.html'
 })
 export class MyApp {
+
+    @ViewChild(Nav) navChild:Nav;
+
 
     //rootPage = LoginPage;
     rootPage: any;
@@ -99,7 +103,7 @@ export class MyApp {
         },
     ];
 
-    constructor(platform: Platform,
+    constructor(private platform: Platform,
                 public events: Events,
                 public loadingCtrl: LoadingController,
                 public mainService: MainService,
@@ -228,6 +232,32 @@ export class MyApp {
 
     }
 
+    ngAfterViewInit() {
+        this.platform.ready().then(() => {
+            /*
+             IonicDeeplink.route({
+             '/about-us': AboutPage,
+             '/universal-links-test': AboutPage,
+             '/products/:productId': ProductPage
+             }, function(match) {
+             // Handle the route manually
+             }, function(nomatch) {
+             // No match
+             })
+             */
+
+            // Convenience to route with a given nav
+            Deeplinks.routeWithNavController(this.navChild, {
+                '/publicacion/:publicacion': ModalPreviewPublicacion,
+                '/favoritos': FavoritosPage
+            }).subscribe((match) => {
+                console.log('Successfully routed', match);
+            }, (nomatch) => {
+                console.warn('Unmatched Route', nomatch);
+            });
+        })
+    }
+
     listenToLoginEvents() {
         this.events.subscribe('user:login', (user) => {
             console.log('login');
@@ -302,6 +332,7 @@ export class MyApp {
             });
 
         BackgroundGeolocation.stop();
+        OneSignal.setSubscription(false);
         this.rootPage = LoginPage;
         console.log('logout');
     }
