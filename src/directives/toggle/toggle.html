@@ -1,7 +1,7 @@
 <ion-item-group *ngFor="let d of data">
 
     <ion-item-divider (click)="toggleDetails(d)" light>
-        <b>{{d.title}}</b>
+        <b>{{d.title | translate}}</b>
 
         <ion-icon style="font-weight: bold;" primary item-right
                   [name]="d.showDetails?'arrow-dropdown':'arrow-dropup'"></ion-icon>
@@ -12,7 +12,7 @@
     <ion-list *ngIf="!d.autocomplete">
         <ion-item [hidden]="d.showDetails" *ngFor="let item of d.items" icon-right>
 
-            <ion-label color="primary" *ngIf="item.active">{{item.text}}</ion-label>
+            <ion-label color="primary" *ngIf="item.active">{{ item.text }}</ion-label>
             <ion-label *ngIf="!item.active">{{item.text}}</ion-label>
             <ion-checkbox [(ngModel)]="item.active"></ion-checkbox>
 

@@ -36,7 +36,7 @@
         <ion-item>
             <ion-label color="ep-celeste">{{ "tipo-documento" | translate }}</ion-label>
             <ion-select formControlName="tipoDocumento">
-                <ion-option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">{{tipo.siglas}}</ion-option>
+                <ion-option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">{{ tipo.siglas| translate }}</ion-option>
             </ion-select>
         </ion-item>
         <ion-item>

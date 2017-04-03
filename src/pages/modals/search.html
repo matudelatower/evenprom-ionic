@@ -8,7 +8,7 @@
         </ion-buttons>
 
         <ion-title>
-            Filtrar publiaciones
+            {{ 'filtrarEvenproms' |translate }}
         </ion-title>
 
     </ion-toolbar>
@@ -21,14 +21,14 @@
             <ion-col width-50>
                 <button (click)="cleanAll()" block color="danger"  ion-button icon-left>
                     <ion-icon name="trash"></ion-icon>
-                    Borrar filtros
+                    {{ 'borrarFiltros' |translate }}
                 </button>
 
             </ion-col>
 
             <ion-col width-50>
                 <button (click)="dismiss(true)" block color="secondary"  ion-button icon-right>
-                    Buscar
+                    {{ 'pesquisa' |translate }}
                     <ion-icon name="search"></ion-icon>
                 </button>
             </ion-col>

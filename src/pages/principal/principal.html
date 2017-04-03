@@ -11,7 +11,7 @@
         -->
         <ion-searchbar #searchP [hidden]="!showSearch" [(ngModel)]="search" (ionBlur)="cancelarBusqueda($event)"
                        (ionClear)="cancelarBusqueda($event)" (ionCancel)="cancelarBusqueda($event)"
-                       placeholder="Buscar publicaciones y eventos"></ion-searchbar>
+                       [placeholder]="('buscarEvenProms' | translate)"></ion-searchbar>
         <ion-buttons *ngIf="!showSearch" end>
             <!--<button (click)="modalSearch({charNum: 0})" ion-button icon-only>-->
             <!--<ion-icon name="options"></ion-icon>-->
@@ -59,7 +59,7 @@
                 <ion-row no-padding>
                     <ion-col text-center width-100 no-padding>
                         <h1>
-                            No hay conexión a internet.
+                            No hay conexión a internet. {{ mainservice.cargando}}
                         </h1>
                         <h4>
                             Arrastre la parte superior hacia abajo para actualizar

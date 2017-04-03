@@ -6,52 +6,52 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <button ion-button menuToggle>
-      <img src="assets/img/logos/favicon.png" class="logo-menu">
-      <ion-icon name="menu" color="ep-gris-claro"></ion-icon>
-    </button>
+    <ion-navbar>
+        <button ion-button menuToggle>
+            <img src="assets/img/logos/favicon.png" class="logo-menu">
+            <ion-icon name="menu" color="ep-gris-claro"></ion-icon>
+        </button>
 
-    <ion-title>{{ "contactanos" | translate }}</ion-title>
-  </ion-navbar>
+        <ion-title>{{ "contacto-titulo" | translate | fuppercase }}</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
-  <ion-card>
+    <ion-card>
 
-    <img src="assets/img/logos/favicon.png"/>
+        <img src="assets/img/logos/favicon.png"/>
 
-    <ion-card-content>
-      <ion-card-title>
-        EvenProm
-      </ion-card-title>
-      <p>
-        Ofertas y eventos en tu ciudad.
-      </p>
-    </ion-card-content>
+        <ion-card-content>
+            <ion-card-title>
+                EvenProm
+            </ion-card-title>
+            <p>
+                {{"contacto-descripcion" | translate}}
+            </p>
+        </ion-card-content>
 
-    <ion-row no-padding>
-      <ion-col>
-        <button ion-button clear small color="danger" icon-left (click)="call()">
-          <ion-icon name='call'></ion-icon>
-          Llamar
-        </button>
-      </ion-col>
-      <ion-col text-center>
-        <button ion-button clear small color="danger" icon-left (click)="openUrl()">
-          <ion-icon name='globe'></ion-icon>
-          Visitar Web
-        </button>
-      </ion-col>
-      <ion-col text-right>
-        <button ion-button clear small color="danger" icon-left (click)="sendMail()">
-          <ion-icon name='mail'></ion-icon>
-          Mail
-        </button>
-      </ion-col>
-    </ion-row>
+        <ion-row no-padding>
+            <ion-col>
+                <button ion-button clear small color="danger" icon-left (click)="call()">
+                    <ion-icon name='call'></ion-icon>
+                    {{"llamar" | translate}}
+                </button>
+            </ion-col>
+            <ion-col text-center>
+                <button ion-button clear small color="danger" icon-left (click)="openUrl()">
+                    <ion-icon name='globe'></ion-icon>
+                    {{"visitarWeb" | translate}}
+                </button>
+            </ion-col>
+            <ion-col text-right>
+                <button ion-button clear small color="danger" icon-left (click)="sendMail()">
+                    <ion-icon name='mail'></ion-icon>
+                    {{"email" | translate}}
+                </button>
+            </ion-col>
+        </ion-row>
 
-  </ion-card>
+    </ion-card>
 </ion-content>

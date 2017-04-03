@@ -17,38 +17,6 @@ export class ModalSearch {
                 public params: NavParams,
                 public mainService: MainService,
                 public viewCtrl: ViewController) {
-        var characters = [
-            {
-                name: 'Gollum',
-                quote: 'Sneaky little hobbitses!',
-                image: 'img/avatar-gollum.jpg',
-                items: [
-                    {title: 'Race', note: 'Hobbit'},
-                    {title: 'Culture', note: 'River Folk'},
-                    {title: 'Alter Ego', note: 'Smeagol'}
-                ]
-            },
-            {
-                name: 'Frodo',
-                quote: 'Go back, Sam! I\'m going to Mordor alone!',
-                image: 'img/avatar-frodo.jpg',
-                items: [
-                    {title: 'Race', note: 'Hobbit'},
-                    {title: 'Culture', note: 'Shire Folk'},
-                    {title: 'Weapon', note: 'Sting'}
-                ]
-            },
-            {
-                name: 'Samwise Gamgee',
-                quote: 'What we need is a few good taters.',
-                image: 'img/avatar-samwise.jpg',
-                items: [
-                    {title: 'Race', note: 'Hobbit'},
-                    {title: 'Culture', note: 'Shire Folk'},
-                    {title: 'Nickname', note: 'Sam'}
-                ]
-            }
-        ];
 
         let rubros = [];
 
@@ -70,12 +38,11 @@ export class ModalSearch {
 
 
         this.dataList = [
-            new Data('Rubros', '', 'ios-add-circle-outline', 'rubro', true, rubros, false),
-            new Data('Ondas', ' ', 'ios-add-circle-outline', 'onda', true, ondas, false),
-            new Data('Localidaddes', ' ', 'ios-add-circle-outline', 'localidad', true, localidades, true),
+            new Data('rubro', '', 'ios-add-circle-outline', 'rubro', true, rubros, false),
+            new Data('onda', ' ', 'ios-add-circle-outline', 'onda', true, ondas, false),
+            new Data('localidad', ' ', 'ios-add-circle-outline', 'localidad', true, localidades, true),
         ];
 
-        this.character = characters[this.params.get('charNum')];
     }
 
     cleanAll() {

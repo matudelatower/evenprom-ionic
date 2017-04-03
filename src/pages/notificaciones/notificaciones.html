@@ -6,140 +6,141 @@
 -->
 <!--<ion-header>-->
 
-  <!--<ion-navbar>-->
-    <!--<ion-title>Notificaciones</ion-title>-->
-  <!--</ion-navbar>-->
+<!--<ion-navbar>-->
+<!--<ion-title>Notificaciones</ion-title>-->
+<!--</ion-navbar>-->
 
 <!--</ion-header>-->
 
 
 <!--<ion-content padding>-->
 
-  <ion-row>
+<ion-row>
     <ion-col text-center>
-      <h2>Notificaciones</h2>
+        <h2>{{ 'notificaciones' |translate }}</h2>
     </ion-col>
-  </ion-row>
-  <ion-row class="desactivar">
+</ion-row>
+<ion-row class="desactivar">
     <ion-item>
-      <ion-label> Desactivar</ion-label>
-      <ion-toggle checked="false" [(ngModel)]="desactivarNotificaciones" (ionChange)="changeNotificaciones(desactivarNotificaciones)" ></ion-toggle>
+        <ion-label> {{ 'desactivar' |translate }}</ion-label>
+        <ion-toggle checked="false" [(ngModel)]="desactivarNotificaciones"
+                    (ionChange)="changeNotificaciones(desactivarNotificaciones)"></ion-toggle>
     </ion-item>
-  </ion-row>
-  <ion-row>
+</ion-row>
+<ion-row>
     <ion-col>
-      <h3>Configura tus notificaciones por:</h3>
+        <h3>{{ 'configNotif' |translate }}:</h3>
     </ion-col>
-  </ion-row>
-  <ion-row>
+</ion-row>
+<ion-row>
     <ion-col width-33>
-      <ion-label>Localidad</ion-label>
-      <ion-item>
-        <ion-label>Toppings</ion-label>
-        <ion-select multiple="true" [(ngModel)]="notificacionesLocalidad">
-          <ion-option *ngFor="let localidad of localidades" [value]="localidad.id">
-            {{localidad.descripcion}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-
-
-    <ion-col width-33>
-      <ion-label>Descuentos</ion-label>
-      <ion-item>
-        <ion-select multiple="true" [(ngModel)]="notificacionesDescuentos">
-          <ion-option *ngFor="let descuento of descuentos" [value]="descuento.id">
-            {{descuento.nombre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
+        <ion-label>{{ 'localidad' |translate }}</ion-label>
+        <ion-item>
+            <ion-label>Toppings</ion-label>
+            <ion-select multiple="true" [(ngModel)]="notificacionesLocalidad">
+                <ion-option *ngFor="let localidad of localidades" [value]="localidad.id">
+                    {{localidad.descripcion}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
     </ion-col>
 
 
     <ion-col width-33>
-      <ion-label>Eventos</ion-label>
-      <ion-item>
-        <ion-select [(ngModel)]="notificacionesEventos">
-          <ion-option value="si">SI</ion-option>
-          <ion-option value="no">NO</ion-option>
-        </ion-select>
-      </ion-item>
+        <ion-label>{{ 'descuentos' |translate }}</ion-label>
+        <ion-item>
+            <ion-select multiple="true" [(ngModel)]="notificacionesDescuentos">
+                <ion-option *ngFor="let descuento of descuentos" [value]="descuento.id">
+                    {{descuento.nombre}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
     </ion-col>
 
 
-  </ion-row>
-
-  <ion-row>
     <ion-col width-33>
-      <ion-label>Empresas</ion-label>
-      <ion-item>
-        <ion-select multiple="true" [(ngModel)]="notificacionesEmpresa">
-          <ion-option *ngFor="let empresa of empresas" [value]="empresa.id">
-            {{empresa.nombre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-    <ion-col width-33>
-      <ion-label>Gastronomia</ion-label>
-      <ion-item>
-        <ion-select multiple="true" [(ngModel)]="notificacionesGastronomia">
-          <ion-option *ngFor="let gastronomi of gastronomia" [value]="gastronomi.id">
-            {{gastronomi.nombre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-    <ion-col width-33>
-      <ion-label>Compras</ion-label>
-      <ion-item>
-        <ion-select multiple="true" [(ngModel)]="notificacionesCompras">
-          <ion-option *ngFor="let servicio of servicios" [value]="servicio.id">
-            {{servicio.nombre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-  </ion-row>
-
-  <ion-row>
-    <ion-col width-33>
-      <ion-label>Entretenimiento</ion-label>
-      <ion-item>
-        <ion-select multiple="true" [(ngModel)]="notificacionesEntretenimiento">
-          <ion-option *ngFor="let e of entretenimiento" [value]="e.id">
-            {{e.nombre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-    <ion-col width-33>
-      <ion-label>Rubro</ion-label>
-      <ion-item>
-        <ion-label>Toppings</ion-label>
-        <ion-select multiple="true" [(ngModel)]="notificacionesRubro">
-          <ion-option *ngFor="let r of rubros" [value]="r.id">
-            {{r.nombre}}
-          </ion-option>
-        </ion-select>
-      </ion-item>
+        <ion-label>{{ 'eventos' |translate }}</ion-label>
+        <ion-item>
+            <ion-select [(ngModel)]="notificacionesEventos">
+                <ion-option value="si">{{ 'si' |translate }}</ion-option>
+                <ion-option value="no">{{ 'no' |translate }}</ion-option>
+            </ion-select>
+        </ion-item>
     </ion-col>
 
-    <ion-col width-33>
-      <ion-label>Segun tu onda</ion-label>
-      <ion-item>
-        <ion-select multiple="true" [(ngModel)]="notificacionesOnda">
-          <ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>
-        </ion-select>
-      </ion-item>
-    </ion-col>
-  </ion-row>
 
-  <ion-row margin-top>
+</ion-row>
+
+<ion-row>
+    <ion-col width-33>
+        <ion-label>{{ 'empresas' |translate }}</ion-label>
+        <ion-item>
+            <ion-select multiple="true" [(ngModel)]="notificacionesEmpresa">
+                <ion-option *ngFor="let empresa of empresas" [value]="empresa.id">
+                    {{empresa.nombre}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+    <ion-col width-33>
+        <ion-label>Gastronomia</ion-label>
+        <ion-item>
+            <ion-select multiple="true" [(ngModel)]="notificacionesGastronomia">
+                <ion-option *ngFor="let gastronomi of gastronomia" [value]="gastronomi.id">
+                    {{gastronomi.nombre}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+    <ion-col width-33>
+        <ion-label>{{ 'compras' |translate }}</ion-label>
+        <ion-item>
+            <ion-select multiple="true" [(ngModel)]="notificacionesCompras">
+                <ion-option *ngFor="let servicio of servicios" [value]="servicio.id">
+                    {{servicio.nombre}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+</ion-row>
+
+<ion-row>
+    <ion-col width-33>
+        <ion-label>{{ 'entretenimiento' |translate }}</ion-label>
+        <ion-item>
+            <ion-select multiple="true" [(ngModel)]="notificacionesEntretenimiento">
+                <ion-option *ngFor="let e of entretenimiento" [value]="e.id">
+                    {{e.nombre}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+    <ion-col width-33>
+        <ion-label>{{ 'rubro' |translate }}</ion-label>
+        <ion-item>
+            <!--<ion-label>Toppings</ion-label>-->
+            <ion-select multiple="true" [(ngModel)]="notificacionesRubro">
+                <ion-option *ngFor="let r of rubros" [value]="r.id">
+                    {{r.nombre}}
+                </ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+
+    <ion-col width-33>
+        <ion-label>{{ 'segunOnda' |translate }}</ion-label>
+        <ion-item>
+            <ion-select multiple="true" [(ngModel)]="notificacionesOnda">
+                <ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>
+            </ion-select>
+        </ion-item>
+    </ion-col>
+</ion-row>
+
+<ion-row margin-top>
     <ion-col text-center>
-      <button ion-button large round (click)="guardarPerfil()">Aplicar</button>
+        <button ion-button large round (click)="guardarPerfil()">{{ 'aplicar' |translate }}</button>
     </ion-col>
-  </ion-row>
+</ion-row>
 
 <!--</ion-content>-->

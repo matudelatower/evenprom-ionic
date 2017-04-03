@@ -24,7 +24,7 @@ import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 })
 export class MyApp {
 
-    @ViewChild(Nav) navChild:Nav;
+    @ViewChild(Nav) navChild: Nav;
 
 
     //rootPage = LoginPage;
@@ -303,7 +303,10 @@ export class MyApp {
             android: 'market://details?id=com.evenprom.evenpromapp',
         };
 
+        AppRate.preferences.useLanguage = this.lenguaje;
+
         AppRate.promptForRating(true);
+
     }
 
     recomiendanos() {

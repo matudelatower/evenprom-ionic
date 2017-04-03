@@ -56,7 +56,7 @@
             </button>
 
             <button ion-button icon-right clear item-right (click)="sendMail(empresa.contacto.mail)" class="btn-mail">
-                Enviar Mensaje
+                {{"enviarMensaje" | translate}}
                 <ion-icon name="arrow-forward"></ion-icon>
             </button>
         </ion-item>
@@ -69,7 +69,8 @@
                     <ion-row>
                         <ion-col (click)="openFileChooser()" width-100>
                             <ion-icon style="font-size:50px;" name="images"></ion-icon>
-                            <br>Añadir una foto
+                            <br>
+                            {{"añadirFoto" | translate}}
 
                         </ion-col>
                         <!--<ion-col (click)="camera()" width-50>-->
@@ -101,12 +102,14 @@
     </div>
     <ion-row>
         <ion-col text-center>
-            <button (click)="publicacionesActual () " outline ion-button>Ver Eventos y Promociones HOY</button>
+            <button (click)="publicacionesActual () " outline ion-button>
+                {{"eventosHoy" | translate}}
+            </button>
         </ion-col>
     </ion-row>
     <ion-row class="row-novedades" no-padding *ngIf="noticias && noticias.length > 0">
         <ion-col text-center no-padding>
-            <h2 style="margin-bottom: 0px; margin-top: 10px;">Novedades</h2>
+            <h2 style="margin-bottom: 0px; margin-top: 10px;">{{"novedades" | translate}}</h2>
             <ion-slides pager="progress">
 
                 <ion-slide *ngFor="let noticia of noticias">
@@ -151,7 +154,7 @@
             <br>
             <button ion-button round icon-left outline small (click)="comoLlegar()">
                 <ion-icon name="pin"></ion-icon>
-                Cómo Llegar?
+                {{ 'comoLlegar' |translate }}
             </button>
 
         </ion-col>

@@ -40,7 +40,7 @@
             </ion-row>
             <ion-row no-padding>
                 <ion-col no-padding>
-                    <ion-searchbar placeholder="Buscar"></ion-searchbar>
+                    <ion-searchbar [placeholder]="('buscar' | translate)"></ion-searchbar>
                 </ion-col>
             </ion-row>
 
@@ -51,9 +51,9 @@
                 <ion-icon name="globe" item-left></ion-icon>
                 <ion-label>{{"elegirLenguaje" | translate}}</ion-label>
                 <ion-select (ionChange)="cambiarLenguaje()" [(ngModel)]="lenguaje">
-                    <ion-option value="es">Español</ion-option>
-                    <ion-option value="en">English</ion-option>
-                    <ion-option value="pt">Português</ion-option>
+                    <ion-option value="es">{{"es" | translate}}</ion-option>
+                    <ion-option value="en">{{"en" | translate}}</ion-option>
+                    <ion-option value="pt">{{"pt" | translate}}</ion-option>
                 </ion-select>
             </ion-item>
 
@@ -67,7 +67,7 @@
 
             <ion-item menuClose no-lines *ngFor="let menu of menues" (click)="menu.function()">
                 <ion-icon color="danger" [name]="menu.icono" item-left></ion-icon>
-                {{ menu.nombre | translate }}
+                {{ menu.nombre | translate | fuppercase }}
                 <i class="fa fa-thumbs-o-up"></i>
             </ion-item>
 

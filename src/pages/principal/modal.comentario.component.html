@@ -8,14 +8,15 @@
         </ion-buttons>
 
         <ion-title>
-            Comentar publicación
+            {{ 'comentarPublicacion' |translate }}
         </ion-title>
 
     </ion-toolbar>
 </ion-header>
 
 <ion-content>
-    <ion-textarea style="height: 150px;" [(ngModel)]="comentario" placeholder="Escribí un comentario">></ion-textarea>
-    <button (click)="comentar()" ion-button block>Comentar</button>
+    <ion-textarea style="height: 150px;" [(ngModel)]="comentario" [placeholder]="('escribirComentario' | translate)">
+    </ion-textarea>
+    <button (click)="comentar()" ion-button block> {{ 'comentar' |translate }}</button>
 
 </ion-content>
