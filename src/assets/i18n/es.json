@@ -66,6 +66,10 @@
   "buscarEvenProms": "Buscar eventos y promociones",
   "si": "Sí",
   "no": "No",
-  "filtrarEvenproms" : "Filtrar eventos y promociones",
-  "borrarFiltros" : "Borrar filtros"
+  "cancelar": "Cancelar",
+  "filtrarEvenproms": "Filtrar eventos y promociones",
+  "borrarFiltros": "Borrar filtros",
+  "espere": "Espere, por favor",
+  "textoSalir": "¿Estás seguro de querer salir de EvenProm?",
+  "tituloSalir": "Saliendo de EvenProm"
 }

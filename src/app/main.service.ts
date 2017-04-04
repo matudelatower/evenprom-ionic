@@ -26,6 +26,14 @@ export class MainService {
 
     public currentLocalidad: any = false;
 
+    public translateArray = [
+        {k: 'espere', txt: 'espere'},
+        {k: 'textoSalir', txt: 'textoSalir'},
+        {k: 'tituloSalir', txt: 'tituloSalir'},
+        {k: 'cancelar', txt: 'cancelar'},
+        {k: 'si', txt: 'si'},
+    ];
+
     headers: Headers;
     options: RequestOptions;
 
@@ -75,7 +83,17 @@ export class MainService {
 
     }
 
-    getAvatar(fbId, gId): Observable <any> {
+    getTranslate(f) {
+        for (let arr of this.translateArray) {
+            if (arr.k == f) {
+                return arr.txt;
+            }
+        }
+
+        return '';
+    }
+
+    getAvatar(fbId, gId): Observable<any> {
 
 
         let params;
@@ -430,6 +448,36 @@ export class MainService {
                 },
                 error => console.log(error)
             );
+    }
+
+    getNavigatorLenguaje() {
+        if (navigator.language.indexOf('en') > -1) {
+            return 'en';
+        } else if (navigator.language.indexOf('es') > -1) {
+            return 'es';
+        } else if (navigator.language.indexOf('pt') > -1) {
+            return 'pt';
+        }
+    }
+
+    getDistanceFromLatLonInKm(lat1, lon1, lat2, lon2) {
+        var R = 6371; // Radius of the earth in km
+        var dLat = this.deg2rad(lat2 - lat1);  // deg2rad below
+        var dLon = this.deg2rad(lon2 - lon1);
+        var a =
+            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+            Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+            Math.sin(dLon / 2) * Math.sin(dLon / 2)
+        ;
+        var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        var d = R * c; // Distance in km
+
+        console.log(d);
+        return d;
+    }
+
+    deg2rad(deg) {
+        return deg * (Math.PI / 180)
     }
 }
 

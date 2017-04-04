@@ -33,7 +33,7 @@ export class Empresas {
                 public loadingCtrl: LoadingController) {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -106,7 +106,7 @@ export class Empresas {
         this.slider.slideTo(index, 500);
         this.rubroSel = rub;
         let loader = this.loadingCtrl.create({
-            content: "Cargando",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();

@@ -53,6 +53,8 @@ export class PrincipalPage {
 
         this.doRefresh(false);
 
+        this.mainservice.getDistanceFromLatLonInKm(-27.3672616,-55.8915074, -27.3669613, -55.8925728)
+
 
         this.events.subscribe(this.mainservice.event_location_detected, (location) => {
 
@@ -127,6 +129,7 @@ export class PrincipalPage {
             .then(
                 (data) => {
                     this.publicaciones = data;
+
                     this.errorNoConexion = false;
                     loader.dismissAll();
                     if (refresher) {
@@ -157,9 +160,20 @@ export class PrincipalPage {
 
 
     doRefresh(refresher, fields?) {
-        
+        let esperetxt = this.mainservice.getTranslate('espere');
+        if (esperetxt =='espere'){
+            let lan = this.mainservice.getNavigatorLenguaje();
+            if (lan=='en'){
+                esperetxt = 'Espere, por favor';
+            }else if (lan=='pt'){
+                esperetxt = 'Aguarde, por favor';
+            }else{
+                esperetxt = 'Please wait';
+            }
+        }
+
         let loader = this.loadingCtrl.create({
-            content: "Cargando evenproms",
+            content: esperetxt,
             // duration: 6000
         });
         loader.present();
@@ -266,7 +280,7 @@ export class PrincipalPage {
     modalUbicaciones() {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando empresas",
+            content: this.mainservice.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -286,7 +300,8 @@ export class PrincipalPage {
             })
             .catch((ex) => {
 
-                console.error('error ubicaciones', ex)
+                console.error('error ubicaciones', ex);
+                loader.dismissAll();
 
                 let toast = this.toastCtrl.create({
                     message: "Error en la conexión a internet",

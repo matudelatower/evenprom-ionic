@@ -30,9 +30,9 @@
   "OTRO": "OUTRO",
   "escribi-comentario": "Escrever um comentário",
   "pull-to-refresh": "Puxe para atualizar",
-  "es":"Espanhol",
-  "pt":"Português",
-  "en":"Inglês",
+  "es": "Espanhol",
+  "pt": "Português",
+  "en": "Inglês",
   "cargando": "Carregar",
   "actualizando": "atualização",
   "buscar": "Pesquisa",
@@ -65,7 +65,10 @@
   "buscarEvenProms": "Pesquisa eventos e promoções",
   "si": "Sim",
   "no": "Não",
-  "filtrarEvenproms" : "Filtrar eventos e promoções",
-  "borrarFiltros" : "Remover filtros"
-
+  "cancelar": "Cancelar",
+  "filtrarEvenproms": "Filtrar eventos e promoções",
+  "borrarFiltros": "Remover filtros",
+  "espere": "Aguarde, por favor",
+  "textoSalir": "Tem certeza de que deseja sair Evenprom?",
+  "tituloSalir": "Deixando EvenProm"
 }

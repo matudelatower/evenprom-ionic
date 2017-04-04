@@ -66,6 +66,11 @@
   "buscarEvenProms": "Search events and promotions",
   "si": "Yes",
   "no": "No",
+  "cancelar": "Cancel",
   "filtrarEvenproms" : "Filter events and promotions",
-  "borrarFiltros" : "Clear filters"
+  "borrarFiltros" : "Clear filters",
+  "espere":"Please wait",
+  "textoSalir": "Are you sure you want to leave EvenProm?",
+  "tituloSalir": "Exiting from EvenProm"
 }
+

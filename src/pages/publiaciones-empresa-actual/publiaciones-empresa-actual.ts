@@ -38,7 +38,7 @@ export class PubliacionesEmpresaActualPage {
     cargarPublicaciones() {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando evenproms de la empresa",
+            content: this.mainservice.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();

@@ -39,7 +39,7 @@ export class LoginPage {
     loginFacebook() {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando...",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -153,7 +153,7 @@ export class LoginPage {
         // GooglePlus.trySilentLogin();
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando...",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -190,7 +190,7 @@ export class LoginPage {
     omitir() {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando...",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();

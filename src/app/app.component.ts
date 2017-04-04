@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Events, LoadingController, Nav} from 'ionic-angular';
+import {Platform, Events, LoadingController, Nav, AlertController} from 'ionic-angular';
 import {
     StatusBar, BackgroundGeolocation, Facebook, NativeStorage, AppRate,
     GooglePlus, Market, GoogleAnalytics, Splashscreen, OneSignal, Deeplinks
@@ -33,7 +33,7 @@ export class MyApp {
     personaOndas: any;
     pages = [];
 
-    prod = true;
+    prod = false;
     googleReverseClientId: any;
     googleAnalyticsTrackId: any;
     pushSenderID: any;
@@ -105,6 +105,7 @@ export class MyApp {
 
     constructor(private platform: Platform,
                 public events: Events,
+                public alert: AlertController,
                 public loadingCtrl: LoadingController,
                 public mainService: MainService,
                 public translate: TranslateService,
@@ -122,27 +123,18 @@ export class MyApp {
                         this.translate.setDefaultLang(this.lenguaje);
                         this.translate.use(this.lenguaje);
                     } else {
-                        if (navigator.language.indexOf('en') > -1) {
-                            this.lenguaje = 'en';
-                        } else if (navigator.language.indexOf('es') > -1) {
-                            this.lenguaje = 'es';
-                        } else if (navigator.language.indexOf('pt') > -1) {
-                            this.lenguaje = 'pt';
-                        }
+                        this.lenguaje = this.mainService.getNavigatorLenguaje();
                         this.translate.setDefaultLang(this.lenguaje);
                         this.translate.use(this.lenguaje);
                     }
+
+                    this.cambiarLenguaje();
                 })
                 .catch((err) => {
-                    if (navigator.language.indexOf('en') > -1) {
-                        this.lenguaje = 'en';
-                    } else if (navigator.language.indexOf('es') > -1) {
-                        this.lenguaje = 'es';
-                    } else if (navigator.language.indexOf('pt') > -1) {
-                        this.lenguaje = 'pt';
-                    }
+                    this.lenguaje = this.mainService.getNavigatorLenguaje();
                     this.translate.setDefaultLang(this.lenguaje);
                     this.translate.use(this.lenguaje);
+                    this.cambiarLenguaje();
                 });
 
 
@@ -313,6 +305,29 @@ export class MyApp {
         Market.open('com.evenprom.evenpromapp');
     }
 
+    salir() {
+
+        let alert = this.alert.create({
+            title: this.mainService.getTranslate('tituloSalir'),
+            message: this.mainService.getTranslate('textoSalir'),
+            buttons: [{
+                text: this.mainService.getTranslate('si'),
+                handler: () => {
+                    this.logout();
+                    this.exitApp();
+                }
+            }, {
+                text: this.mainService.getTranslate('cancelar'),
+                role: 'cancel'
+            }]
+        });
+        alert.present();
+    }
+
+    exitApp() {
+        this.platform.exitApp();
+    }
+
     logout() {
 
         this.mainService.getUser().then(
@@ -347,7 +362,17 @@ export class MyApp {
     cambiarLenguaje() {
 
         NativeStorage.setItem('lenguaje', this.lenguaje);
-        this.translate.use(this.lenguaje);
+        this.translate.use(this.lenguaje).subscribe(() => {
+            for (let arr of this.mainService.translateArray) {
+                this.translate.get(arr.k).subscribe(
+                    value => {
+                        console.log(value);
+                        // value is our translated string
+                        arr.txt = value;
+                    }
+                );
+            }
+        });
 
     }
 
