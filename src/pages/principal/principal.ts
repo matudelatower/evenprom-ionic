@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
-import {ToastController, Slides, Events, Content} from "ionic-angular";
+import {ToastController, Slides, Events, Content, Select} from "ionic-angular";
 import {ModalSearch} from '../../pages/modals/search';
 import {MainService} from "../../app/main.service";
 import 'leaflet';
@@ -38,9 +38,14 @@ export class PrincipalPage {
 
     showSearch: Boolean = false;
 
+    // search = "";
+
     search = "";
 
-    @ViewChild('searchP') searchP: Searchbar;
+    localidades: any;
+
+
+    @ViewChild('searchP') searchP: Select;
 
     constructor(private navController: NavController,
                 public mainservice: MainService,
@@ -53,7 +58,7 @@ export class PrincipalPage {
 
         this.doRefresh(false);
 
-        this.mainservice.getDistanceFromLatLonInKm(-27.3672616,-55.8915074, -27.3669613, -55.8925728)
+        this.mainservice.getDistanceFromLatLonInKm(-27.3672616, -55.8915074, -27.3669613, -55.8925728)
 
 
         this.events.subscribe(this.mainservice.event_location_detected, (location) => {
@@ -72,6 +77,17 @@ export class PrincipalPage {
         } else {
             this.search = this.mainservice.currentLocalidad;
         }
+
+
+        this.mainservice.getAll('localidades/publicaciones').then(
+            (response) => {
+                this.localidades = response;
+                if (response.length > 0) {
+                    this.search = response[0].descripcion;
+                }
+
+            }
+        );
 
     }
 
@@ -109,21 +125,21 @@ export class PrincipalPage {
 
     cancelarBusqueda() {
         this.mainservice.currentLocalidad = this.search;
-        this.showSearch = false;
+
     }
 
     mostrarBusqueda() {
-        this.showSearch = true;
+        this.searchP.open();
 
-        console.log(this.searchP);
-
-        setTimeout(() => {
-            this.searchP.setFocus();
-        }, 150);
+        // console.log(this.searchP);
+        //
+        // setTimeout(() => {
+        //     this.searchP.setFocus();
+        // }, 150);
 
     }
 
-    getPublicaciones(userID, fields, loader, refresher) {
+    getPublicaciones(userID, fields, loader, refresher, error?) {
         let resource = 'publicaciones/' + userID + '/persona'
         this.mainservice.getAll(resource, fields)
             .then(
@@ -138,7 +154,12 @@ export class PrincipalPage {
                 })
             .catch(
                 (ex) => {
-                    console.error('error publicaciones', ex);
+                    console.error('error publicaciones', ex)
+
+                    if (this.mainservice.isUndefined(error)) {
+                        this.getPublicaciones(userID, fields, loader, refresher, true);
+                        return;
+                    }
 
                     this.errorNoConexion = true;
                     //this.publicaciones = [];
@@ -161,13 +182,13 @@ export class PrincipalPage {
 
     doRefresh(refresher, fields?) {
         let esperetxt = this.mainservice.getTranslate('espere');
-        if (esperetxt =='espere'){
+        if (esperetxt == 'espere') {
             let lan = this.mainservice.getNavigatorLenguaje();
-            if (lan=='en'){
+            if (lan == 'en') {
                 esperetxt = 'Espere, por favor';
-            }else if (lan=='pt'){
+            } else if (lan == 'pt') {
                 esperetxt = 'Aguarde, por favor';
-            }else{
+            } else {
                 esperetxt = 'Please wait';
             }
         }

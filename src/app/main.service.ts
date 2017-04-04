@@ -479,5 +479,11 @@ export class MainService {
     deg2rad(deg) {
         return deg * (Math.PI / 180)
     }
+
+    isUndefined(variable) {
+        if ("undefined" === typeof variable) {
+            console.log("variable is undefined");
+        }
+    }
 }
 

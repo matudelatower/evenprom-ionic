@@ -9,9 +9,20 @@
         <!--TODO
         buscador que hizo sergio por ciudad.
         -->
-        <ion-searchbar #searchP [hidden]="!showSearch" [(ngModel)]="search" (ionBlur)="cancelarBusqueda($event)"
-                       (ionClear)="cancelarBusqueda($event)" (ionCancel)="cancelarBusqueda($event)"
-                       [placeholder]="('buscarEvenProms' | translate)"></ion-searchbar>
+        <!--<ion-searchbar #searchP [hidden]="!showSearch" [(ngModel)]="search" (ionBlur)="cancelarBusqueda($event)"-->
+        <!--(ionClear)="cancelarBusqueda($event)" (ionCancel)="cancelarBusqueda($event)"-->
+        <!--[placeholder]="('buscarEvenProms' | translate)"></ion-searchbar>-->
+
+        <ion-title>
+            <ion-select  center #searchP [hidden]="!showSearch" [(ngModel)]="search">
+                <ion-option *ngFor="let l of localidades" [value]="l.descripcion">
+                    {{l.descripcion | uppercase}}
+                </ion-option>
+
+            </ion-select>
+        </ion-title>
+
+
         <ion-buttons *ngIf="!showSearch" end>
             <!--<button (click)="modalSearch({charNum: 0})" ion-button icon-only>-->
             <!--<ion-icon name="options"></ion-icon>-->
