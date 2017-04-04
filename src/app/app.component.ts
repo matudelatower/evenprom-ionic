@@ -33,7 +33,7 @@ export class MyApp {
     personaOndas: any;
     pages = [];
 
-    prod = false;
+    prod = true;
     googleReverseClientId: any;
     googleAnalyticsTrackId: any;
     pushSenderID: any;
