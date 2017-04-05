@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Http, Response, URLSearchParams, RequestOptions, Headers} from '@angular/http';
-import {ModalController, Events} from 'ionic-angular';
+import {ModalController, Events, AlertController, LoadingController, ToastController} from 'ionic-angular';
 import {Observable} from 'rxjs/Rx';
 import {NativeStorage} from "ionic-native";
 import {Config} from "./config";
@@ -32,6 +32,10 @@ export class MainService {
         {k: 'tituloSalir', txt: 'tituloSalir'},
         {k: 'cancelar', txt: 'cancelar'},
         {k: 'si', txt: 'si'},
+        {k: 'agregadoFavoritos', txt: 'agregadoFavoritos'},
+        {k: 'sacadoFavoritos', txt: 'sacadoFavoritos'},
+        {k: 'mensajeUserAnonimo', txt: 'mensajeUserAnonimo'},
+        {k: 'irLogin', txt: 'irLogin'},
     ];
 
     headers: Headers;
@@ -42,6 +46,9 @@ export class MainService {
     constructor(http: Http,
                 modalCont: ModalController,
                 public _config: Config,
+                public alertctrl: AlertController,
+                public loadingctrl: LoadingController,
+                public toastctrl: ToastController,
                 public events: Events) {
 
         this.ip = _config.get('apiUrl');
@@ -221,6 +228,7 @@ export class MainService {
                             this.options.merge({headers: this.headers});
 
                             return this.http.get(this.service + "/" + resource + "/" + id, this.options)
+                                .timeout(2000)
                                 .toPromise()
                                 .then(this.extractData)
                                 .catch(this.handleError);
@@ -484,6 +492,32 @@ export class MainService {
         if ("undefined" === typeof variable) {
             console.log("variable is undefined");
         }
+    }
+
+    sinUsuario() {
+        let toast = this.toastctrl.create({
+            message: this.getTranslate('mensajeUserAnonimo'),
+            duration: 2500,
+            position: 'bottom'
+        });
+
+        toast.present();
+
+        let alert = this.alertctrl.create({
+            title: this.getTranslate('mensajeUserAnonimo'),
+            message: this.getTranslate('irLogin'),
+            buttons: [{
+                text: this.getTranslate('si'),
+                handler: () => {
+                    this.events.publish('go:login');
+
+                }
+            }, {
+                text: this.getTranslate('cancelar'),
+                role: 'cancel'
+            }]
+        });
+        alert.present();
     }
 }
 

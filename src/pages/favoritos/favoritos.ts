@@ -46,14 +46,7 @@ export class FavoritosPage {
                     );
             },
             error => {
-                console.error('favoritos.error', error);
-                loader.dismissAll();
-                let alert = this.alertCtrl.create({
-                    title: 'Aviso!',
-                    subTitle: 'Para ver tus favoritos, tenes que iniciar sesión!',
-                    buttons: ['OK']
-                });
-                alert.present();
+                this.mainService.sinUsuario();
             }
         )
 

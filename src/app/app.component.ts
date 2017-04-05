@@ -270,6 +270,12 @@ export class MyApp {
             console.log('updateOndas');
             this.loadOndas();
         });
+
+        this.events.subscribe('go:login', () => {
+            console.log('go:login');
+            this.navChild.push(LoginPage);
+            this.rootPage = LoginPage;
+        });
     }
 
     loadOndas() {

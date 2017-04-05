@@ -42,7 +42,7 @@ export class PrincipalPage {
 
     search = "";
 
-    localidades: any;
+    localidades = [];
 
 
     @ViewChild('searchP') searchP: Select;
@@ -58,7 +58,7 @@ export class PrincipalPage {
 
         this.doRefresh(false);
 
-        this.mainservice.getDistanceFromLatLonInKm(-27.3672616, -55.8915074, -27.3669613, -55.8925728)
+        // this.mainservice.getDistanceFromLatLonInKm(-27.3672616, -55.8915074, -27.3669613, -55.8925728)
 
 
         this.events.subscribe(this.mainservice.event_location_detected, (location) => {
@@ -78,7 +78,11 @@ export class PrincipalPage {
             this.search = this.mainservice.currentLocalidad;
         }
 
+        this.getLocalidades();
 
+    }
+
+    getLocalidades() {
         this.mainservice.getAll('localidades/publicaciones').then(
             (response) => {
                 this.localidades = response;
@@ -88,7 +92,6 @@ export class PrincipalPage {
 
             }
         );
-
     }
 
     setCurrentLocalidad(lat, lng) {
@@ -97,8 +100,16 @@ export class PrincipalPage {
 
             console.log(location);
             if (addr.valid) {
-                this.search = addr.address;
-                this.mainservice.currentLocalidad = addr.address;
+
+                for (let l of this.localidades) {
+                    if (l.description == addr.address){
+                        this.search = addr.address;
+                        this.mainservice.currentLocalidad = addr.address;
+                        return;
+                    }
+                }
+
+
             }
         }, error => console.log("error al consultar ciudad actual"));
 
@@ -129,7 +140,13 @@ export class PrincipalPage {
     }
 
     mostrarBusqueda() {
-        this.searchP.open();
+
+        if (this.localidades.length > 0) {
+            this.searchP.open();
+        } else {
+            this.getLocalidades();
+        }
+
 
         // console.log(this.searchP);
         //
@@ -258,10 +275,6 @@ export class PrincipalPage {
                 console.log(data);
             }
         });
-    }
-
-    favPublicacion(id) {
-
     }
 
 

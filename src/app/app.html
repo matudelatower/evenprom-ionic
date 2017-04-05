@@ -50,7 +50,7 @@
             <ion-item no-lines>
                 <ion-icon name="globe" item-left></ion-icon>
                 <ion-label>{{"elegirLenguaje" | translate}}</ion-label>
-                <ion-select (ionChange)="cambiarLenguaje()" [(ngModel)]="lenguaje">
+                <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" (ionChange)="cambiarLenguaje()" [(ngModel)]="lenguaje">
                     <ion-option value="es">{{"es" | translate}}</ion-option>
                     <ion-option value="en">{{"en" | translate}}</ion-option>
                     <ion-option value="pt">{{"pt" | translate}}</ion-option>

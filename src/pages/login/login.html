@@ -9,21 +9,7 @@
         <li><span></span>
             <div>
                 <h3>
-                    Tus promociones
-                </h3>
-            </div>
-        </li>
-        <li><span></span>
-            <div>
-                <h3>
-                    Tus eventos
-                </h3>
-            </div>
-        </li>
-        <li><span></span>
-            <div>
-                <h3>
-                    Tus empresas preferidas
+                    {{'loginmsj-1' | translate}}
                 </h3>
             </div>
         </li>
@@ -31,7 +17,38 @@
         <li><span></span>
             <div>
                 <h3>
-                    En tu evenprom
+                    {{'loginmsj-2' | translate}}
+                </h3>
+            </div>
+        </li>
+
+        <li><span></span>
+            <div>
+                <h3>
+                    {{'loginmsj-3' | translate}}
+                </h3>
+            </div>
+        </li>
+        <li><span></span>
+            <div>
+                <h3>
+                    {{'loginmsj-1' | translate}}
+                </h3>
+            </div>
+        </li>
+
+        <li><span></span>
+            <div>
+                <h3>
+                    {{'loginmsj-2' | translate}}
+                </h3>
+            </div>
+        </li>
+
+        <li><span></span>
+            <div>
+                <h3>
+                    {{'loginmsj-3' | translate}}
                 </h3>
             </div>
         </li>
@@ -39,28 +56,28 @@
 
 
     <!--<form style="padding-top: 40%;" [formGroup]="loginForm" (submit)="login(!loginForm.valid)">-->
-    <div style="padding-top: 50%;">
+    <div style="padding-top: 40%;">
         <div>
             <!--<button ion-button block type="button" (click)="login()"> Ingresar</button>-->
             <p>
-                <button (click)="loginFacebook()" ion-button icon-right color="color-facebook">
-                    Ingresar con Facebook
+                <button (click)="loginFacebook()" ion-button block icon-right color="color-facebook">
+                    {{'ingresar' | translate}} {{'con' | translate}} Facebook
 
                     <ion-icon name="logo-facebook"></ion-icon>
 
                 </button>
             </p>
             <p>
-                <button (click)="loginGoogle()" ion-button icon-right color="color-google">
-                    Ingresar con Google
+                <button (click)="loginGoogle()" ion-button block icon-right color="color-google">
+                    {{'ingresar' | translate}} {{'con' | translate}}  Google
 
                     <ion-icon name="logo-google"></ion-icon>
 
                 </button>
             </p>
             <p>
-                <button (click)="omitir()" ion-button icon-right>
-                    {{'ingresar' | translate}}
+                <button (click)="omitir()" block ion-button icon-right>
+                    {{'ingresar' | translate}} DEMO
 
                 </button>
             </p>

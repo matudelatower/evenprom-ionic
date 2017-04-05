@@ -82,13 +82,7 @@ export class NotificacionesPage {
                         });
             },
             error => {
-                let alert = alertCtrl.create({
-                    title: 'Aviso!',
-                    subTitle: 'Primero tenes que iniciar sesión!',
-                    buttons: ['OK']
-                });
-                alert.present();
-                navCtrl.setRoot(LoginPage);
+                this.mainService.sinUsuario();
             });
 
     }
@@ -115,6 +109,11 @@ export class NotificacionesPage {
 
     // notificaciones
     cargarNotificaciones() {
+        let loader = this.loadingCtrl.create({
+            content: this.mainService.getTranslate('espere'),
+            // duration: 6000
+        });
+        loader.present();
 
         this.mainService.getAll('localidades/publicaciones').then(
             (response) => {
@@ -137,32 +136,34 @@ export class NotificacionesPage {
         this.mainService.getAll('descuentos').then(
             (response) => {
                 this.descuentos = response;
+                loader.dismissAll();
             }
-        );
+        ).catch(() => loader.dismissAll());
 
-        this.mainService.getAll('empresas').then(
-            (response) => {
-                this.empresas = response;
-            }
-        );
+        // this.mainService.getAll('empresas').then(
+        //     (response) => {
+        //         this.empresas = response;
+        //     }
+        // );
 
-        this.mainService.getAll('subrubros/gastronomia/slugrubro').then(
-            (response) => {
-                this.gastronomia = response;
-            }
-        );
+        // this.mainService.getAll('subrubros/gastronomia/slugrubro').then(
+        //     (response) => {
+        //         this.gastronomia = response;
+        //     }
+        // );
 
-        this.mainService.getAll('subrubros/recreacion-diversion/slugrubro').then(
-            (response) => {
-                this.entretenimiento = response;
-            }
-        );
+        // this.mainService.getAll('subrubros/recreacion-diversion/slugrubro').then(
+        //     (response) => {
+        //         this.entretenimiento = response;
+        //     }
+        // );
 
-        this.mainService.getAll('subrubros/servicios/slugrubro').then(
-            (response) => {
-                this.servicios = response;
-            }
-        );
+        // this.mainService.getAll('subrubros/servicios/slugrubro').then(
+        //     (response) => {
+        //         this.servicios = response;
+        //         loader.dismissAll();
+        //     }
+        // ).catch(() => loader.dismissAll());
 
     }
 
@@ -171,10 +172,10 @@ export class NotificacionesPage {
         let params = {
             onda: this.notificacionesOnda,
             rubro: this.notificacionesRubro,
-            entretenimiento: this.notificacionesEntretenimiento,
+            // entretenimiento: this.notificacionesEntretenimiento,
             compras: this.notificacionesCompras,
-            gastronomia: this.notificacionesGastronomia,
-            empresa: this.notificacionesEmpresa,
+            // gastronomia: this.notificacionesGastronomia,
+            // empresa: this.notificacionesEmpresa,
             eventos: this.notificacionesEventos,
             descuentos: this.notificacionesDescuentos,
             localidad: this.notificacionesLocalidad,
@@ -182,10 +183,15 @@ export class NotificacionesPage {
 
         console.log('notificaciones', params);
 
-        this.mainService.put('notificaciones', 3, params)
+        let loader = this.loadingCtrl.create({
+            content: this.mainService.getTranslate('espere'),
+            // duration: 6000
+        });
+
+        this.mainService.put('notificaciones', this.persona.userID, params)
             .then(
                 (ondas) => {
-                    // this.ondas = ondas;
+                    loader.dismissAll();
                     let toast = this.toastCtrl.create({
                         message: 'Perfil Guardado Correctamente',
                         duration: 2000,
@@ -197,6 +203,7 @@ export class NotificacionesPage {
                 },
                 (err) => {
                     console.error(err);
+                    loader.dismissAll();
 
                 }
             );
@@ -205,7 +212,7 @@ export class NotificacionesPage {
     getOndas() {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando...",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();

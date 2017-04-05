@@ -47,6 +47,8 @@ export class ItemEmpresaComponent {
                     toast.present(toast);
 
                 });
+        }).catch(()=>{
+            this.mainService.sinUsuario()
         });
     }
 

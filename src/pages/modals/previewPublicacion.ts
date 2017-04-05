@@ -1,5 +1,5 @@
 import {Component, Output, EventEmitter, ElementRef, ViewChild} from '@angular/core';
-import {Platform, NavParams, ViewController, LoadingController, ToastController} from 'ionic-angular';
+import {Platform, NavParams, ViewController, LoadingController, ToastController, NavController} from 'ionic-angular';
 import {MapService} from "../../directives/map/map.service";
 import {GeocodingService} from "../../directives/map/geocode.service";
 import {Subscription} from "rxjs/Subscription";
@@ -30,6 +30,7 @@ export class ModalPreviewPublicacion {
     constructor(public platform: Platform,
                 public params: NavParams,
                 public viewCtrl: ViewController,
+                public nav:NavController,
                 public mapService: MapService,
                 public geocoder: GeocodingService,
                 public loadingCtrl: LoadingController,
@@ -69,7 +70,9 @@ export class ModalPreviewPublicacion {
                 }
 
             }, (error) => {
-                console.error(error);
+
+                this.mainService.sinUsuario();
+                this.nav.pop();
 
             });
 

@@ -31,7 +31,7 @@ export class EditarPerfilPage {
                 public events: Events) {
 
         let loader = this.loadingCtrl.create({
-            content: "Cargando...",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -100,20 +100,12 @@ export class EditarPerfilPage {
                         },
                         (err) => {
                             console.error(err);
+                            loader.dismissAll();
                         }
                     );
             },
             error => {
-                let alert = alertCtrl.create({
-                    title: 'Aviso!',
-                    subTitle: 'Primero tenes que iniciar sesión!',
-                    buttons: ['OK']
-                });
-
-                loader.dismissAll();
-
-                alert.present();
-                navCtrl.setRoot(LoginPage);
+                this.mainService.sinUsuario();
             }
         );
 
@@ -126,7 +118,7 @@ export class EditarPerfilPage {
     logForm() {
 
         let loader = this.loadingCtrl.create({
-            content: "Guardando...",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();

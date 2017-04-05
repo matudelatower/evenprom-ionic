@@ -261,7 +261,7 @@ export class EmpresaPerfilPage {
                     loader.dismissAll();
                     console.log('comente', this.comentario);
                     loader = this.loadingCtrl.create({
-                        content: "Cargando comentarios",
+                        content: this.mainService.getTranslate('espere'),
                         // duration: 6000
                     });
                     loader.present();
@@ -299,7 +299,7 @@ export class EmpresaPerfilPage {
 
     getImagenes() {
         let loader = this.loadingCtrl.create({
-            content: "Cargando comentarios",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -307,6 +307,7 @@ export class EmpresaPerfilPage {
         this.mainService.getAll('fotos/' + this.empresa.id + '/empresa')
             .then((data) => {
                 this.imagenes = data;
+                console.log(data);
                 loader.dismissAll();
             }, (error) => {
                 loader.dismissAll();
@@ -754,13 +755,7 @@ export class EmpresaPerfilPage {
         this.mainService.getUser().then((user) => {
             this.uploadImg(user.userID, this.empresa.id);
         }, (error) => {
-            let toast = this.toastCtrl.create({
-                message: this.mainService.mensajeUserAnonimo,
-                duration: 1500,
-                position: 'center'
-            });
-
-            toast.present();
+            this.mainService.sinUsuario();
         });
 
     }

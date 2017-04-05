@@ -38,8 +38,8 @@
 
         </ion-col>
     </ion-row>
-    <ion-card>
-        <ion-card-content>
+    <ion-card  no-padding>
+        <ion-card-content  no-padding>
             <div *ngIf="empresa.link_youtube!=null" class="video-container" text-center>
                 <iframe class="video" [src]="link_youtube" frameborder="0" allowfullscreen></iframe>
 
@@ -160,19 +160,22 @@
         </ion-col>
     </ion-row>
     <ion-row>
-        <ion-col text-center no-padding>
-            <button class="btn-redondo" color="color-whatsapp" large round ion-button icon-only
-                    (click)="shareWhastApp(empresa.nombre ,empresa.image_name, empresa.contacto.web)">
-                <ion-icon name="logo-whatsapp"></ion-icon>
-            </button>
-            <button class="btn-redondo" color="color-facebook" large round ion-button icon-only
-                    (click)="shareFacebook(empresa.nombre ,empresa.image_name, empresa.contacto.web)">
-                <ion-icon name="logo-facebook"></ion-icon>
-            </button>
-            <button class="btn-redondo" color="ep-violeta" large round ion-button icon-only
+        <ion-col col-9 text-center >
+            <!--<button class="btn-redondo" color="color-whatsapp" large round ion-button icon-only-->
+            <!--(click)="shareWhastApp(empresa.nombre ,empresa.image_name, empresa.contacto.web)">-->
+            <!--<ion-icon name="logo-whatsapp"></ion-icon>-->
+            <!--</button>-->
+            <!--<button class="btn-redondo" color="color-facebook" large round ion-button icon-only-->
+            <!--(click)="shareFacebook(empresa.nombre ,empresa.image_name, empresa.contacto.web)">-->
+            <!--<ion-icon name="logo-facebook"></ion-icon>-->
+            <!--</button>-->
+            <button block color="ep-violeta" large round ion-button
                     (click)="share(empresa.nombre ,empresa.image_name, empresa.contacto.web)">
+                {{ 'compartir' |translate }}
                 <ion-icon name="share"></ion-icon>
             </button>
+        </ion-col>
+        <ion-col col-3 text-center>
             <button class="btn-redondo" color="ep-rojo" large round ion-button icon-only
                     (click)="agregarANotificacion(empresa.id)">
                 <ion-icon name="notifications-outline"></ion-icon>
@@ -189,7 +192,7 @@
             <h2>{{c.persona.nombre}} {{c.persona.apellido}}</h2>
             <p>{{c.texto}}</p>
         </ion-item>
-        <ion-item>
+        <ion-item *ngIf="usuario">
             <ion-avatar item-left *ngIf="usuario">
                 <m-avatar [fbId]="usuario.fbId" [gId]="usuario.gId"></m-avatar>
 

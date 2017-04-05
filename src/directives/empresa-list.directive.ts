@@ -54,18 +54,23 @@ export class ItemListEmpresa {
 
     modalComentario(publicacion) {
 
-        console.log(publicacion);
-        let modal = this.mainservice.modalCreate(ModalComentario, {
-            publicacion: publicacion
-        });
+        this.mainservice.getUser()
+            .then((user) => {
+                let modal = this.mainservice.modalCreate(ModalComentario, {
+                    publicacion: publicacion
+                });
 
-        modal.present();
+                modal.present();
 
-        modal.onDidDismiss((data: any[]) => {
-            if (data) {
-                console.log(data);
-            }
-        });
+                modal.onDidDismiss((data: any[]) => {
+                    if (data) {
+                        console.log(data);
+                    }
+                });
+            }).catch(
+            () => this.mainservice.sinUsuario()
+        );
+
     }
 
     sharedTwitter(message: string, image?: string, url?: string) {
@@ -79,7 +84,7 @@ export class ItemListEmpresa {
     }
 
     share(message: string, subject?: string, image?: string, url?: string) {
-        console.log(message, subject, image, url);
+
 
         SocialSharing.share(message, '@evenprom', image, url).then(() => {
 
@@ -96,13 +101,13 @@ export class ItemListEmpresa {
                 this.mainservice.post(url)
                     .then(
                         (data) => {
-                            let mensaje = 'Agregado a favoritos';
+                            let mensaje = this.mainservice.getTranslate('agregadoFavoritos');
 
                             if (data.publicacion.like_persona == true) {
                                 this.publicacion.likes += 1;
                             } else {
                                 this.publicacion.likes -= 1;
-                                mensaje = 'Quitado de favoritos';
+                                mensaje = this.mainservice.getTranslate('sacadoFavoritos');
                             }
                             this.publicacion.like_persona = data.publicacion.like_persona;
                             let toast = this.toastCtrl.create({
@@ -114,13 +119,15 @@ export class ItemListEmpresa {
                             toast.present(toast);
 
                         });
-            });
+            }).catch(() => {
+            this.mainservice.sinUsuario();
+        });
 
 
     }
 
     pagePublicacion(publicacion) {
-        console.log(publicacion)
+
         this.navController.push(ModalPreviewPublicacion, {publicacion: publicacion});
     }
 

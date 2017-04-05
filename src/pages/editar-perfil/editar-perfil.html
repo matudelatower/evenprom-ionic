@@ -35,7 +35,7 @@
         </ion-item>
         <ion-item>
             <ion-label color="ep-celeste">{{ "tipo-documento" | translate }}</ion-label>
-            <ion-select formControlName="tipoDocumento">
+            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"formControlName="tipoDocumento">
                 <ion-option *ngFor="let tipo of tiposDocumento" [value]="tipo.id">{{ tipo.siglas| translate }}</ion-option>
             </ion-select>
         </ion-item>
@@ -46,7 +46,7 @@
 
         <ion-item>
             <ion-label color="ep-celeste">{{ "ondas" | translate }}</ion-label>
-            <ion-select formControlName="ondas" multiple="true">
+            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"formControlName="ondas" multiple="true">
                 <ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>
             </ion-select>
         </ion-item>
