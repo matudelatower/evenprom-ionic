@@ -44,6 +44,8 @@ export class PrincipalPage {
 
     localidades = [];
 
+    user = null;
+
 
     @ViewChild('searchP') searchP: Select;
 
@@ -102,7 +104,7 @@ export class PrincipalPage {
             if (addr.valid) {
 
                 for (let l of this.localidades) {
-                    if (l.description == addr.address){
+                    if (l.description == addr.address) {
                         this.search = addr.address;
                         this.mainservice.currentLocalidad = addr.address;
                         return;
@@ -131,7 +133,19 @@ export class PrincipalPage {
 
     selectedTab() {
         // this.slider.slideTo(+this.tabs, 500);
-        this.tabBody = +this.tabs;
+
+
+        console.log(this.user);
+
+        if (this.tabs == "2") {
+            if (!this.user || this.user.nombre == "demo") {
+                this.mainservice.sinUsuario();
+                this.tabs = this.tabBody.toString();
+            }
+        } else {
+            this.tabBody = +this.tabs;
+        }
+
     }
 
     cancelarBusqueda() {
@@ -157,7 +171,7 @@ export class PrincipalPage {
     }
 
     getPublicaciones(userID, fields, loader, refresher, error?) {
-        let resource = 'publicaciones/' + userID + '/persona'
+        let resource = 'publicaciones/' + userID + '/persona';
         this.mainservice.getAll(resource, fields)
             .then(
                 (data) => {
@@ -174,8 +188,17 @@ export class PrincipalPage {
                     console.error('error publicaciones', ex)
 
                     if (this.mainservice.isUndefined(error)) {
-                        this.getPublicaciones(userID, fields, loader, refresher, true);
+                        error = 0;
+                        this.getPublicaciones(userID, fields, loader, refresher, error);
                         return;
+                    } else {
+
+                        if (error < 3) {
+                            error++;
+                            this.getPublicaciones(userID, fields, loader, refresher, error);
+                            return;
+                        }
+
                     }
 
                     this.errorNoConexion = true;
@@ -218,6 +241,7 @@ export class PrincipalPage {
 
         this.mainservice.getUser().then(
             (user) => {
+                this.user = user;
                 this.getPublicaciones(user.userID, fields, loader, refresher);
             },
             () => {
@@ -295,7 +319,7 @@ export class PrincipalPage {
     }
 
     pageNotificaciones() {
-        // this.navController.push(Empresas);
+
     }
 
     toastPromo(promo) {

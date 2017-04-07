@@ -46,7 +46,7 @@ export class NotificacionesPage {
                 public alertCtrl: AlertController,
                 public toastCtrl: ToastController) {
 
-        this.cargarNotificaciones();
+
 
         mainService.getUser().then(
             data => {
@@ -54,6 +54,7 @@ export class NotificacionesPage {
                 this.mainService.get('notificaciones', this.persona.userID)
                     .then(
                         (notificaciones) => {
+                            this.cargarNotificaciones();
                             this.notificacionesOnda = notificaciones.onda;
                             this.notificacionesLocalidad = notificaciones.localidad;
                             this.notificacionesDescuentos = notificaciones.descuento;
@@ -83,6 +84,7 @@ export class NotificacionesPage {
             },
             error => {
                 this.mainService.sinUsuario();
+
             });
 
     }

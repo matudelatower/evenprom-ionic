@@ -58,7 +58,7 @@ export class EmpresaPerfilPage {
             this.empresa = navParams.data.empresa;
             console.log(this.empresa);
             let loader = this.loadingCtrl.create({
-                content: "Cargando comentarios",
+                content: this.mainService.getTranslate('espere'),
                 // duration: 6000
             });
             loader.present();
@@ -848,7 +848,7 @@ export class EmpresaPerfilPage {
 
                 },
                 (err) => {
-                    console.error(err);
+                   this.mainService.sinUsuario();
 
                 }
             );

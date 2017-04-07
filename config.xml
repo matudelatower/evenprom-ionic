@@ -67,7 +67,7 @@
   <plugin name="cordova-plugin-email" spec="~1.2.6"/>
   <plugin name="cordova-plugin-mauron85-background-geolocation" spec="~2.2.5"/>
   <plugin name="cordova-plugin-googleplus" spec="~5.1.1">
-    <variable name="REVERSED_CLIENT_ID" value="902289846212-8pvgc0clqfbna83kp1iqrpm71c2u4h45.apps.googleusercontent.com"/>
+    <variable name="REVERSED_CLIENT_ID" value="902289846212-2sp3sa7lo9bvd2u56j1gmcu59g8sq5ph.apps.googleusercontent.com"/>
   </plugin>
   <plugin name="cordova-plugin-file-transfer" spec="~1.6.1"/>
   <plugin name="com.xmartlabs.cordova.market" spec="~1.1"/>

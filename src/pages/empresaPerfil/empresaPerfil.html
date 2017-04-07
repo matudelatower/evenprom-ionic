@@ -149,7 +149,7 @@
         <ion-col text-right>
             <button ion-button round icon-left outline small (click)="openUrl(empresa.contacto.web)">
                 <ion-icon name="globe"></ion-icon>
-                Sitio Web
+                {{ 'sitioWeb' |translate }}
             </button>
             <br>
             <button ion-button round icon-left outline small (click)="comoLlegar()">
@@ -172,7 +172,7 @@
             <button block color="ep-violeta" large round ion-button
                     (click)="share(empresa.nombre ,empresa.image_name, empresa.contacto.web)">
                 {{ 'compartir' |translate }}
-                <ion-icon name="share"></ion-icon>
+                  <ion-icon name="share"></ion-icon>
             </button>
         </ion-col>
         <ion-col col-3 text-center>
