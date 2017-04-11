@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 import {ModalPreviewPublicacion} from "../modals/previewPublicacion";
-import {LoginPage} from "../login/login";
 
 /*
  Generated class for the Favoritos page.

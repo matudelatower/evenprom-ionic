@@ -23,13 +23,16 @@ export class MapService {
     }
 
     // load a web map and return response
-    createMap(domId: any) {
-        this.remove()
+    createMap(domId: any, lat?, lng?) {
+        this.remove();
+
+        lat = "undefined" === typeof lat ? -25.59751 : lat;
+        lng = "undefined" === typeof lng ? -54.57 : lng;
         this.map = new L.Map(domId, {
             zoomControl: false,
-            //center: new L.LatLng(40.731253, -73.996139),
-            //zoom: this.getURLParameter('zoomLevel') || 12,
-            zoom: 16,
+            fullscreenControl: true,
+            center: new L.LatLng(lat, lng),
+            zoom: 14,
             minZoom: 4,
             maxZoom: 18,
             layers: [this.baseMaps.OpenStreetMap]
@@ -84,6 +87,10 @@ export class MapService {
 
         return r;
 
+    }
+
+    createCircle(lat, lng, km) {
+        L.circle([lat, lng], km * 1000).addTo(this.map);
     }
 
     createRoute(waypoints, message) {

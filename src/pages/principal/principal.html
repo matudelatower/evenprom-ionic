@@ -14,15 +14,17 @@
         <!--[placeholder]="('buscarEvenProms' | translate)"></ion-searchbar>-->
 
         <ion-title>
-            <ion-select  center #searchP [hidden]="!showSearch" [(ngModel)]="search">
-                <ion-option *ngFor="let l of localidades" [value]="l.descripcion">
-                    {{l.descripcion | uppercase}}
-                </ion-option>
+            <ion-item [hidden]="!showSearch">
+                <ion-label>{{'localidad' | translate}}</ion-label>
+                <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" #searchP center [(ngModel)]="search">
+                    <ion-option *ngFor="let l of localidades"
+                                [value]="l.descripcion !='Sin Filtros' ? l.descripcion:''">
+                        {{l.descripcion | uppercase}}
+                    </ion-option>
 
-            </ion-select>
+                </ion-select>
+            </ion-item>
         </ion-title>
-
-
         <ion-buttons *ngIf="!showSearch && tabBody =='0'" end>
             <!--<button (click)="modalSearch({charNum: 0})" ion-button icon-only>-->
             <!--<ion-icon name="options"></ion-icon>-->
@@ -69,17 +71,9 @@
             <ion-grid no-padding no-padding *ngIf="errorNoConexion">
                 <ion-row no-padding>
                     <ion-col text-center width-100 no-padding>
-                        <h1>
-                            No hay conexión a internet. {{ mainservice.cargando}}
-                        </h1>
                         <h4>
                             Arrastre la parte superior hacia abajo para actualizar
                         </h4>
-                    </ion-col>
-                </ion-row>
-                <ion-row no-padding>
-                    <ion-col text-center width-100 no-padding>
-                        <img style="height: 100px;" src="assets/img/noconexion.png">
                     </ion-col>
                 </ion-row>
             </ion-grid>

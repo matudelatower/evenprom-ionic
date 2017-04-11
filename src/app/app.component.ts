@@ -240,7 +240,7 @@ export class MyApp {
 
             // Convenience to route with a given nav
             Deeplinks.routeWithNavController(this.navChild, {
-                '/publicacion/:publicacion': ModalPreviewPublicacion,
+                '/publicacion/:id': ModalPreviewPublicacion,
                 '/favoritos': FavoritosPage
             }).subscribe((match) => {
                 console.log('Successfully routed', match);
@@ -399,6 +399,8 @@ export class MyApp {
             console.log('[js] BackgroundGeolocation callback:  ' + location.latitude + ',' + location.longitude);
 
             NativeStorage.setItem('location', location);
+
+            this.mainService.backLocation = location;
 
             this.events.publish(this.mainService.event_location_detected, location);
 

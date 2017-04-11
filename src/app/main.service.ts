@@ -25,6 +25,7 @@ export class MainService {
     public event_location_detected = "location:detected";
 
     public currentLocalidad: any = false;
+    public backLocation: any;
 
     public translateArray = [
         {k: 'espere', txt: 'espere'},
@@ -36,6 +37,23 @@ export class MainService {
         {k: 'sacadoFavoritos', txt: 'sacadoFavoritos'},
         {k: 'mensajeUserAnonimo', txt: 'mensajeUserAnonimo'},
         {k: 'irLogin', txt: 'irLogin'},
+        {k: 'errorMapa', txt: ''},
+        {k: 'errorDireccion', txt: ''},
+        {k: 'rutaOk', txt: ''},
+        {k: 'subiendoImagen', txt: ''},
+        {k: 'imagenOk', txt: ''},
+        {k: 'imagenError1', txt: ''},
+        {k: 'imagenError2', txt: ''},
+        {k: 'imagenError3', txt: ''},
+        {k: 'notificacionesOk', txt: ''},
+        {k: 'sitioWebError', txt: ''},
+        {k: 'enviandoComentario', txt: ''},
+        {k: 'comentarioOk', txt: ''},
+        {k: 'comentarioError1', txt: ''},
+        {k: 'comentarioError2', txt: ''},
+        {k: 'abrirMapa', txt: ''},
+        {k: 'perfilOk', txt: ''},
+        {k: 'perfilError', txt: ''}
     ];
 
     headers: Headers;
@@ -491,6 +509,9 @@ export class MainService {
     isUndefined(variable) {
         if ("undefined" === typeof variable) {
             console.log("variable is undefined");
+            return true;
+        } else {
+            return false;
         }
     }
 

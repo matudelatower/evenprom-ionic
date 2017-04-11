@@ -27,10 +27,12 @@ export class ModalPreviewPublicacion {
     faveada: any;
     usuario: any;
 
+    color = "#5c666f";
+
     constructor(public platform: Platform,
                 public params: NavParams,
                 public viewCtrl: ViewController,
-                public nav:NavController,
+                public nav: NavController,
                 public mapService: MapService,
                 public geocoder: GeocodingService,
                 public loadingCtrl: LoadingController,
@@ -42,16 +44,19 @@ export class ModalPreviewPublicacion {
             (user) => {
                 this.usuario = user;
 
-                let objectConstructor = {}.constructor;
-                let ob = this.params.get('publicacion');
+                let publiacionId = this.params.get('id');
 
-                if (ob.constructor === objectConstructor) {
+                if (publiacionId) {
 
-                    let resource = 'publicacions/' + this.usuario.userID + '/personas/' + this.params.get('publicacion').id;
+                    let resource = 'publicacions/' + this.usuario.userID + '/personas/' + publiacionId.id;
                     this.mainService.getAll(resource)
                         .then(
                             (data) => {
                                 this.publicacion = data;
+                                if (this.publicacion.premium) {
+                                    this.color = this.publicacion.color;
+
+                                }
                                 this.triggerPublicacion();
                             })
                         .catch((ex) => {
@@ -66,6 +71,9 @@ export class ModalPreviewPublicacion {
                         });
                 } else {
                     this.publicacion = this.params.get('publicacion');
+                    if (this.publicacion.premium) {
+                        this.color = this.publicacion.color;
+                    }
                     this.triggerPublicacion();
                 }
 
@@ -82,12 +90,11 @@ export class ModalPreviewPublicacion {
     ngOnInit() {
 
 
-
     }
 
-    triggerPublicacion(){
+    triggerPublicacion() {
         let loader = this.loadingCtrl.create({
-            content: "Cargando comentarios",
+            content: this.mainService.getTranslate('espere'),
             // duration: 6000
         });
         loader.present();
@@ -107,24 +114,16 @@ export class ModalPreviewPublicacion {
 
                 this.contenedorMapa.nativeElement.innerHTML = '<div style="height:150px;" id="' + mapId + '"></div>';
 
-                this.map = this.mapService.createMap(mapId);
-
-                // let address = location.address;
-
-                var newBounds = location.viewBounds;
-                //this.mapService.changeBounds(newBounds);
-
-
                 let latlng = new Array();
+                var newBounds = location.viewBounds;
                 this.lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
                 this.lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
                 latlng.push(this.lat);
                 latlng.push(this.lng);
+                this.map = this.mapService.createMap(mapId,this.lat, this.lng);
 
                 this.mapService.addMarker(latlng, this.publicacion.nombre_empresa);
 
-                this.mapService.setPosition(this.lat, this.lng);
-                this.mapService.setBound(this.lat - 0.02, this.lng - 0.02, this.lat + 0.02, this.lng + 0.02);
 
             }, error => console.error(error));
         }
@@ -133,7 +132,7 @@ export class ModalPreviewPublicacion {
     openUrl(url) {
         if (!url) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene sitio web cargado",
+                message: this.mainService.getTranslate('sitioWebError'),
                 duration: 3000,
                 position: 'center'
             });
@@ -147,7 +146,7 @@ export class ModalPreviewPublicacion {
     comentar() {
         if (this.comentario) {
             let loader = this.loadingCtrl.create({
-                content: "Enviando comentario",
+                content: this.mainService.getTranslate('enviandoComentario'),
                 // duration: 6000
             });
             loader.present();
@@ -185,14 +184,14 @@ export class ModalPreviewPublicacion {
                 loader.dismissAll();
                 console.log('comente', this.comentario);
                 loader = this.loadingCtrl.create({
-                    content: "Cargando comentarios",
+                    content: this.mainService.getTranslate('espere'),
                     // duration: 6000
                 });
                 loader.present();
                 this.getComentarios(this.publicacion.id, loader);
             }, (error) => {
                 let toast = this.toastCtrl.create({
-                    message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                    message: this.mainService.getTranslate('comentarioError1'),
                     duration: 3250,
                     position: 'center'
                 });
@@ -213,7 +212,7 @@ export class ModalPreviewPublicacion {
                 console.error('comentarios', ex);
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se han podido cargar los comentarios.",
+                    message: this.mainService.getTranslate('comentarioError2'),
                     duration: 3250,
                     position: 'center'
                 });
@@ -259,12 +258,12 @@ export class ModalPreviewPublicacion {
                     .then(
                         (data) => {
 
-                            let mensaje = 'Agregado a favoritos';
+                            let mensaje = this.mainService.getTranslate('agregadoFavoritos');
                             if (data.publicacion.like_persona == true) {
                                 this.publicacion.likes += 1;
                             } else {
                                 this.publicacion.likes -= 1;
-                                mensaje = 'Quitado de favoritos';
+                                mensaje = this.mainService.getTranslate('sacadoFavoritos');
                             }
                             this.publicacion.like_persona = data.publicacion.like_persona;
                             let toast = this.toastCtrl.create({
@@ -292,12 +291,12 @@ export class ModalPreviewPublicacion {
                     .then(
                         (data) => {
 
-                            let mensaje = 'Hiciste CheckIn';
+                            let mensaje = this.mainService.getTranslate('checkIn');
                             if (data.publicacion.checkin_persona == true) {
                                 this.publicacion.checkins += 1;
                             } else {
                                 this.publicacion.checkins -= 1;
-                                mensaje = 'Eliminaste el CheckIn';
+                                mensaje = this.mainService.getTranslate('checkOut');
                             }
                             this.publicacion.checkin_persona = data.publicacion.checkin_persona;
                             let toast = this.toastCtrl.create({
@@ -318,7 +317,7 @@ export class ModalPreviewPublicacion {
     comoLlegar() {
         if (!this.publicacion.direccion_empresa) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene cargada la dirección",
+                message: this.mainService.getTranslate('errorDireccion'),
                 duration: 1500,
                 position: 'center'
             });
@@ -348,7 +347,7 @@ export class ModalPreviewPublicacion {
                     loader.dismissAll();
                     if (!location.valid) {
                         let toast = this.toastCtrl.create({
-                            message: "La empresa no tiene cargada la dirección",
+                            message: this.mainService.getTranslate('errorDireccion'),
                             duration: 1500,
                             position: 'center'
                         });
@@ -368,7 +367,7 @@ export class ModalPreviewPublicacion {
                     let destino = lat + ", " + lng;
 
                     let toast = this.toastCtrl.create({
-                        message: "Ruta encontrada.",
+                        message: this.mainService.getTranslate('rutaOk'),
                         duration: 1500,
                         position: 'center'
                     });
@@ -383,7 +382,7 @@ export class ModalPreviewPublicacion {
                 }, error => {
                     loader.dismissAll();
                     let toast = this.toastCtrl.create({
-                        message: "No se ha podido abrir el mapa.",
+                        message: this.mainService.getTranslate('errorMapa'),
                         duration: 1500,
                         position: 'center'
                     });
@@ -394,7 +393,7 @@ export class ModalPreviewPublicacion {
             }).catch((error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
-                message: "No se ha podido abrir el mapa.",
+                message: this.mainService.getTranslate('errorMapa'),
                 duration: 1500,
                 position: 'center'
             });

@@ -107,4 +107,6 @@
     <variable name="DEEPLINK_5_HOST" value=" "/>
   </plugin>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
+  <allow-navigation href="http://192.168.0.117:8100"/>
+  <allow-navigation href="http://192.168.1.106:8100"/>
 </widget>

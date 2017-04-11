@@ -17,7 +17,6 @@ import {
     Transfer,
     Crop,
     Geolocation,
-    Diagnostic,
     NativeStorage
 } from 'ionic-native';
 import {MainService} from "../../app/main.service";
@@ -96,7 +95,7 @@ export class EmpresaPerfilPage {
         console.log('url', url);
         if (url == null) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene sitio web cargado",
+                message: this.mainService.getTranslate('sitioWebError'),
                 duration: 3000,
                 position: 'center'
             });
@@ -237,7 +236,7 @@ export class EmpresaPerfilPage {
     comentar() {
         if (this.comentario) {
             let loader = this.loadingCtrl.create({
-                content: "Enviando comentario",
+                content: this.mainService.getTranslate('enviandoComentario'),
                 // duration: 6000
             });
             loader.present();
@@ -259,16 +258,22 @@ export class EmpresaPerfilPage {
                     // postComentarEmpresa(this.empresa.id, user.userID, this.comentario).subscribe((data) => {
                     this.comentario = '';
                     loader.dismissAll();
-                    console.log('comente', this.comentario);
                     loader = this.loadingCtrl.create({
                         content: this.mainService.getTranslate('espere'),
                         // duration: 6000
                     });
+                    let toast = this.toastCtrl.create({
+                        message: this.mainService.getTranslate('comentarioOk'),
+                        duration: 3250,
+                        position: 'center'
+                    });
+
+                    toast.present(toast);
                     loader.present();
                     this.getComentarios(loader);
                 }, (error) => {
                     let toast = this.toastCtrl.create({
-                        message: "No se ha podido enviar el comentario. Intentelo nuevamente a la brevedad.",
+                        message: this.mainService.getTranslate('comentarioError1'),
                         duration: 3250,
                         position: 'center'
                     });
@@ -288,7 +293,7 @@ export class EmpresaPerfilPage {
             }, (error) => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se han podido cargar los comentarios.",
+                    message: this.mainService.getTranslate('comentarioError2'),
                     duration: 3250,
                     position: 'center'
                 });
@@ -312,7 +317,7 @@ export class EmpresaPerfilPage {
             }, (error) => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se han podido cargar las imagenes.",
+                    message: this.mainService.getTranslate('comentarioError2'),
                     duration: 3250,
                     position: 'center'
                 });
@@ -323,7 +328,7 @@ export class EmpresaPerfilPage {
 
     comoLlegar() {
         let actionSheet = this.actionSheetCtrl.create({
-            title: 'Abrir mapas con',
+            title: this.mainService.getTranslate('abrirMapa'),
             buttons: [
                 {
                     color: 'danger',
@@ -355,7 +360,7 @@ export class EmpresaPerfilPage {
 
         if (!this.empresa.direccion) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene cargada la dirección",
+                message: this.mainService.getTranslate('errorDireccion'),
                 duration: 1500,
                 position: 'center'
             });
@@ -384,7 +389,7 @@ export class EmpresaPerfilPage {
                 loader.dismissAll();
                 if (!location.valid) {
                     let toast = this.toastCtrl.create({
-                        message: "La empresa no tiene cargada la dirección",
+                        message: this.mainService.getTranslate('errorDireccion'),
                         duration: 1500,
                         position: 'center'
                     });
@@ -392,11 +397,8 @@ export class EmpresaPerfilPage {
                     toast.present(toast);
                     return;
                 }
-                // let address = location.address;
 
                 var newBounds = location.viewBounds;
-                //this.mapService.changeBounds(newBounds);
-
 
                 let lat = (newBounds._northEast.lat + newBounds._southWest.lat) / 2;
                 let lng = (newBounds._northEast.lng + newBounds._southWest.lng) / 2;
@@ -404,7 +406,7 @@ export class EmpresaPerfilPage {
                 let destino = lat + ", " + lng;
 
                 let toast = this.toastCtrl.create({
-                    message: "Ruta encontrada.",
+                    message: this.mainService.getTranslate('rutaOk'),
                     duration: 1500,
                     position: 'center'
                 });
@@ -419,7 +421,7 @@ export class EmpresaPerfilPage {
             }, error => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se ha podido abrir el mapa.",
+                    message: this.mainService.getTranslate('errorMapa'),
                     duration: 1500,
                     position: 'center'
                 });
@@ -430,7 +432,7 @@ export class EmpresaPerfilPage {
         }).catch((error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
-                message: "No se ha podido abrir el mapa.",
+                message: this.mainService.getTranslate('errorMapa'),
                 duration: 1500,
                 position: 'center'
             });
@@ -445,7 +447,7 @@ export class EmpresaPerfilPage {
 
         if (!this.empresa.direccion) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene cargada la dirección",
+                message: this.mainService.getTranslate('errorDireccion'),
                 duration: 1500,
                 position: 'center'
             });
@@ -479,7 +481,7 @@ export class EmpresaPerfilPage {
                 loader.dismissAll();
                 if (!location.valid) {
                     let toast = this.toastCtrl.create({
-                        message: "La empresa no tiene cargada la dirección",
+                        message: this.mainService.getTranslate('errorDireccion'),
                         duration: 1500,
                         position: 'center'
                     });
@@ -499,7 +501,7 @@ export class EmpresaPerfilPage {
                 let destino = lat + ", " + lng;
 
                 let toast = this.toastCtrl.create({
-                    message: "Ruta encontrada.",
+                    message: this.mainService.getTranslate('rutaOk'),
                     duration: 1500,
                     position: 'center'
                 });
@@ -514,7 +516,7 @@ export class EmpresaPerfilPage {
             }, error => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se ha podido abrir el mapa.",
+                    message: this.mainService.getTranslate('errorMapa'),
                     duration: 1500,
                     position: 'center'
                 });
@@ -526,7 +528,7 @@ export class EmpresaPerfilPage {
             loader.dismissAll();
             this.gMaps();
             let toast = this.toastCtrl.create({
-                message: "No se ha podido abrir el mapa.",
+                message: this.mainService.getTranslate('errorMapa'),
                 duration: 1500,
                 position: 'center'
             });
@@ -542,7 +544,7 @@ export class EmpresaPerfilPage {
 
         if (!this.empresa.direccion) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene cargada la dirección",
+                message: this.mainService.getTranslate('errorDireccion'),
                 duration: 1500,
                 position: 'center'
             });
@@ -580,7 +582,7 @@ export class EmpresaPerfilPage {
                 loader.dismissAll();
                 if (!location.valid) {
                     let toast = this.toastCtrl.create({
-                        message: "La empresa no tiene cargada la dirección",
+                        message: this.mainService.getTranslate('errorDireccion'),
                         duration: 1500,
                         position: 'center'
                     });
@@ -603,7 +605,7 @@ export class EmpresaPerfilPage {
                 };
 
                 let toast = this.toastCtrl.create({
-                    message: "Ruta encontrada.",
+                    message: this.mainService.getTranslate('rutaOk'),
                     duration: 2520,
                     position: 'center'
                 });
@@ -620,7 +622,7 @@ export class EmpresaPerfilPage {
             }, error => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se ha podido abrir el mapa.",
+                    message: this.mainService.getTranslate('errorMapa'),
                     duration: 1500,
                     position: 'center'
                 });
@@ -638,11 +640,10 @@ export class EmpresaPerfilPage {
     leaflet() {
 
         console.log("leaflet");
-        // Diagnostic.isGpsLocationEnabled().then((resp) => {
-        //     if (resp === true) {
+
         if (!this.empresa.direccion) {
             let toast = this.toastCtrl.create({
-                message: "La empresa no tiene cargada la dirección",
+                message: this.mainService.getTranslate('errorDireccion'),
                 duration: 1500,
                 position: 'center'
             });
@@ -674,7 +675,7 @@ export class EmpresaPerfilPage {
                 loader.dismissAll();
                 if (!location.valid) {
                     let toast = this.toastCtrl.create({
-                        message: "La empresa no tiene cargada la dirección",
+                        message: this.mainService.getTranslate('errorDireccion'),
                         duration: 1500,
                         position: 'center'
                     });
@@ -697,7 +698,7 @@ export class EmpresaPerfilPage {
                 };
 
                 let toast = this.toastCtrl.create({
-                    message: "Ruta encontrada.",
+                    message: this.mainService.getTranslate('rutaOk'),
                     duration: 2520,
                     position: 'center'
                 });
@@ -714,7 +715,7 @@ export class EmpresaPerfilPage {
             }, error => {
                 loader.dismissAll();
                 let toast = this.toastCtrl.create({
-                    message: "No se ha podido abrir el mapa.",
+                    message: this.mainService.getTranslate('errorMapa'),
                     duration: 1500,
                     position: 'center'
                 });
@@ -725,28 +726,13 @@ export class EmpresaPerfilPage {
         }).catch((error) => {
             loader.dismissAll();
             let toast = this.toastCtrl.create({
-                message: "No se ha podido abrir el mapa.",
+                message: this.mainService.getTranslate('errorMapa'),
                 duration: 1500,
                 position: 'center'
             });
 
             toast.present(toast);
         });
-
-
-        //     } else {
-        //         let toast = this.toastCtrl.create({
-        //             message: "Necesitás habilitar el GPS para realizar esta función",
-        //             duration: 1500,
-        //             position: 'center'
-        //         });
-        //
-        //         toast.present(toast);
-        //
-        //     }
-        // }).catch((error) => {
-        //     console.log("isGpsLocationEnabled ERROR:", error);
-        // });
 
     }
 
@@ -761,14 +747,10 @@ export class EmpresaPerfilPage {
     }
 
     uploadImg(userID, empresaId) {
-        // if (!Diagnostic ){
-        //
-        // }
-        //
 
         let options = {maximumImagesCount: 1};
         let loader = this.loadingCtrl.create({
-            content: "Subiendo imagen.",
+            content: this.mainService.getTranslate('subiendoImagen'),
             // duration: 6000
         });
 
@@ -790,7 +772,7 @@ export class EmpresaPerfilPage {
                                 .then(
                                     (data) => {
                                         let toast = this.toastCtrl.create({
-                                            message: "Imagen subida",
+                                            message: this.mainService.getTranslate('imagenOk'),
                                             duration: 1500,
                                             position: 'center'
                                         });
@@ -802,7 +784,7 @@ export class EmpresaPerfilPage {
 
                                     }, (error) => {
                                         let toast = this.toastCtrl.create({
-                                            message: "No se ha podido subir la imagen ",
+                                            message: this.mainService.getTranslate('imagenError1'),
                                             duration: 1500,
                                             position: 'center'
                                         });
@@ -819,7 +801,7 @@ export class EmpresaPerfilPage {
 
         }, (err) => {
             let toast = this.toastCtrl.create({
-                message: "Error en la lectura de imágenes",
+                message: this.mainService.getTranslate('imagenError2'),
                 duration: 1500,
                 position: 'center'
             });
@@ -839,7 +821,7 @@ export class EmpresaPerfilPage {
             .then(
                 (ondas) => {
                     let toast = this.toastCtrl.create({
-                        message: 'Se agrego a notificaciones',
+                        message: this.mainService.getTranslate('notificacionesOk'),
                         duration: 2000,
                         position: 'center'
                     });
@@ -877,7 +859,7 @@ export class EmpresaPerfilPage {
 
         let options = {maximumImagesCount: 1};
         let loader = this.loadingCtrl.create({
-            content: "Subiendo imagen.",
+            content: this.mainService.getTranslate('subiendoImagen'),
             // duration: 6000
         });
 
@@ -893,7 +875,7 @@ export class EmpresaPerfilPage {
 
                             fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas").then((data)=> {
                                 let toast = this.toastCtrl.create({
-                                    message: "Imagen subida",
+                                    message: this.mainService.getTranslate('imagenOk'),
                                     duration: 1500,
                                     position: 'center'
                                 });
@@ -909,7 +891,7 @@ export class EmpresaPerfilPage {
 
             }, (err) => {
                 let toast = this.toastCtrl.create({
-                    message: "Error en la lectura de imágenes",
+                    message: this.mainService.getTranslate('imagenError2'),
                     duration: 1500,
                     position: 'center'
                 });

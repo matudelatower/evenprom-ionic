@@ -1,11 +1,34 @@
 <ion-header>
+
     <ion-navbar>
-        <ion-title>
-            Mapa de Empresas
+        <ion-title no-padding>Empresas a {{(kms > 0? 'menosde' :'masde' )| translate }} {{kms > 0? kms :'300' }} km
         </ion-title>
+        <ion-item [hidden]="true">
+            <ion-label>{{'distancia' | translate}}</ion-label>
+            <ion-select (ionChange)="rangeChange()" [cancelText]="('cancelar' | translate)"
+                        [okText]="('ok' | translate)" #searchKm center
+                        [(ngModel)]="kms">
+                <ion-option *ngFor="let k of distancias"
+                            [value]="k.km">
+                    {{ (k.km > 0? 'menosde' :'masde') | translate }} {{k.km > 0? k.km :'300' }} kms
+                </ion-option>
+            </ion-select>
+        </ion-item>
+        <ion-buttons end>
+            <button (click)="opensearchKm()" icon-only ion-button>
+                <ion-icon name="search"></ion-icon>
+            </button>
+        </ion-buttons>
     </ion-navbar>
+    <!--<ion-toolbar style="max-height: 63px !important;">-->
+    <!--<ion-range pin="true" step="0.5" min="1" max="500" [(ngModel)]="kms">-->
+    <!--</ion-range>-->
+    <!---->
+    <!--</ion-toolbar>-->
+
 </ion-header>
 
+
 <ion-content>
-    <empresas-map [empresas]="empresas" style="width:100%;"></empresas-map>
+    <div #contenedorMapaEmpresas class="angular-leaflet-map"></div>
 </ion-content>

@@ -3,7 +3,7 @@ import {ToastController, Slides, Events, Content, Select} from "ionic-angular";
 import {ModalSearch} from '../../pages/modals/search';
 import {MainService} from "../../app/main.service";
 import 'leaflet';
-import {NavController, LoadingController, Searchbar} from 'ionic-angular';
+import {NavController, LoadingController} from 'ionic-angular';
 import {Empresas} from "../empresas/empresas";
 import {MapService} from './../../directives/map/map.service';
 import {GeosearchComponent} from './../../directives/map/geosearch.component';
@@ -38,13 +38,13 @@ export class PrincipalPage {
 
     showSearch: Boolean = false;
 
-    // search = "";
-
     search = "";
 
     localidades = [];
 
     user = null;
+
+    complete = false;
 
 
     @ViewChild('searchP') searchP: Select;
@@ -58,19 +58,20 @@ export class PrincipalPage {
                 public mapService: MapService) {
         this.mapService = mapService;
 
-        this.doRefresh(false);
 
-        // this.mainservice.getDistanceFromLatLonInKm(-27.3672616, -55.8915074, -27.3669613, -55.8925728)
+    }
 
+    ngOnInit() {
+
+
+        setTimeout(() => { // <===
+            this.doRefresh(false);
+        }, 2000);
 
         this.events.subscribe(this.mainservice.event_location_detected, (location) => {
 
             this.setCurrentLocalidad(location.latitude, location.longitude);
         });
-
-    }
-
-    ngOnInit() {
         if (!this.mainservice.currentLocalidad) {
             Geolocation.getCurrentPosition().then((location) => {
                 this.setCurrentLocalidad(location.coords.latitude, location.coords.longitude);
@@ -81,8 +82,8 @@ export class PrincipalPage {
         }
 
         this.getLocalidades();
-
     }
+
 
     getLocalidades() {
         this.mainservice.getAll('localidades/publicaciones').then(
@@ -90,6 +91,7 @@ export class PrincipalPage {
                 this.localidades = response;
                 if (response.length > 0) {
                     this.search = response[0].descripcion;
+                    this.localidades.unshift({descripcion: 'Sin Filtros'});
                 }
 
             }
@@ -141,10 +143,11 @@ export class PrincipalPage {
             if (!this.user || this.user.nombre == "demo") {
                 this.mainservice.sinUsuario();
                 this.tabs = this.tabBody.toString();
+                return;
             }
-        } else {
-            this.tabBody = +this.tabs;
         }
+
+        this.tabBody = +this.tabs;
 
     }
 
@@ -170,12 +173,14 @@ export class PrincipalPage {
 
     }
 
-    getPublicaciones(userID, fields, loader, refresher, error?) {
+    getPublicaciones(userID, fields, loader, refresher) {
         let resource = 'publicaciones/' + userID + '/persona';
         this.mainservice.getAll(resource, fields)
             .then(
                 (data) => {
                     this.publicaciones = data;
+
+                    this.complete = true;
 
                     this.errorNoConexion = false;
                     loader.dismissAll();
@@ -187,19 +192,6 @@ export class PrincipalPage {
                 (ex) => {
                     console.error('error publicaciones', ex)
 
-                    if (this.mainservice.isUndefined(error)) {
-                        error = 0;
-                        this.getPublicaciones(userID, fields, loader, refresher, error);
-                        return;
-                    } else {
-
-                        if (error < 3) {
-                            error++;
-                            this.getPublicaciones(userID, fields, loader, refresher, error);
-                            return;
-                        }
-
-                    }
 
                     this.errorNoConexion = true;
                     //this.publicaciones = [];
@@ -209,7 +201,7 @@ export class PrincipalPage {
                     }
 
                     let toast = this.toastCtrl.create({
-                        message: "Error en la conexión a internet",
+                        message: "",
                         duration: 2000,
                         position: 'center'
                     });
@@ -239,18 +231,24 @@ export class PrincipalPage {
         });
         loader.present();
 
+
         this.mainservice.getUser().then(
             (user) => {
+
+                console.log('USER_OK', user);
                 this.user = user;
                 this.getPublicaciones(user.userID, fields, loader, refresher);
             },
-            () => {
+            (error) => {
+                console.log('USER_ERROR', error);
                 this.mainservice.getUserDemo().then(
                     (user) => {
+                        console.log('USERDEMO_OK', user);
                         this.getPublicaciones(user.userID, fields, loader, refresher);
                     },
-                    () => {
-                        this.getPublicaciones(null, fields, loader, refresher);
+                    (error) => {
+                        console.log('USERDEMO_ERROR', error);
+                        this.doRefresh(false);
                     }
                 );
             }
@@ -358,7 +356,7 @@ export class PrincipalPage {
             })
             .catch((ex) => {
 
-                console.error('error ubicaciones', ex);
+                console.log('error ubicaciones', ex);
                 loader.dismissAll();
 
                 let toast = this.toastCtrl.create({

@@ -2,7 +2,6 @@ import {Component} from '@angular/core';
 import {NavController, NavParams, ToastController, AlertController, LoadingController, Events} from 'ionic-angular';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {MainService} from "../../app/main.service";
-import {LoginPage} from "../login/login";
 
 /*
  Generated class for the EditarPerfil page.
@@ -128,7 +127,7 @@ export class EditarPerfilPage {
                 (ondas) => {
                     // this.ondas = ondas;
                     let toast = this.toastCtrl.create({
-                        message: 'Perfil Guardado Correctamente',
+                        message: this.mainService.getTranslate('perfilOk'),
                         duration: 2000,
                         position: 'center'
                     });
@@ -141,6 +140,12 @@ export class EditarPerfilPage {
                 },
                 (err) => {
                     console.error(err);
+                    let toast = this.toastCtrl.create({
+                        message: this.mainService.getTranslate('perfilError'),
+                        duration: 2000,
+                        position: 'center'
+                    });
+                    toast.present();
                     loader.dismissAll();
                 }
             );

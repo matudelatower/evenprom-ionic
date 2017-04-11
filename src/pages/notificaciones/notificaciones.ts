@@ -1,7 +1,6 @@
 import {Component} from '@angular/core';
 import {NavController, NavParams, LoadingController, ToastController, AlertController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
-import {LoginPage} from "../login/login";
 import {OneSignal, NativeStorage} from "ionic-native";
 
 /*

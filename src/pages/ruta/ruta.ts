@@ -16,7 +16,7 @@ export class RutaPage {
 
     @ViewChild('contenedorMapa') contenedorMapa: ElementRef;
 
-    map:any;
+    map: any;
 
     constructor(public navCtrl: NavController,
                 public mapService: MapService,
@@ -33,7 +33,7 @@ export class RutaPage {
 
         this.contenedorMapa.nativeElement.innerHTML = '<div class="angular-leaflet-map" id="' + mapId + '"></div>';
 
-        this.map = this.mapService.createMap(mapId);
+        this.map = this.mapService.createMap(mapId, ways[0].lat, ways[0].lng);
 
         let wayPoints = this.mapService.createWayPoints(ways);
 

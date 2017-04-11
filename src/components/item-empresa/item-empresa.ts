@@ -29,13 +29,13 @@ export class ItemEmpresaComponent {
 
             this.mainService.post('favears/' + empresaId + '/empresas/' + user.userID)
                 .then((data) => {
-                    let mensaje = 'Agregado a favoritos';
+                    let mensaje = this.mainService.getTranslate('agregadoFavoritos');
 
                     if (data.empresa.like_persona == true) {
                         this.empresa.likes += 1;
                     } else {
                         this.empresa.likes -= 1;
-                        mensaje = 'Quitado de favoritos';
+                        mensaje = this.mainService.getTranslate('sacadoFavoritos');
                     }
                     this.empresa.like_persona = data.empresa.like_persona;
                     let toast = this.toastCtrl.create({
@@ -47,7 +47,7 @@ export class ItemEmpresaComponent {
                     toast.present(toast);
 
                 });
-        }).catch(()=>{
+        }).catch(() => {
             this.mainService.sinUsuario()
         });
     }

@@ -1,19 +1,17 @@
-<ion-header class="header-preview-publicacion" *ngIf="publicacion">
-    <ion-navbar *ngIf="publicacion.premium" [ngStyle]="{'background-color':publicacion.color, 'color':'#FFF'}">
-
-        <ion-title text-right>evenprom</ion-title>
-    </ion-navbar>
-    <ion-navbar *ngIf="!publicacion.premium" [ngStyle]="{'background-color':'#5c666f', 'color':'#FFF'}">
-
-        <ion-title text-right>evenprom</ion-title>
+<ion-header class="header-preview-publicacion">
+    <ion-navbar [ngStyle]="{'background-color':color , 'color':'#FFF'}">
+        <ion-title text-right>
+            <b class="ep-celeste">Even</b><b class="ep-fucsia">Prom</b>
+        </ion-title>
     </ion-navbar>
 </ion-header>
 
-<ion-content class="modal-preview-publicacion" *ngIf="publicacion">
 
-    <ion-grid>
+<ion-content class="modal-preview-publicacion">
+
+    <ion-grid *ngIf="publicacion">
         <ion-row class="no-padding-top-button">
-            <ion-col center text-left width-60 class="no-padding-top-button">
+            <ion-col center text-left width-60 no-padding class="no-padding-top-button">
                 <ion-note>
                     <h1 style="margin-top: 10px;">
                         <b [ngStyle]="{'color':publicacion.color}" *ngIf="publicacion.premium">{{publicacion.nombre_empresa
@@ -33,7 +31,8 @@
                 </button>
 
             </ion-col>
-            <ion-col center text-left no-padding width-10  class="no-padding-top-button" style="margin-right: 20px; margin-bottom: 5px;">
+            <ion-col center text-left no-padding width-10 class="no-padding-top-button"
+                     style="margin-right: 20px; margin-bottom: 5px;">
                 <button style="padding-left: 5px;" danger ion-button icon-left clear color="danger">
                     <ion-icon name='heart'></ion-icon>
                     <div style="color: #000;">{{publicacion.likes}}</div>
@@ -44,15 +43,15 @@
         </ion-row>
 
         <ion-row class="img-publicacion-content-modal" class="no-padding-top-button">
-            <ion-col class="no-padding-top-button">
+            <ion-col class="no-padding-top-button" no-padding>
                 <img class="img-publicacion-img" [src]="publicacion.imagen_publicacion"/>
                 <div class="btn-flotantes-publicacion">
-                    <button  ion-button icon-only clear color="danger"
+                    <button ion-button icon-only clear color="danger"
                             (click)="checkInPublicacion(publicacion.id)">
                         <ion-icon name="checkmark-circle-outline" *ngIf="!publicacion.checkin_persona"></ion-icon>
                         <ion-icon name="checkmark-circle" *ngIf="publicacion.checkin_persona"></ion-icon>
                     </button>
-                    <button  ion-button icon-only clear color="danger" (click)="addPublicacionFav(publicacion.id)">
+                    <button ion-button icon-only clear color="danger" (click)="addPublicacionFav(publicacion.id)">
                         <ion-icon name='heart-outline' *ngIf="!publicacion.like_persona"></ion-icon>
                         <ion-icon name='heart' *ngIf="publicacion.like_persona"></ion-icon>
                     </button>
@@ -82,8 +81,10 @@
         </ion-row>
         <ion-row class="publicacion-fecha-border" text-center>
             <ion-col class="no-padding-top-button" text-center>
-                <p><span class="ep-gris ">Fecha</span> {{publicacion.rango_fecha.fecha_desde}} al {{publicacion.rango_fecha.fecha_hasta}} </p>
-                <p><span class="ep-gris ">Hora</span> {{publicacion.rango_fecha.hora_desde}} hasta las {{publicacion.rango_fecha.hora_hasta}}</p>
+                <p><span class="ep-gris ">Fecha</span> {{publicacion.rango_fecha.fecha_desde}} al
+                    {{publicacion.rango_fecha.fecha_hasta}} </p>
+                <p><span class="ep-gris ">Hora</span> {{publicacion.rango_fecha.hora_desde}} hasta las
+                    {{publicacion.rango_fecha.hora_hasta}}</p>
             </ion-col>
 
         </ion-row>
@@ -114,12 +115,13 @@
                 </button>
 
 
-                <button class="btn-redondo"  color="danger" large round ion-button icon-only (click)="comoLlegar()">
+                <button class="btn-redondo" color="danger" large round ion-button icon-only (click)="comoLlegar()">
                     <ion-icon name="pin"></ion-icon>
                 </button>
 
 
-                <button class="btn-redondo" (click)="openUrl(publicacion.contacto_empresa.web)" color="ep-violeta" large round ion-button
+                <button class="btn-redondo" (click)="openUrl(publicacion.contacto_empresa.web)" color="ep-violeta" large
+                        round ion-button
                         icon-only>
                     <ion-icon name="globe"></ion-icon>
                 </button>
@@ -127,18 +129,18 @@
             </ion-col>
         </ion-row>
 
-<!--TODO crear form de alta de medios de pagos que acepta la empresa-->
+        <!--TODO crear form de alta de medios de pagos que acepta la empresa-->
         <!--<ion-row text-center>-->
-            <!--<ion-col no-padding-top-button class="tarjetas-content">-->
+        <!--<ion-col no-padding-top-button class="tarjetas-content">-->
 
-                <!--<img src="assets/img/tarjetas/mestro.png" alt="Maestro">-->
-                <!--<img src="assets/img/tarjetas/paypal2.png" alt="Paypal">-->
-                <!--<img src="assets/img/tarjetas/mastercard.png" alt="Mastercard">-->
-                <!--<img src="assets/img/tarjetas/visa.png" alt="Visa">-->
-                <!--<img src="assets/img/tarjetas/mercadopago.png" width="51" height="32" alt="mercado pago">-->
-                <!--<img src="assets/img/tarjetas/american-express.png" alt="American Express">-->
+        <!--<img src="assets/img/tarjetas/mestro.png" alt="Maestro">-->
+        <!--<img src="assets/img/tarjetas/paypal2.png" alt="Paypal">-->
+        <!--<img src="assets/img/tarjetas/mastercard.png" alt="Mastercard">-->
+        <!--<img src="assets/img/tarjetas/visa.png" alt="Visa">-->
+        <!--<img src="assets/img/tarjetas/mercadopago.png" width="51" height="32" alt="mercado pago">-->
+        <!--<img src="assets/img/tarjetas/american-express.png" alt="American Express">-->
 
-            <!--</ion-col>-->
+        <!--</ion-col>-->
         <!--</ion-row>-->
 
 
@@ -159,7 +161,7 @@
                 <m-avatar [fbId]="usuario.fbId" [gId]="usuario.gId"></m-avatar>
             </ion-avatar>
             <h2>Yo</h2>
-            <ion-textarea placeholder="Escribí un comentario" [(ngModel)]="comentario"></ion-textarea>
+            <ion-textarea [placeholder]="('escribi-comentario' | translate)" [(ngModel)]="comentario"></ion-textarea>
 
             <button (click)="comentar()" ion-button clear icon-only item-right>
                 <ion-icon name="send" is-active="false"></ion-icon>

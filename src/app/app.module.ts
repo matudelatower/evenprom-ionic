@@ -22,7 +22,6 @@ import {MapService} from "../directives/map/map.service";
 import {MapComponent} from '../directives/map/map.component';
 import {GeosearchComponent} from '../directives/map/geosearch.component';
 import {ModalMapa} from '../pages/principal/modalMapa.component';
-import {MapaEmpresaComponent} from "../directives/map-empresa/map.component";
 import {DefaultImageDirective} from "../directives/img/image-default.directive";
 import {UserData} from "../pages/login/user-data";
 import {ModalComentario} from "../pages/principal/modal.comentario.component";
@@ -70,7 +69,6 @@ export function createTranslateLoader(http: Http) {
         MapComponent,
         GeosearchComponent,
         ModalMapa,
-        MapaEmpresaComponent,
         DefaultImageDirective,
         ModalImageDefault,
         FavoritosPage,
