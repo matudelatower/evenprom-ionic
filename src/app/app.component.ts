@@ -338,27 +338,39 @@ export class MyApp {
 
         this.mainService.getUser().then(
             data => {
-                if (data.fbId) {
-                    Facebook.logout().then(function (response) {
-                        NativeStorage.clear();
-                    }, function (error) {
-                        console.log(error);
-                    });
-                }
-                else if (data.gId) {
-                    GooglePlus.logout()
-                        .then(function (response) {
+
+                if (data.nombre == "demo"){
+                    this.stopBackgroundService();
+                }else{
+                    if (data.fbId) {
+                        Facebook.logout().then(function (response) {
                             NativeStorage.clear();
+                            this.stopBackgroundService();
                         }, function (error) {
                             console.log(error);
                         });
+                    }
+                    else if (data.gId) {
+                        GooglePlus.logout()
+                            .then(function (response) {
+                                NativeStorage.clear();
+                                this.stopBackgroundService();
+                            }, function (error) {
+                                console.log(error);
+                            });
+                    }
                 }
+
             });
 
+
+        console.log('logout');
+    }
+
+    stopBackgroundService () {
         BackgroundGeolocation.stop();
         OneSignal.setSubscription(false);
-        this.rootPage = LoginPage;
-        console.log('logout');
+
     }
 
     openPage(page) {
