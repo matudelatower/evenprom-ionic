@@ -119,19 +119,6 @@ export class PrincipalPage {
 
     }
 
-    onSlideChanged() {
-        let currentIndex = this.slider.getActiveIndex();
-        console.log("Current index is", currentIndex);
-        this.tabBody = currentIndex;
-        this.tabs = currentIndex.toString();
-        if (this.tabs == "1") {
-            this.pageEmpresas();
-        }
-        else if (this.tabs == "2") {
-            this.pageNotificaciones();
-        }
-        this.content.scrollToTop();
-    }
 
     selectedTab() {
         // this.slider.slideTo(+this.tabs, 500);
@@ -278,47 +265,17 @@ export class PrincipalPage {
         modal.onDidDismiss((data) => {
 
             if (data) {
-                let fields = "fields=" + JSON.stringify(data);
 
-                this.doRefresh(false, fields);
+
+                this.doRefresh(false, {
+                    fields : data
+                });
             }
 
 
         });
     }
 
-    modalRanking() {
-        let modal = this.mainservice.modalCreate(GeosearchComponent);
-
-        modal.present();
-
-        modal.onDidDismiss((data: any[]) => {
-            if (data) {
-                console.log(data);
-            }
-        });
-    }
-
-
-    modalEmpresas() {
-        let modal = this.mainservice.modalCreate(Empresas);
-
-        modal.present();
-
-        modal.onDidDismiss((data: any[]) => {
-            if (data) {
-                console.log(data);
-            }
-        });
-    }
-
-    pageEmpresas() {
-        // this.navController.push(Empresas);
-    }
-
-    pageNotificaciones() {
-
-    }
 
     toastPromo(promo) {
 

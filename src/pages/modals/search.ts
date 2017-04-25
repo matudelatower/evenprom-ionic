@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import {Platform, NavParams, ViewController} from 'ionic-angular';
+import {Platform, NavParams, ViewController, Events} from 'ionic-angular';
 import {NativeStorage} from 'ionic-native';
 import {Data} from '../../directives/toggle/data';
 import {MainService} from "../../app/main.service";
+import {TranslateService} from "@ngx-translate/core";
 
 @Component({
     selector: 'page-search',
@@ -16,6 +17,8 @@ export class ModalSearch {
     constructor(public platform: Platform,
                 public params: NavParams,
                 public mainService: MainService,
+                public translate:TranslateService,
+                public events: Events,
                 public viewCtrl: ViewController) {
 
         let rubros = [];
@@ -69,7 +72,11 @@ export class ModalSearch {
 
 
     cargarParametros(listas, rubros, ondas, localidades) {
-        this.mainService.getAll('rubros')
+        let params = {
+            locale : this.translate.currentLang
+        };
+
+        this.mainService.getAll('rubros', params)
             .then(
                 (response) => {
                     for (let r of response) {
@@ -84,7 +91,7 @@ export class ModalSearch {
             );
 
 
-        this.mainService.getAll('ondas')
+        this.mainService.getAll('ondas', params)
             .then(
                 (response) => {
                     for (let r of response) {

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {NavController, NavParams, ToastController, AlertController, LoadingController, Events} from 'ionic-angular';
 import {FormGroup, Validators, FormBuilder} from "@angular/forms";
 import {MainService} from "../../app/main.service";
+import {TranslateService} from "@ngx-translate/core";
 
 /*
  Generated class for the EditarPerfil page.
@@ -27,6 +28,7 @@ export class EditarPerfilPage {
                 private formBuilder: FormBuilder,
                 public alertCtrl: AlertController,
                 public loadingCtrl: LoadingController,
+                public translate: TranslateService,
                 public events: Events) {
 
         let loader = this.loadingCtrl.create({
@@ -35,17 +37,14 @@ export class EditarPerfilPage {
         });
         loader.present();
 
-        this.mainService.getAll('ondas')
-            .then(
-                (ondas) => {
-                    this.ondas = ondas;
+        this.getOndas();
 
-                },
-                (err) => {
-                    console.error(err);
+        this.events.subscribe(this.mainService.event_change_locale, () => {
 
-                }
-            );
+            this.getOndas();
+        });
+
+
         this.mainService.getAll('tipodocumentos')
             .then(
                 (tipoDoc) => {
@@ -108,6 +107,24 @@ export class EditarPerfilPage {
             }
         );
 
+    }
+
+    getOndas () {
+        let params = {
+            locale : this.translate.currentLang
+        };
+
+        this.mainService.getAll('ondas', params)
+            .then(
+                (ondas) => {
+                    this.ondas = ondas;
+
+                },
+                (err) => {
+                    console.error(err);
+
+                }
+            );
     }
 
     ionViewDidLoad() {

@@ -89,7 +89,7 @@ export class NotificacionesPage {
 
             });
 
-        this.events.subscribe(this.mainService.event_change_locale, (location) => {
+        this.events.subscribe(this.mainService.event_change_locale, () => {
 
             this.cargarNotificaciones();
         });
@@ -124,10 +124,10 @@ export class NotificacionesPage {
         });
         loader.present();
 
-        console.log('this.translate.currentLang', this.translate.currentLang);
+
         let params = {
             locale : this.translate.currentLang
-        }
+        };
 
         this.mainService.getAll('localidades/publicaciones').then(
             (response) => {
