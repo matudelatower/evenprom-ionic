@@ -1,5 +1,5 @@
 import {Component, ViewChild} from '@angular/core';
-import {Platform, Events, LoadingController, Nav, AlertController} from 'ionic-angular';
+import {Platform, Events, LoadingController, Nav, AlertController, Select} from 'ionic-angular';
 import {
     StatusBar, BackgroundGeolocation, Facebook, NativeStorage, AppRate,
     GooglePlus, Market, GoogleAnalytics, Splashscreen, OneSignal, Deeplinks
@@ -25,6 +25,7 @@ import {ModalPreviewPublicacion} from "../pages/modals/previewPublicacion";
 export class MyApp {
 
     @ViewChild(Nav) navChild: Nav;
+    @ViewChild('selectLenguaje') selectLenguaje: Select;
 
 
     //rootPage = LoginPage;
@@ -377,10 +378,15 @@ export class MyApp {
         this.rootPage = page;
     }
 
+    openCambiarLenguaje () {
+        this.selectLenguaje.open();
+    }
+
     cambiarLenguaje() {
 
         NativeStorage.setItem('lenguaje', this.lenguaje);
         this.translate.use(this.lenguaje).subscribe(() => {
+            this.events.publish(this.mainService.event_change_locale);
             for (let arr of this.mainService.translateArray) {
                 this.translate.get(arr.k).subscribe(
                     value => {

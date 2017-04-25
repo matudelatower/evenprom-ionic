@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, LoadingController, ToastController, AlertController} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, ToastController, AlertController, Events} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 import {OneSignal, NativeStorage} from "ionic-native";
+import {TranslateService} from "@ngx-translate/core";
 
 /*
  Generated class for the Notificaciones page.
@@ -43,6 +44,8 @@ export class NotificacionesPage {
                 public mainService: MainService,
                 public loadingCtrl: LoadingController,
                 public alertCtrl: AlertController,
+                public events : Events,
+                public translate: TranslateService,
                 public toastCtrl: ToastController) {
 
 
@@ -86,6 +89,11 @@ export class NotificacionesPage {
 
             });
 
+        this.events.subscribe(this.mainService.event_change_locale, (location) => {
+
+            this.cargarNotificaciones();
+        });
+
     }
 
     ionViewDidLoad() {
@@ -116,19 +124,24 @@ export class NotificacionesPage {
         });
         loader.present();
 
+        console.log('this.translate.currentLang', this.translate.currentLang);
+        let params = {
+            locale : this.translate.currentLang
+        }
+
         this.mainService.getAll('localidades/publicaciones').then(
             (response) => {
                 this.localidades = response;
             }
         );
 
-        this.mainService.getAll('rubros').then(
+        this.mainService.getAll('rubros', params).then(
             (response) => {
                 this.rubros = response;
             }
         );
 
-        this.mainService.getAll('ondas').then(
+        this.mainService.getAll('ondas', params).then(
             (response) => {
                 this.ondas = response;
             }

@@ -136,12 +136,18 @@
 
     <ion-row>
         <ion-col text-right>
-            <ion-icon name="star-outline"></ion-icon>
-            <ion-icon name="star-outline"></ion-icon>
-            <ion-icon name="star-outline"></ion-icon>
-            <ion-icon name="star-outline"></ion-icon>
-            <ion-icon name="star-outline"></ion-icon>
-            <span>0</span>
+            <ion-icon color="bright" *ngIf="empresa.rating>=1" name="star"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating>=2" name="star"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating>=3" name="star"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating>=4" name="star"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating>=5" name="star"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating%1!=0" name="star-half"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating==0" name="star-outline"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating<=1" name="star-outline"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating<=2" name="star-outline"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating<=3" name="star-outline"></ion-icon>
+            <ion-icon color="bright" *ngIf="empresa.rating<=4" name="star-outline"></ion-icon>
+            <b>{{empresa.rating}}</b>
             <br>
             <span>0</span>
             <ion-icon name="person"></ion-icon>

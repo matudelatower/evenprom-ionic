@@ -23,6 +23,7 @@ export class MainService {
     public mensajeUserAnonimo = "Useted no puede realizar esta acción.";
 
     public event_location_detected = "location:detected";
+    public event_change_locale = "locale:changed";
 
     public currentLocalidad: any = false;
     public backLocation: any;
@@ -221,6 +222,7 @@ export class MainService {
                             this.headers.set('Authorization', 'Bearer ' + data.access_token);
 
                             this.options.merge({headers: this.headers});
+                            this.options.search = search;
 
                             return this.http.get(this.service + "/" + resource, this.options)
                                 .toPromise()

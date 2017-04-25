@@ -47,10 +47,10 @@
         </ion-grid>
 
         <ion-list class="menu-items">
-            <ion-item no-lines>
+            <ion-item no-lines (click)="openCambiarLenguaje()">
                 <ion-icon name="globe" item-left></ion-icon>
-                <ion-label>{{"elegirLenguaje" | translate}}</ion-label>
-                <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" (ionChange)="cambiarLenguaje()" [(ngModel)]="lenguaje">
+                <ion-label><b>{{"elegirLenguaje" | translate}}</b>: {{lenguaje | translate}}</ion-label>
+                <ion-select hidden="true" [cancelText]="('cancelar' | translate)" #selectLenguaje  [okText]="('ok' | translate)" (ionChange)="cambiarLenguaje()" [(ngModel)]="lenguaje">
                     <ion-option value="es">{{"es" | translate}}</ion-option>
                     <ion-option value="en">{{"en" | translate}}</ion-option>
                     <ion-option value="pt">{{"pt" | translate}}</ion-option>
