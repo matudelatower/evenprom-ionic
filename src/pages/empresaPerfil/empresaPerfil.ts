@@ -15,6 +15,7 @@ import {
     EmailComposer,
     ImagePicker,
     Transfer,
+    FileUploadOptions,
     Crop,
     Geolocation,
     NativeStorage
@@ -267,6 +268,7 @@ export class EmpresaPerfilPage {
                         duration: 3250,
                         position: 'center'
                     });
+
 
                     toast.present(toast);
                     loader.present();
@@ -755,7 +757,8 @@ export class EmpresaPerfilPage {
         });
 
 
-        const fileTransfer = new Transfer();
+        let fileTransfer = new Transfer();
+
 
         ImagePicker.getPictures(options).then((results) => {
 
@@ -764,34 +767,51 @@ export class EmpresaPerfilPage {
 
                 Crop.crop(imagenURL, {quality: 75})
                     .then(
-                        newImage => {
+                        (newImage) => {
                             //let url = newImage.substring(0, newImage.indexOf('?'));
                             //let url = newImage.substring(0, newImage.indexOf('?'));
                             loader.present();
-                            fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas")
+
+                            NativeStorage.getItem('token')
                                 .then(
-                                    (data) => {
-                                        let toast = this.toastCtrl.create({
-                                            message: this.mainService.getTranslate('imagenOk'),
-                                            duration: 1500,
-                                            position: 'center'
-                                        });
+                                    data => {
+                                        console.log(this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas");
 
-                                        toast.present(toast);
-                                        loader.dismissAll();
+                                        let optionsFile = {
+                                            headers: {'Authorization': 'Bearer ' + data.access_token}
+                                        };
 
-                                        this.getImagenes();
+                                        fileTransfer.upload(newImage, this.mainService.routeServices.uploadImage + empresaId + "/personas/" + userID + "/empresas",
+                                            optionsFile)
+                                            .then(
+                                                (data) => {
+                                                    let toast = this.toastCtrl.create({
+                                                        message: this.mainService.getTranslate('imagenOk'),
+                                                        duration: 1500,
+                                                        position: 'center'
+                                                    });
 
-                                    }, (error) => {
-                                        let toast = this.toastCtrl.create({
-                                            message: this.mainService.getTranslate('imagenError1'),
-                                            duration: 1500,
-                                            position: 'center'
-                                        });
+                                                    toast.present(toast);
+                                                    loader.dismissAll();
 
-                                        toast.present();
-                                        loader.dismissAll();
-                                    });
+                                                    this.getImagenes();
+
+                                                },
+                                                (error) => {
+                                                    console.log(error);
+                                                    let toast = this.toastCtrl.create({
+                                                        message: this.mainService.getTranslate('imagenError1'),
+                                                        duration: 1500,
+                                                        position: 'center'
+                                                    });
+
+                                                    toast.present();
+                                                    loader.dismissAll();
+                                                });
+                                    }
+                                );
+
+
                         },
                         error => this.uploadImg(userID, empresaId)
                     );
@@ -830,7 +850,7 @@ export class EmpresaPerfilPage {
 
                 },
                 (err) => {
-                   this.mainService.sinUsuario();
+                    this.mainService.sinUsuario();
 
                 }
             );

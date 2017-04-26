@@ -390,7 +390,7 @@ export class MyApp {
             for (let arr of this.mainService.translateArray) {
                 this.translate.get(arr.k).subscribe(
                     value => {
-                        console.log(value);
+                        
                         // value is our translated string
                         arr.txt = value;
                     }

@@ -83,7 +83,7 @@ export class MainService {
         this.headers = new Headers({'Content-Type': 'application/json'});
         this.options = new RequestOptions({headers: this.headers});
 
-        // this.initRouteServices();
+        this.initRouteServices();
 
     }
 
