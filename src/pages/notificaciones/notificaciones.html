@@ -33,39 +33,42 @@
     </ion-col>
 </ion-row>
 <ion-row>
-    <ion-col width-33>
+    <ion-col width-33 text-center>
+      <img src="assets/img/ciudad.png" (click)="show_alert(1)">
         <ion-label>{{ 'localidad' |translate }}</ion-label>
-        <ion-item>
-            <ion-label>Toppings</ion-label>
-            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" multiple="true" [(ngModel)]="notificacionesLocalidad">
-                <ion-option *ngFor="let localidad of localidades" [value]="localidad.id">
-                    {{localidad.descripcion}}
-                </ion-option>
-            </ion-select>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--<ion-label>Toppings</ion-label>-->
+            <!--<ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" multiple="true" [(ngModel)]="notificacionesLocalidad">-->
+                <!--<ion-option *ngFor="let localidad of localidades" [value]="localidad.id">-->
+                    <!--{{localidad.descripcion}}-->
+                <!--</ion-option>-->
+            <!--</ion-select>-->
+        <!--</ion-item>-->
     </ion-col>
 
 
-    <ion-col width-33>
+    <ion-col width-33 text-center>
+      <img src="assets/img/descuentos.png"  (click)="show_alert(2)">
         <ion-label>{{ 'descuentos' |translate }}</ion-label>
-        <ion-item>
-            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"multiple="true" [(ngModel)]="notificacionesDescuentos">
-                <ion-option *ngFor="let descuento of descuentos" [value]="descuento.id">
-                    {{descuento.nombre}}
-                </ion-option>
-            </ion-select>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--<ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"multiple="true" [(ngModel)]="notificacionesDescuentos">-->
+                <!--<ion-option *ngFor="let descuento of descuentos" [value]="descuento.id">-->
+                    <!--{{descuento.nombre}}-->
+                <!--</ion-option>-->
+            <!--</ion-select>-->
+        <!--</ion-item>-->
     </ion-col>
 
 
-    <ion-col width-33>
+    <ion-col width-33 text-center>
+      <img src="assets/img/eventos.png" (click)="show_alert(3)">
         <ion-label>{{ 'eventos' |translate }}</ion-label>
-        <ion-item>
-            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"[(ngModel)]="notificacionesEventos">
-                <ion-option value="si">{{ 'si' |translate }}</ion-option>
-                <ion-option value="no">{{ 'no' |translate }}</ion-option>
-            </ion-select>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--<ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"[(ngModel)]="notificacionesEventos">-->
+                <!--<ion-option value="si">{{ 'si' |translate }}</ion-option>-->
+                <!--<ion-option value="no">{{ 'no' |translate }}</ion-option>-->
+            <!--</ion-select>-->
+        <!--</ion-item>-->
     </ion-col>
 
 
@@ -115,24 +118,26 @@
             <!--</ion-select>-->
         <!--</ion-item>-->
     <!--</ion-col>-->
-    <ion-col width-33>
+    <ion-col col-4 text-center>
+      <img src="assets/img/empresa.png" (click)="show_alert(4)">
         <ion-label>{{ 'rubro' |translate }}</ion-label>
-        <ion-item>
-            <!--<ion-label>Toppings</ion-label>-->
-            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"multiple="true" [(ngModel)]="notificacionesRubro">
-                <ion-option *ngFor="let r of rubros" [value]="r.id">
-                    {{r.nombre}}
-                </ion-option>
-            </ion-select>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--&lt;!&ndash;<ion-label>Toppings</ion-label>&ndash;&gt;-->
+            <!--<ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"multiple="true" [(ngModel)]="notificacionesRubro">-->
+                <!--<ion-option *ngFor="let r of rubros" [value]="r.id">-->
+                    <!--{{r.nombre}}-->
+                <!--</ion-option>-->
+            <!--</ion-select>-->
+        <!--</ion-item>-->
     </ion-col>
-    <ion-col width-33>
+    <ion-col col-4 text-center>
+      <img src="assets/img/onda.png" (click)="show_alert(5)">
         <ion-label>{{ 'segunOnda' |translate }}</ion-label>
-        <ion-item>
-            <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"multiple="true" [(ngModel)]="notificacionesOnda">
-                <ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>
-            </ion-select>
-        </ion-item>
+        <!--<ion-item>-->
+            <!--<ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)"multiple="true" [(ngModel)]="notificacionesOnda">-->
+                <!--<ion-option *ngFor="let onda of ondas" [value]="onda.id">{{onda.nombre}}</ion-option>-->
+            <!--</ion-select>-->
+        <!--</ion-item>-->
     </ion-col>
 </ion-row>
 
