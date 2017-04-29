@@ -1,9 +1,10 @@
 <ion-header>
     <ion-navbar>
-        <button *ngIf="!showSearch" ion-button menuToggle>
+        <button *ngIf="!showSearch" ion-button menuToggle style="text-transform: lowercase; font-size: 1.2em;">
             <img src="assets/img/logos/favicon.png"
                  class="logo-menu">
-            <ion-icon name="menu" color="ep-gris-claro" class="btn-menu-hamb"></ion-icon>
+            <ion-icon name="menu" color="ep-gris-claro" class="btn-menu-hamb" style="margin-left:10px;"></ion-icon>
+          <b class="ep-celeste" style="margin-left:5px;">Even</b><b class="ep-fucsia">Prom</b>
         </button>
 
         <!--TODO
@@ -14,37 +15,40 @@
         <!--[placeholder]="('buscarEvenProms' | translate)"></ion-searchbar>-->
 
         <ion-title>
-            <ion-item [hidden]="!showSearch">
-                <ion-label>{{'localidad' | translate}}</ion-label>
-                <ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" #searchP center [(ngModel)]="search">
-                    <ion-option *ngFor="let l of localidades"
-                                [value]="l.descripcion !='Sin Filtros' ? l.descripcion:''">
-                        {{l.descripcion | uppercase}}
-                    </ion-option>
+            <!--<ion-item [hidden]="!showSearch">-->
+                <!--<ion-label>{{'localidad' | translate}}</ion-label>-->
+                <!--<ion-select [cancelText]="('cancelar' | translate)" [okText]="('ok' | translate)" #searchP center [(ngModel)]="search">-->
+                    <!--<ion-option *ngFor="let l of localidades"-->
+                                <!--[value]="l.descripcion !='Sin Filtros' ? l.descripcion:''">-->
+                        <!--{{l.descripcion | uppercase}}-->
+                    <!--</ion-option>-->
 
-                </ion-select>
-            </ion-item>
+                <!--</ion-select>-->
+            <!--</ion-item>-->
         </ion-title>
-        <ion-buttons *ngIf="!showSearch && tabBody =='0'" end>
+        <ion-buttons *ngIf="!showSearch && tabBody =='0'" end class="end-buttons">
             <!--<button (click)="modalSearch({charNum: 0})" ion-button icon-only>-->
             <!--<ion-icon name="options"></ion-icon>-->
             <!--</button>-->
-            <button (click)="mostrarBusqueda()" ion-button icon-only>
-                <span>{{search}}</span>
-                <ion-icon name="search" color="ep-gris-claro"></ion-icon>
+            <button (click)="mostrarBusqueda()" ion-button icon-right>
+                <span>Ciudades</span>
+                <ion-icon>
+                  <img src="assets/img/down.png">
+                </ion-icon>
             </button>
         </ion-buttons>
     </ion-navbar>
     <ion-toolbar>
         <ion-segment [(ngModel)]="tabs">
-            <ion-segment-button value="0" style="text-transform: lowercase; font-size: 1.2em;" (click)="selectedTab()">
-                <b class="ep-celeste">Even</b><b class="ep-fucsia">Prom</b>
+            <ion-segment-button value="0" (click)="selectedTab()">
+                <!--<b class="ep-celeste">Even</b><b class="ep-fucsia">Prom</b>-->
+              <ion-icon name="ios-home" color="ep-gris"></ion-icon>
             </ion-segment-button>
             <ion-segment-button value="1" (click)="selectedTab()">
-                <ion-icon name="home" color="ep-gris-claro"></ion-icon>
+                <ion-icon name="ios-beaker" color="ep-gris"></ion-icon>
             </ion-segment-button>
             <ion-segment-button value="2" (click)="selectedTab()">
-                <ion-icon name="notifications-outline" color="ep-gris-claro"></ion-icon>
+                <ion-icon name="ios-notifications" color="ep-gris"></ion-icon>
             </ion-segment-button>
         </ion-segment>
     </ion-toolbar>
@@ -128,10 +132,10 @@
 
 
     <ion-fab right bottom *ngIf="tabs == 0">
-        <button mini ion-fab color="ep-gris" (click)="modalSearch({charNum: 0})">
-            <ion-icon name="funnel"></ion-icon>
+        <button mini ion-fab color="ep-celeste" (click)="modalSearch({charNum: 0})">
+            <ion-icon name="ios-options"></ion-icon>
         </button>
-        <button mini ion-fab color="ep-gris" (click)="modalUbicaciones()">
+        <button mini ion-fab color="ep-celeste" (click)="modalUbicaciones()">
             <ion-icon name="pin"></ion-icon>
         </button>
     </ion-fab>
