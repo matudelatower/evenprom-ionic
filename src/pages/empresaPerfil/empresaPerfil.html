@@ -66,12 +66,13 @@
         <div class="scroll-hidden-x-inner">
             <ion-row>
                 <ion-col class="text-center" width-50>
-                    <ion-row>
-                        <ion-col (click)="openFileChooser()" width-100>
-                            <ion-icon style="font-size:50px;" name="images"></ion-icon>
+                    <ion-row style="height: 100%;">
+                        <ion-col (click)="openFileChooser()" width-100 class="vertical-mid-container bottom-row">
+                          <div class="vertical-mid-inner">
+                            <ion-icon style="font-size:80px;" name="ios-camera-outline"></ion-icon>
                             <br>
                             {{"añadirFoto" | translate}}
-
+                          </div>
                         </ion-col>
                         <!--<ion-col (click)="camera()" width-50>-->
                         <!--<ion-icon style="font-size:50px;" name="camera"></ion-icon>-->
@@ -84,29 +85,27 @@
                     <img [preview]="true" [srcPreview]="img.imagen_usuario_empresa" style="max-height: 140px;"
                          class="img-responsive" [src]="img.thumb">
                     <!--<ion-note>{{ img.persona.nombre}} {{img.persona.apellido}}</ion-note>-->
-
-                    <ion-item style="border: none !important;">
-                        <ion-avatar item-left>
-                            <m-avatar [fbId]="img.fbId" [gId]="img.gId"></m-avatar>
-                        </ion-avatar>
-                        <p>{{ img.persona.nombre}} </p>
-                        <p>{{ img.persona.apellido}} </p>
-
-                    </ion-item>
-
                 </ion-col>
 
 
             </ion-row>
+          <ion-row class="bottom-row">
+            <ion-col></ion-col>
+            <ion-col>
+              <ion-item class="m-item">
+                <ion-avatar item-left>
+                  <m-avatar [fbId]="img.fbId" [gId]="img.gId"></m-avatar>
+                </ion-avatar>
+                <p>{{ img.persona.nombre}} </p>
+                <p>{{ img.persona.apellido}} </p>
+
+              </ion-item>
+            </ion-col>
+          </ion-row>
+
         </div>
     </div>
-    <ion-row>
-        <ion-col text-center>
-            <button (click)="publicacionesActual () " outline ion-button>
-                {{"eventosHoy" | translate}}
-            </button>
-        </ion-col>
-    </ion-row>
+
     <ion-row class="row-novedades" no-padding *ngIf="noticias && noticias.length > 0">
         <ion-col text-center no-padding>
             <h2 style="margin-bottom: 0px; margin-top: 10px;">{{"novedades" | translate}}</h2>
@@ -135,38 +134,33 @@
     </ion-row>
 
     <ion-row>
-        <ion-col text-right>
-            <ion-icon color="bright" *ngIf="empresa.rating>=1" name="star"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating>=2" name="star"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating>=3" name="star"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating>=4" name="star"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating>=5" name="star"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating%1!=0" name="star-half"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating==0" name="star-outline"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating<=1" name="star-outline"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating<=2" name="star-outline"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating<=3" name="star-outline"></ion-icon>
-            <ion-icon color="bright" *ngIf="empresa.rating<=4" name="star-outline"></ion-icon>
-            <b>{{empresa.rating}}</b>
+        <ion-col text-center>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <ion-icon name="star-outline"></ion-icon>
+            <span>0</span>
             <br>
             <span>0</span>
             <ion-icon name="person"></ion-icon>
         </ion-col>
-        <ion-col text-right>
-            <button ion-button round icon-left outline small (click)="openUrl(empresa.contacto.web)">
-                <ion-icon name="globe"></ion-icon>
-                {{ 'sitioWeb' |translate }}
-            </button>
-            <br>
-            <button ion-button round icon-left outline small (click)="comoLlegar()">
-                <ion-icon name="pin"></ion-icon>
-                {{ 'comoLlegar' |translate }}
-            </button>
+        <!--<ion-col text-right>-->
+            <!--<button ion-button round icon-left outline small (click)="openUrl(empresa.contacto.web)">-->
+                <!--<ion-icon name="globe"></ion-icon>-->
+                <!--{{ 'sitioWeb' |translate }}-->
+            <!--</button>-->
+            <!--<br>-->
+            <!--<button ion-button round icon-left outline small (click)="comoLlegar()">-->
+                <!--<ion-icon name="pin"></ion-icon>-->
+                <!--{{ 'comoLlegar' |translate }}-->
+            <!--</button>-->
 
-        </ion-col>
+        <!--</ion-col>-->
     </ion-row>
-    <ion-row>
-        <ion-col col-9 text-center >
+    <ion-row class="bottom-row">
+      <ion-col col-3></ion-col>
+        <ion-col col-3 text-center >
             <!--<button class="btn-redondo" color="color-whatsapp" large round ion-button icon-only-->
             <!--(click)="shareWhastApp(empresa.nombre ,empresa.image_name, empresa.contacto.web)">-->
             <!--<ion-icon name="logo-whatsapp"></ion-icon>-->
@@ -175,20 +169,30 @@
             <!--(click)="shareFacebook(empresa.nombre ,empresa.image_name, empresa.contacto.web)">-->
             <!--<ion-icon name="logo-facebook"></ion-icon>-->
             <!--</button>-->
-            <button block color="ep-violeta" large round ion-button
+            <button block color="ep-violeta" large round ion-button style="background-color: #53BC5B; width:60px;height:60px;border-radius: 50%;"
                     (click)="share(empresa.nombre ,empresa.image_name, empresa.contacto.web)">
                 {{ 'compartir' |translate }}
                   <ion-icon name="share"></ion-icon>
             </button>
         </ion-col>
         <ion-col col-3 text-center>
-            <button class="btn-redondo" color="ep-rojo" large round ion-button icon-only
+            <button style="width:60px;height:60px;border-radius: 50%;" class="btn-redondo" color="ep-rojo" large round ion-button icon-only
                     (click)="agregarANotificacion(empresa.id)">
                 <ion-icon name="notifications-outline"></ion-icon>
             </button>
 
         </ion-col>
+
+      <ion-col col-3></ion-col>
     </ion-row>
+
+  <ion-row class="bottom-row">
+    <ion-col text-center>
+      <button (click)="publicacionesActual () " ion-button color="ep-celeste">
+        {{"eventosHoy" | translate}}
+      </button>
+    </ion-col>
+  </ion-row>
 
     <ion-list no-lines>
         <ion-item *ngFor="let c of comentarios" no-lines>
