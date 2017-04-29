@@ -214,7 +214,7 @@ export class NotificacionesPage {
           type:'checkbox',
           label:this.localidades[i].descripcion,
           value:this.localidades[i].id,
-          checked:i==0?true:false
+          checked:false
         });
 
       }
@@ -227,7 +227,7 @@ export class NotificacionesPage {
           type:'checkbox',
           label:this.descuentos[i].nombre,
           value:this.descuentos[i].id,
-          checked:i==0?true:false
+          checked:false
         });
 
       }
@@ -246,7 +246,7 @@ export class NotificacionesPage {
         type:'checkbox',
         label:this.no,
         value:'no',
-        checked:i==0?true:false
+        checked:false
       });
 
     }else if(flag==4){
@@ -257,7 +257,7 @@ export class NotificacionesPage {
           type:'checkbox',
           label:this.rubros[i].nombre,
           value:this.rubros[i].id,
-          checked:i==0?true:false
+          checked:false
         });
 
       }
@@ -269,7 +269,7 @@ export class NotificacionesPage {
           type:'checkbox',
           label:this.ondas[i].nombre,
           value:this.ondas[i].id,
-          checked:i==0?true:false
+          checked:false
         });
 
       }
