@@ -10,6 +10,12 @@ page-principal {
 
   }
 
+  .end-buttons{
+    background-color: #e6e6e6;
+    img{
+      height: 16px;
+    }
+  }
 }
 
 .desactivar .item {
@@ -28,8 +34,8 @@ item-list-empresa {
 }
 
 .logo-menu {
-  width: 50%;
-  margin-left: -20% !important;
+  width: 40px;
+  margin-left: -50px !important;
   position: absolute;
 }
 
@@ -67,6 +73,26 @@ item-list-empresa {
 .ep-gris {
   color: color($colors, ep-gris);
 }
+
+.date-button{
+  display: block;
+  padding:5px 10px;
+  border-radius: 5px;
+  background-color: color($colors,ep-celeste);
+  width:100px;
+  margin-left:auto;
+  margin-right:auto;
+  color:#fff;
+}
+
+.bb-row{
+  width:60%;
+  margin-left:20%;
+  ion-icon{
+    font-size:28px;
+  }
+}
+
 
 .ep-celeste {
   color: color($colors, ep-celeste);
@@ -149,9 +175,10 @@ btn-flotantes-publicacion > button {
 .img-promo-subtitle {
   position: absolute;
   text-align: center;
-  top: 60%;
-  padding: 2%;
-  border-radius: 10px 5px;
+  top: 40%;
+  padding: 5px 20px 5px 10px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
   width: auto;
   max-width: 60%;
   right: 0%;
@@ -160,7 +187,7 @@ btn-flotantes-publicacion > button {
   font-weight: bold;
   float: right;
   white-space: normal;
-
+  background-color: #dc0000;
 }
 
 .tarjetas-content > img {
@@ -340,6 +367,27 @@ btn-flotantes-publicacion > button {
 
   .img-publicacion-img {
     height: 180px;
+  }
+
+  .icon-row{
+    width:40%;
+    margin-left:30%;
+  }
+
+  .mb-row{
+    width:50%;
+    margin-left:25%;
+    ion-item{
+      border:none;
+      .item-inner{
+        border:none;
+      }
+    }
+  }
+
+  .line-div{
+    width:100%;
+    border-bottom:1px solid #e0e0e0;
   }
 
   /* Portrait and Landscape */
