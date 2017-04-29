@@ -23,6 +23,17 @@ page-empresa-perfil {
     margin: 0px;
   }
 
+  .bottom-row{
+    border-bottom:1px solid #e0e0e0;
+  }
+
+  .m-item{
+    border:none!important;
+    .item-inner{
+      border:none!important;
+    }
+  }
+
   .novedades-card {
     img {
       max-height: 180px;
@@ -48,6 +59,31 @@ page-empresa-perfil {
       img {
         max-height: 300px;
       }
+    }
+  }
+
+}
+
+.video {
+  width: 100%;
+  height: 100%;
+}
+
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+}
+
+.video-container iframe, .video-container object, .video-container embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
     }
   }
 
