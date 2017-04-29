@@ -39,10 +39,10 @@ export class NotificacionesPage {
     entretenimiento = [];
     gastronomia = [];
 
-    oktext:any='Ok';
-    canceltext:any='Cancel';
-    si:any='si';
-    no:any='no';
+    oktext: any = 'Ok';
+    canceltext: any = 'Cancel';
+    si: any = 'si';
+    no: any = 'no';
 
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
@@ -50,9 +50,7 @@ export class NotificacionesPage {
                 public loadingCtrl: LoadingController,
                 public alertCtrl: AlertController,
                 public toastCtrl: ToastController,
-                public translateService:TranslateService
-    ) {
-
+                public translateService: TranslateService) {
 
 
         mainService.getUser().then(
@@ -94,33 +92,33 @@ export class NotificacionesPage {
 
             });
 
-      translateService.get('ok').subscribe(
-        value => {
-          // value is our translated string
-          this.oktext = value;
-        }
-      );
+        translateService.get('ok').subscribe(
+            value => {
+                // value is our translated string
+                this.oktext = value;
+            }
+        );
 
-      translateService.get('cancelar').subscribe(
-        value => {
-          // value is our translated string
-          this.canceltext = value;
-        }
-      );
+        translateService.get('cancelar').subscribe(
+            value => {
+                // value is our translated string
+                this.canceltext = value;
+            }
+        );
 
-      translateService.get('si').subscribe(
-        value => {
-          // value is our translated string
-          this.si = value;
-        }
-      );
+        translateService.get('si').subscribe(
+            value => {
+                // value is our translated string
+                this.si = value;
+            }
+        );
 
-      translateService.get('no').subscribe(
-        value => {
-          // value is our translated string
-          this.no = value;
-        }
-      );
+        translateService.get('no').subscribe(
+            value => {
+                // value is our translated string
+                this.no = value;
+            }
+        );
     }
 
     ionViewDidLoad() {
@@ -203,110 +201,109 @@ export class NotificacionesPage {
 
     }
 
-  show_alert(flag){
-    let alert = this.alertCtrl.create();
-    var title='';
-    if(flag==1){
-      title='localidad';
+    show_alert(flag) {
+        let alert = this.alertCtrl.create();
+        var title = '';
+        if (flag == 1) {
+            title = 'localidad';
 
-      for(var i in this.localidades){
-        alert.addInput({
-          type:'checkbox',
-          label:this.localidades[i].descripcion,
-          value:this.localidades[i].id,
-          checked:false
-        });
+            for (var i in this.localidades) {
+                alert.addInput({
+                    type: 'checkbox',
+                    label: this.localidades[i].descripcion,
+                    value: this.localidades[i].id,
+                    checked: false
+                });
 
-      }
+            }
 
-    }else if(flag==2){
-      title='descuentos';
+        } else if (flag == 2) {
+            title = 'descuentos';
 
-      for(var i in this.descuentos){
-        alert.addInput({
-          type:'checkbox',
-          label:this.descuentos[i].nombre,
-          value:this.descuentos[i].id,
-          checked:false
-        });
+            for (var i in this.descuentos) {
+                alert.addInput({
+                    type: 'checkbox',
+                    label: this.descuentos[i].nombre,
+                    value: this.descuentos[i].id,
+                    checked: false
+                });
 
-      }
+            }
 
-    }else if(flag==3){
-      title='eventos';
+        } else if (flag == 3) {
+            title = 'eventos';
 
-      alert.addInput({
-          type:'checkbox',
-          label:this.si,
-          value:'si',
-          checked:i==0?true:false
-      });
+            alert.addInput({
+                type: 'checkbox',
+                label: this.si,
+                value: 'si',
+                checked: false
+            });
 
-      alert.addInput({
-        type:'checkbox',
-        label:this.no,
-        value:'no',
-        checked:false
-      });
+            alert.addInput({
+                type: 'checkbox',
+                label: this.no,
+                value: 'no',
+                checked: false
+            });
 
-    }else if(flag==4){
-      title='rubro';
+        } else if (flag == 4) {
+            title = 'rubro';
 
-      for(var i in this.rubros){
-        alert.addInput({
-          type:'checkbox',
-          label:this.rubros[i].nombre,
-          value:this.rubros[i].id,
-          checked:false
-        });
+            for (var i in this.rubros) {
+                alert.addInput({
+                    type: 'checkbox',
+                    label: this.rubros[i].nombre,
+                    value: this.rubros[i].id,
+                    checked: false
+                });
 
-      }
-    }else if(flag==5){
-      title='segunOnda';
+            }
+        } else if (flag == 5) {
+            title = 'segunOnda';
 
-      for(var i in this.ondas){
-        alert.addInput({
-          type:'checkbox',
-          label:this.ondas[i].nombre,
-          value:this.ondas[i].id,
-          checked:false
-        });
+            for (var i in this.ondas) {
+                alert.addInput({
+                    type: 'checkbox',
+                    label: this.ondas[i].nombre,
+                    value: this.ondas[i].id,
+                    checked: false
+                });
 
-      }
-    }
-
-    alert.addButton(this.canceltext);
-    alert.addButton({
-      text: this.oktext,
-      handler: data => {
-        console.log('Checkbox data:', data);
-        if(flag==1){
-          this.notificacionesLocalidad=data;
-        }else if(flag==2){
-          this.notificacionesDescuentos=data;
-        }else if(flag==3){
-          this.notificacionesEventos=data;
-        }else if(flag==4){
-          this.notificacionesRubro=data;
-        }else if(flag==5){
-          this.notificacionesOnda=data;
+            }
         }
-      }
-    });
 
-    this.translateService.get(title).subscribe(
-      value => {
-        // value is our translated string
-        alert.setTitle(value);
+        alert.addButton(this.canceltext);
+        alert.addButton({
+            text: this.oktext,
+            handler: data => {
+                console.log('Checkbox data:', data);
+                if (flag == 1) {
+                    this.notificacionesLocalidad = data;
+                } else if (flag == 2) {
+                    this.notificacionesDescuentos = data;
+                } else if (flag == 3) {
+                    this.notificacionesEventos = data;
+                } else if (flag == 4) {
+                    this.notificacionesRubro = data;
+                } else if (flag == 5) {
+                    this.notificacionesOnda = data;
+                }
+            }
+        });
 
-        alert.present();
+        this.translateService.get(title).subscribe(
+            value => {
+                // value is our translated string
+                alert.setTitle(value);
 
-      }
-    );
+                alert.present();
+
+            }
+        );
 
 
-
-  }
+    }
 
     guardarPerfil() {
 
