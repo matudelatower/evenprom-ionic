@@ -1,7 +1,8 @@
 <ion-header class="header-preview-publicacion">
     <ion-navbar [ngStyle]="{'background-color':color , 'color':'#FFF'}">
         <ion-title text-right>
-            <b class="ep-celeste">Even</b><b class="ep-fucsia">Prom</b>
+            <!--<b class="ep-celeste">Even</b><b class="ep-fucsia">Prom</b>-->
+          {{publicacion.nombre_empresa | uppercase }}
         </ion-title>
     </ion-navbar>
 </ion-header>
@@ -10,20 +11,20 @@
 <ion-content class="modal-preview-publicacion">
 
     <ion-grid *ngIf="publicacion">
-        <ion-row class="no-padding-top-button">
-            <ion-col center text-left width-60 no-padding class="no-padding-top-button">
-                <ion-note>
-                    <h1 style="margin-top: 10px;">
-                        <b [ngStyle]="{'color':publicacion.color}" *ngIf="publicacion.premium">{{publicacion.nombre_empresa
-                            | uppercase }}</b>
-                        <b [ngStyle]="{'color':'#5c666f'}" *ngIf="!publicacion.premium">{{publicacion.nombre_empresa |
-                            uppercase }}</b>
-                    </h1>
-                </ion-note>
+        <ion-row class="no-padding-top-button icon-row">
+            <!--<ion-col center text-left width-60 no-padding class="no-padding-top-button">-->
+                <!--<ion-note>-->
+                    <!--<h1 style="margin-top: 10px;">-->
+                        <!--<b [ngStyle]="{'color':publicacion.color}" *ngIf="publicacion.premium">{{publicacion.nombre_empresa-->
+                            <!--| uppercase }}</b>-->
+                        <!--<b [ngStyle]="{'color':'#5c666f'}" *ngIf="!publicacion.premium">{{publicacion.nombre_empresa |-->
+                            <!--uppercase }}</b>-->
+                    <!--</h1>-->
+                <!--</ion-note>-->
 
-            </ion-col>
+            <!--</ion-col>-->
 
-            <ion-col style="margin-bottom: 5px;" center text-right no-padding width-20>
+            <ion-col style="margin-bottom: 5px;" center text-right no-padding>
 
                 <button style="padding-right: 5px; " ion-button icon-left clear color="danger">
                     <ion-icon name='checkmark-circle'></ion-icon>
@@ -31,7 +32,7 @@
                 </button>
 
             </ion-col>
-            <ion-col center text-left no-padding width-10 class="no-padding-top-button"
+            <ion-col center text-left no-padding class="no-padding-top-button"
                      style="margin-right: 20px; margin-bottom: 5px;">
                 <button style="padding-left: 5px;" danger ion-button icon-left clear color="danger">
                     <ion-icon name='heart'></ion-icon>
@@ -56,34 +57,43 @@
                         <ion-icon name='heart' *ngIf="publicacion.like_persona"></ion-icon>
                     </button>
                 </div>
-                <div *ngIf="publicacion.premium">
-                    <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
-                         [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
-                        <span>{{publicacion.promocion | uppercase}}</span>
-                    </div>
-                    <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
-                         [ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">
-                        <span>{{publicacion.titulo | uppercase}}</span>
-                    </div>
-                </div>
-                <div *ngIf="!publicacion.premium">
-                    <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
-                         [ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">
-                        <span>{{publicacion.promocion | uppercase | descuentoMenos}}</span>
-                    </div>
-                    <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
-                         [ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">
-                        <span>{{publicacion.titulo | uppercase}}</span>
-                    </div>
-                </div>
+
+              <div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"
+                   [ngStyle]="{'background-color':publicacion.color}">
+                <span>{{publicacion.promocion | uppercase  | descuentoMenos}}</span>
+              </div>
+              <div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"
+                   [ngStyle]="{'background-color':publicacion.color}">
+                <span>{{publicacion.titulo | uppercase}}</span>
+              </div>
+                <!--<div *ngIf="publicacion.premium">-->
+                    <!--<div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"-->
+                         <!--[ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">-->
+                        <!--<span>{{publicacion.promocion | uppercase}}</span>-->
+                    <!--</div>-->
+                    <!--<div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"-->
+                         <!--[ngStyle]="{'background-color':publicacion.color, 'margin-right': '5px'}">-->
+                        <!--<span>{{publicacion.titulo | uppercase}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div *ngIf="!publicacion.premium">-->
+                    <!--<div *ngIf="publicacion.promocion" class="img-publicacion-subtitle"-->
+                         <!--[ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">-->
+                        <!--<span>{{publicacion.promocion | uppercase | descuentoMenos}}</span>-->
+                    <!--</div>-->
+                    <!--<div *ngIf="!publicacion.promocion" class="img-publicacion-subtitle"-->
+                         <!--[ngStyle]="{'background-color':'#5c666f', 'margin-right': '5px'}">-->
+                        <!--<span>{{publicacion.titulo | uppercase}}</span>-->
+                    <!--</div>-->
+                <!--</div>-->
 
             </ion-col>
         </ion-row>
         <ion-row class="publicacion-fecha-border" text-center>
             <ion-col class="no-padding-top-button" text-center>
-                <p><span class="ep-gris ">Fecha</span> {{publicacion.rango_fecha.fecha_desde}} al
+                <p><span class="ep-gris " style="margin-rigth:10px;">Fecha</span> {{publicacion.rango_fecha.fecha_desde}} al
                     {{publicacion.rango_fecha.fecha_hasta}} </p>
-                <p><span class="ep-gris ">Hora</span> {{publicacion.rango_fecha.hora_desde}} hasta las
+                <p><span class="ep-gris " style="margin-right:10px;">Hora</span> {{publicacion.rango_fecha.hora_desde}} a
                     {{publicacion.rango_fecha.hora_hasta}}</p>
             </ion-col>
 
