@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {NavController, NavParams, LoadingController, ToastController, AlertController, Events} from 'ionic-angular';
+import {NavController, NavParams, LoadingController, ToastController, AlertController} from 'ionic-angular';
 import {MainService} from "../../app/main.service";
 import {OneSignal, NativeStorage} from "ionic-native";
 import {TranslateService} from "@ngx-translate/core";
@@ -39,14 +39,19 @@ export class NotificacionesPage {
     entretenimiento = [];
     gastronomia = [];
 
+    oktext:any='Ok';
+    canceltext:any='Cancel';
+    si:any='si';
+    no:any='no';
+
     constructor(public navCtrl: NavController,
                 public navParams: NavParams,
                 public mainService: MainService,
                 public loadingCtrl: LoadingController,
                 public alertCtrl: AlertController,
-                public events : Events,
-                public translate: TranslateService,
-                public toastCtrl: ToastController) {
+                public toastCtrl: ToastController,
+                public translateService:TranslateService
+    ) {
 
 
 
@@ -89,11 +94,33 @@ export class NotificacionesPage {
 
             });
 
-        this.events.subscribe(this.mainService.event_change_locale, () => {
+      translateService.get('ok').subscribe(
+        value => {
+          // value is our translated string
+          this.oktext = value;
+        }
+      );
 
-            this.cargarNotificaciones();
-        });
+      translateService.get('cancelar').subscribe(
+        value => {
+          // value is our translated string
+          this.canceltext = value;
+        }
+      );
 
+      translateService.get('si').subscribe(
+        value => {
+          // value is our translated string
+          this.si = value;
+        }
+      );
+
+      translateService.get('no').subscribe(
+        value => {
+          // value is our translated string
+          this.no = value;
+        }
+      );
     }
 
     ionViewDidLoad() {
@@ -124,24 +151,19 @@ export class NotificacionesPage {
         });
         loader.present();
 
-
-        let params = {
-            locale : this.translate.currentLang
-        };
-
         this.mainService.getAll('localidades/publicaciones').then(
             (response) => {
                 this.localidades = response;
             }
         );
 
-        this.mainService.getAll('rubros', params).then(
+        this.mainService.getAll('rubros').then(
             (response) => {
                 this.rubros = response;
             }
         );
 
-        this.mainService.getAll('ondas', params).then(
+        this.mainService.getAll('ondas').then(
             (response) => {
                 this.ondas = response;
             }
@@ -180,6 +202,111 @@ export class NotificacionesPage {
         // ).catch(() => loader.dismissAll());
 
     }
+
+  show_alert(flag){
+    let alert = this.alertCtrl.create();
+    var title='';
+    if(flag==1){
+      title='localidad';
+
+      for(var i in this.localidades){
+        alert.addInput({
+          type:'checkbox',
+          label:this.localidades[i].descripcion,
+          value:this.localidades[i].id,
+          checked:i==0?true:false
+        });
+
+      }
+
+    }else if(flag==2){
+      title='descuentos';
+
+      for(var i in this.descuentos){
+        alert.addInput({
+          type:'checkbox',
+          label:this.descuentos[i].nombre,
+          value:this.descuentos[i].id,
+          checked:i==0?true:false
+        });
+
+      }
+
+    }else if(flag==3){
+      title='eventos';
+
+      alert.addInput({
+          type:'checkbox',
+          label:this.si,
+          value:'si',
+          checked:i==0?true:false
+      });
+
+      alert.addInput({
+        type:'checkbox',
+        label:this.no,
+        value:'no',
+        checked:i==0?true:false
+      });
+
+    }else if(flag==4){
+      title='rubro';
+
+      for(var i in this.rubros){
+        alert.addInput({
+          type:'checkbox',
+          label:this.rubros[i].nombre,
+          value:this.rubros[i].id,
+          checked:i==0?true:false
+        });
+
+      }
+    }else if(flag==5){
+      title='segunOnda';
+
+      for(var i in this.ondas){
+        alert.addInput({
+          type:'checkbox',
+          label:this.ondas[i].nombre,
+          value:this.ondas[i].id,
+          checked:i==0?true:false
+        });
+
+      }
+    }
+
+    alert.addButton(this.canceltext);
+    alert.addButton({
+      text: this.oktext,
+      handler: data => {
+        console.log('Checkbox data:', data);
+        if(flag==1){
+          this.notificacionesLocalidad=data;
+        }else if(flag==2){
+          this.notificacionesDescuentos=data;
+        }else if(flag==3){
+          this.notificacionesEventos=data;
+        }else if(flag==4){
+          this.notificacionesRubro=data;
+        }else if(flag==5){
+          this.notificacionesOnda=data;
+        }
+      }
+    });
+
+    this.translateService.get(title).subscribe(
+      value => {
+        // value is our translated string
+        alert.setTitle(value);
+
+        alert.present();
+
+      }
+    );
+
+
+
+  }
 
     guardarPerfil() {
 
