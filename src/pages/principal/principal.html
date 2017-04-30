@@ -30,8 +30,8 @@
             <!--<button (click)="modalSearch({charNum: 0})" ion-button icon-only>-->
             <!--<ion-icon name="options"></ion-icon>-->
             <!--</button>-->
-            <button (click)="mostrarBusqueda()" ion-button icon-right>
-                <span>Ciudades</span>
+            <button (click)="show_alert()" ion-button icon-right>
+                <span>{{locals}}</span>
                 <ion-icon>
                   <img src="assets/img/down.png">
                 </ion-icon>
@@ -45,7 +45,9 @@
               <ion-icon name="ios-home" color="ep-gris"></ion-icon>
             </ion-segment-button>
             <ion-segment-button value="1" (click)="selectedTab()">
-                <ion-icon name="ios-beaker" color="ep-gris"></ion-icon>
+                <ion-icon color="ep-gris">
+                  <img src="assets/img/business.png" style="width:18px;">
+                </ion-icon>
             </ion-segment-button>
             <ion-segment-button value="2" (click)="selectedTab()">
                 <ion-icon name="ios-notifications" color="ep-gris"></ion-icon>
@@ -129,6 +131,7 @@
         </div>
         <!--</ion-slides>-->
     </div>
+
 
 
     <ion-fab right bottom *ngIf="tabs == 0">
