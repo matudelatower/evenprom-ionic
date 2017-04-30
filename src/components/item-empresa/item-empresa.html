@@ -4,7 +4,7 @@
         <div class="empresa-imagen" (click)="goToPerfil(empresa)">
             <img [src]="empresa.image_name"/>
         </div>
-        <h2 class="card-title">
+        <h2 class="card-title" (click)="goToPerfil(empresa)">
             <b> {{empresa.nombre | uppercase }}</b>
             <ion-icon name='checkmark-circle' item-right [ngStyle]="{color: empresa.color}"></ion-icon>
         </h2>
@@ -19,13 +19,28 @@
                 <!--</button>-->
             <!--</ion-col>-->
         <!--</ion-row>-->
-      <div class="line-div"></div>
-        <ion-row class="mb-row">
-          <ion-item (click)="addEmpresaFav(empresa.id)">
-            <ion-icon name='heart-outline' *ngIf="!empresa.like_persona" item-left color="danger"></ion-icon>
-            <ion-icon name='heart' *ngIf="empresa.like_persona" item-left color="danger"></ion-icon>
-            <ion-note>{{empresa.likes}} Likes</ion-note>
-          </ion-item>
-        </ion-row>
+      <!--<div class="line-div"></div>-->
+        <!--<ion-row style="border:1px solid #e0e0e0;">-->
+          <!--&lt;!&ndash;<ion-item (click)="addEmpresaFav(empresa.id)">&ndash;&gt;-->
+          <!--<h5 text-center style="width:100%;">-->
+            <!--<ion-icon name='heart-outline' *ngIf="!empresa.like_persona" item-left color="danger" (click)="addEmpresaFav(empresa.id)"></ion-icon>-->
+            <!--<ion-icon name='heart' *ngIf="empresa.like_persona" item-left color="danger" (click)="addEmpresaFav(empresa.id)"></ion-icon>-->
+            <!--<ion-note>{{empresa.likes}} Likes</ion-note>-->
+          <!--</h5>-->
+
+          <!--&lt;!&ndash;</ion-item>&ndash;&gt;-->
+        <!--</ion-row>-->
+      <ion-row style="border:1px solid #e0e0e0;">
+        <!--<ion-item (click)="addEmpresaFav(empresa.id)">-->
+        <p text-center style="width:100%;">
+          <ion-icon name='heart-outline' color="danger" style="margin-right:5px;margin-top:2px;"></ion-icon>
+
+          <ion-icon name='heart-outline' *ngIf="!empresa.like_persona" color="danger" (click)="addEmpresaFav(empresa.id)" style="margin-right:5px;margin-top:2px;"></ion-icon>
+          <ion-icon name='heart' *ngIf="empresa.like_persona" color="danger" (click)="addEmpresaFav(empresa.id)" style="margin-right:5px;margin-top:2px;"></ion-icon>
+          <ion-note>{{empresa.likes}} Likes</ion-note>
+        </p>
+
+        <!--</ion-item>-->
+      </ion-row>
     </ion-card>
 </ion-col>
