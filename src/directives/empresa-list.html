@@ -84,7 +84,7 @@
 
 
 <ion-grid class="publicacion" *ngIf="!publicacion.premium" no-padding>
-    <ion-row>
+    <ion-row (click)="pagePublicacion(publicacion)">
         <ion-col text-center>
           <b class="date-button" *ngIf="!publicacion.hora_inicio" ion-text>
             <!--{{ getMesByFecha(publicacion.rango_fecha.fecha_desde) }}.-->
