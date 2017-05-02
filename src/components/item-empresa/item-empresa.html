@@ -33,7 +33,7 @@
       <ion-row style="border:1px solid #e0e0e0;">
         <!--<ion-item (click)="addEmpresaFav(empresa.id)">-->
         <p text-center style="width:100%;">
-          <ion-icon name='heart-outline' color="danger" style="margin-right:5px;margin-top:2px;"></ion-icon>
+          <!--<ion-icon name='heart-outline' color="danger" style="margin-right:5px;margin-top:2px;"></ion-icon>-->
 
           <ion-icon name='heart-outline' *ngIf="!empresa.like_persona" color="danger" (click)="addEmpresaFav(empresa.id)" style="margin-right:5px;margin-top:2px;"></ion-icon>
           <ion-icon name='heart' *ngIf="empresa.like_persona" color="danger" (click)="addEmpresaFav(empresa.id)" style="margin-right:5px;margin-top:2px;"></ion-icon>
